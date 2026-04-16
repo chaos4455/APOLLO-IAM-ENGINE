@@ -213,3 +213,31 @@ Especialista em arquiteturas "High-Availability" e sistemas de missão crítica.
 <sub>© 2026 Apollo IAM Project. Todos os direitos reservados. Uso restrito e confidencial.</sub>
 
 </div>
+
+
+
+
+<img width="1040" height="954" alt="chrome_llUZmFosHn" src="https://github.com/user-attachments/assets/8c3b5c00-2c6b-49bb-9d0c-8b8a6cb361d5" />
+<img width="1040" height="954" alt="chrome_4Of2elvcke" src="https://github.com/user-attachments/assets/66469010-68d5-492e-8411-3d1100130780" />
+<img width="1040" height="954" alt="chrome_SbfIRYIFGS" src="https://github.com/user-attachments/assets/26d1b6b7-c193-49dc-a2fd-4db6d4c4aab1" />
+<img width="1040" height="954" alt="chrome_lDJggZEF4w" src="https://github.com/user-attachments/assets/76409628-05d6-4657-b806-d3ffd43da245" />
+<img width="1040" height="954" alt="chrome_3MpGg5Lxl8" src="https://github.com/user-attachments/assets/bbecd7e1-4b42-4480-9135-8ea1a94ef7e6" />
+<img width="1040" height="954" alt="chrome_HSe6eHYvfK" src="https://github.com/user-attachments/assets/8eda2209-6635-4a6f-a597-dd77c947fa41" />
+<img width="1040" height="954" alt="chrome_VQoo3NPxn0" src="https://github.com/user-attachments/assets/b62d28f0-1ebd-46d3-9d51-360216b1f93d" />
+<img width="1040" height="954" alt="chrome_dXloJCaWps" src="https://github.com/user-attachments/assets/7aa33fa2-4e50-4dba-b110-ed6d7240c213" />
+<img width="1040" height="954" alt="chrome_lWqB6QjlDJ" src="https://github.com/user-attachments/assets/466930a2-e56e-4a46-a560-c52da625a45c" />
+<img width="1040" height="954" alt="chrome_oxRgNIQABj" src="https://github.com/user-attachments/assets/41178c77-6092-4b2d-b938-53edd8a23e4b" />
+<img width="1040" height="954" alt="chrome_O3qkcZWOID" src="https://github.com/user-attachments/assets/a0c7ec24-2caa-4b5a-956f-a534ea820197" />
+<img width="1040" height="954" alt="chrome_dnIkETTdv3" src="https://github.com/user-attachments/assets/60799a23-8a72-41f8-a573-3ece0357a962" />
+<img width="1040" height="954" alt="chrome_Y6naa0KiQh" src="https://github.com/user-attachments/assets/a9a07e97-1894-462b-823f-9cf8ae9c8bc1" />
+<img width="1040" height="954" alt="chrome_S5kodm4Sx6" src="https://github.com/user-attachments/assets/c1d4821c-b115-4220-a9aa-726734f48398" />
+<img width="1040" height="954" alt="chrome_kxh1eX1nZt" src="https://github.com/user-attachments/assets/21b42552-a653-49f9-b1c7-8d30a3291137" />
+<img width="1040" height="954" alt="chrome_MTekBuzi9f" src="https://github.com/user-attachments/assets/e8b7b856-4c96-45e4-bd91-45870dab2ced" />
+<img width="1040" height="954" alt="chrome_5jFaiSiAxB" src="https://github.com/user-attachments/assets/ca2bd436-8fda-4b48-bf81-0c10b41b97dd" />
+<img width="1040" height="954" alt="chrome_QNFfQAmy4J" src="https://github.com/user-attachments/assets/d665fd47-8536-49dc-bf79-e26e10c05c80" />
+<img width="3840" height="21363" alt="screencapture-localhost-8443-docs-2026-04-15-20_32_59" src="https://github.com/user-attachments/assets/1d2092d3-75d6-4db8-a0a7-c931a9834a5c" />
+<img width="3840" height="14381" alt="screencapture-localhost-8443-redoc-2026-04-15-20_37_12-3" src="https://github.com/user-attachments/assets/f6d7d1e8-bf1c-4fdd-b015-5c2e752d7b4a" />
+<img width="3840" height="3292" alt="screencapture-localhost-8444-admin-metrics-2026-04-15-20_57_10" src="https://github.com/user-attachments/assets/78d98427-0a1a-4690-80d2-099fe3d104dc" />
+<img width="3840" height="1906" alt="screencapture-localhost-8444-admin-audit-2026-04-15-20_58_13" src="https://github.com/user-attachments/assets/d9004825-3256-4c5c-affc-aba39c164e49" />
+<img width="856" height="886" alt="chrome_P9YQgp5GsX" src="https://github.com/user-attachments/assets/714c5415-2a71-4e3f-a8cc-710bb864fa0b" />
+
