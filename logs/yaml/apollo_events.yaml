@@ -9095,3 +9095,15 @@
     http_status: 200
     elapsed_ms: 18.4
 ---
+- seq: 603
+  uid: e2c49bfb-238a-422f-acb3-63b653d8503a
+  hash: f2fd19a7d22a0710094a240ed9a55ca1e3debb79
+  timestamp: '2026-04-16T00:57:09.763397+00:00'
+  event: system.startup
+  actor: system
+  resource: api
+  resource_id: null
+  status: success
+  detail:
+    version: 1.0.0
+---

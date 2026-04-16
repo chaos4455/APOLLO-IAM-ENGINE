@@ -604,3 +604,4 @@
 | 600 | `7a2e1b80` | 2026-04-16T00:40:52.156158+00:00 | `http.request` | 127.0.0.1 | /auth/check | — | success | {"method": "POST", "path": "/auth/check", "query": "", "http_status": 200, "elap |
 | 601 | `01716e01` | 2026-04-16T00:40:54.193737+00:00 | `auth.abac_check` | gerente1 | auth/check | — | success | {"allowed": true, "reason": "ok", "roles": ["gerente"], "abac": {"sistema": "cot |
 | 602 | `a3e250fa` | 2026-04-16T00:40:54.209267+00:00 | `http.request` | 127.0.0.1 | /auth/check | — | success | {"method": "POST", "path": "/auth/check", "query": "", "http_status": 200, "elap |
+| 603 | `e2c49bfb` | 2026-04-16T00:57:09.763397+00:00 | `system.startup` | system | api | — | success | {"version": "1.0.0"} |

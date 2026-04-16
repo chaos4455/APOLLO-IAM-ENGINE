@@ -1,47 +1,44 @@
-# project-production-test
 """
 project-production-test.py
-Testa o projeto Apollo IAM Engine em producao:
-  - Health check
-  - Todas as rotas da API
-  - Cria RBAC padrao (sistema de cotacao)
-  - Cria usuario1 / vendedor com role cotacao:create
-  - Testa login e valida roles no token
-  - BLOCO 8 — Testes ABAC completos (/auth/check)
-  - Salva relatorio em YAML, MD e JSON em project-test-run-setup-logs/
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  🌟 APOLLO IAM ENGINE — Production Test Suite v3 🌟                        ║
+║  "Hora de Aventura no Reino de Ooo IAM"                                     ║
+║  Finn e Jake testam TUDO antes de salvar o reino!                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Cobre: Health, Auth, RBAC, ABAC, APL (Policy DSL), Cache de Decisão,
+       Multi-tenant, User Types/Levels, Custom Entities, Settings, Audit.
 O2 Data Solutions
 """
+from __future__ import annotations
 
-import os
-import sys
-import ssl
 import json
+import os
+import ssl
+import sys
 import time
 import uuid
 from datetime import datetime, timezone
-from pathlib import Path
+from typing import Any
 
 import httpx
 import yaml
-from colorama import init, Fore, Style
+from colorama import Fore, Style, init
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
 from rich.rule import Rule
-from rich.progress import track, Progress, SpinnerColumn, TextColumn
+from rich.table import Table
 
 init(autoreset=True)
 console = Console()
 
-# ── resolve raiz do projeto e importa config de segurança ────────────────────
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _HERE)
 
 from src.infrastructure.config.security_config import (
-    is_mtls_enabled, get_certs_dir, get_api_port,
+    get_api_port, get_certs_dir, is_mtls_enabled,
 )
 
-# ── config ────────────────────────────────────────────────────────────────────
 _MTLS    = is_mtls_enabled()
 _PORT    = get_api_port() if _MTLS else 8000
 _PROTO   = "https" if _MTLS else "http"
@@ -51,12 +48,10 @@ LOGS_DIR   = os.path.join(_HERE, "project-test-run-setup-logs")
 RUN_ID     = datetime.now().strftime("%Y%m%d_%H%M%S")
 ADMIN_USER = "admin"
 ADMIN_PASS = "admin"
-
 os.makedirs(LOGS_DIR, exist_ok=True)
 
-# ── SSLContext para mTLS ──────────────────────────────────────────────────────
+# ── SSL ───────────────────────────────────────────────────────────────────────
 def _build_ssl_ctx() -> ssl.SSLContext | bool:
-    """Retorna SSLContext com cert cliente se mTLS ativo, senão True (verify padrão)."""
     if not _MTLS:
         return True
     certs = get_certs_dir()
@@ -71,24 +66,21 @@ def _build_ssl_ctx() -> ssl.SSLContext | bool:
 
 _SSL = _build_ssl_ctx()
 
-# ── estado global do run ──────────────────────────────────────────────────────
+# ── estado global ─────────────────────────────────────────────────────────────
 results: list[dict] = []
 kpis: dict = {
     "total": 0, "passed": 0, "failed": 0,
     "created_roles": [], "created_permissions": [],
     "created_users": [], "created_groups": [],
+    "created_policies": [],
     "token_admin": None, "token_usuario1": None,
-    "token_gerente": None,
+    "token_gerente": None, "token_aprovador": None,
+    "latencies_ms": [],
 }
-
-
-# ── helpers ───────────────────────────────────────────────────────────────────
-
 _TIMEOUT = httpx.Timeout(30.0, connect=10.0)
 
-
+# ── helpers HTTP ──────────────────────────────────────────────────────────────
 class _FakeResponse:
-    """Resposta fake para erros de conexao — evita crash com traceback."""
     def __init__(self, exc):
         self.status_code = 0
         self._exc = exc
@@ -96,964 +88,931 @@ class _FakeResponse:
     @property
     def text(self): return str(self._exc)
 
-
 def _ts() -> str:
     return datetime.now(timezone.utc).isoformat()
 
-
 def step(name: str, ok: bool, status_code: int = 0,
-         detail: str = "", data: dict | None = None):
+         detail: str = "", data: dict | None = None,
+         latency_ms: float | None = None):
     icon  = "✅" if ok else "❌"
     color = "bold green" if ok else "bold red"
     kpis["total"] += 1
-    if ok:
-        kpis["passed"] += 1
-    else:
-        kpis["failed"] += 1
-
-    entry = {
-        "step": name, "ok": ok, "status_code": status_code,
-        "detail": detail, "data": data or {}, "timestamp": _ts(),
-    }
+    if ok: kpis["passed"] += 1
+    else:  kpis["failed"] += 1
+    if latency_ms is not None:
+        kpis["latencies_ms"].append(latency_ms)
+    entry = {"step": name, "ok": ok, "status_code": status_code,
+             "detail": detail, "data": data or {}, "latency_ms": latency_ms,
+             "timestamp": _ts()}
     results.append(entry)
-
+    lat_str = f"  [dim magenta]{latency_ms:.0f}ms[/dim magenta]" if latency_ms else ""
     console.print(
         f"  {icon} [{color}]{name}[/{color}]"
         + (f"  [dim]{detail}[/dim]" if detail else "")
         + (f"  [dim cyan]HTTP {status_code}[/dim cyan]" if status_code else "")
+        + lat_str
     )
     return ok
 
-
-def get(path: str, token: str = None) -> httpx.Response:
+def _req(method: str, path: str, token: str | None = None,
+         json_body: dict | None = None, form: dict | None = None,
+         params: dict | None = None) -> tuple[Any, float]:
     headers = {"Authorization": f"Bearer {token}"} if token else {}
+    t0 = time.perf_counter()
     try:
-        return httpx.get(f"{API_BASE}{path}", headers=headers,
-                         timeout=_TIMEOUT, verify=_SSL)
+        fn = getattr(httpx, method.lower())
+        kwargs: dict = {"headers": headers, "timeout": _TIMEOUT, "verify": _SSL}
+        if json_body is not None: kwargs["json"] = json_body
+        if form is not None:      kwargs["data"] = form
+        if params is not None:    kwargs["params"] = params
+        r = fn(f"{API_BASE}{path}", **kwargs)
+        return r, round((time.perf_counter() - t0) * 1000, 1)
     except Exception as e:
-        return _FakeResponse(e)
-
-
-def post(path: str, json_body: dict = None, form: dict = None, token: str = None) -> httpx.Response:
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    try:
-        if form:
-            return httpx.post(f"{API_BASE}{path}", data=form, headers=headers,
-                              timeout=_TIMEOUT, verify=_SSL)
-        return httpx.post(f"{API_BASE}{path}", json=json_body, headers=headers,
-                          timeout=_TIMEOUT, verify=_SSL)
-    except Exception as e:
-        return _FakeResponse(e)
-
-
-def put(path: str, json_body: dict, token: str = None) -> httpx.Response:
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    try:
-        return httpx.put(f"{API_BASE}{path}", json=json_body, headers=headers,
-                         timeout=_TIMEOUT, verify=_SSL)
-    except Exception as e:
-        return _FakeResponse(e)
-
-
-def delete(path: str, token: str = None) -> httpx.Response:
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    try:
-        return httpx.delete(f"{API_BASE}{path}", headers=headers,
-                            timeout=_TIMEOUT, verify=_SSL)
-    except Exception as e:
-        return _FakeResponse(e)
-
-
-def delete(path: str, token: str = None) -> httpx.Response:
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    try:
-        return httpx.delete(f"{API_BASE}{path}", headers=headers, timeout=_TIMEOUT)
-    except Exception as e:
-        return _FakeResponse(e)
-
-
-# ===========================================================================
-# BLOCO 1 — Health & Conectividade
-# ===========================================================================
-
-def test_health():
-    console.print(Rule("[bold cyan]1. Health & Conectividade[/bold cyan]", style="cyan"))
-
-    console.print("  [dim]Aguardando API responder...[/dim]")
-    for attempt in range(15):
-        try:
-            r = httpx.get(f"{API_BASE}/health", timeout=3, verify=_SSL)
-            if r.status_code == 200:
-                break
-        except Exception:
-            pass
-        time.sleep(2)
-    else:
-        step("API disponivel", False, 0, "API nao respondeu em 30s")
-        console.print("[bold red]  Certifique-se de rodar run-init-api-engine.py primeiro.[/bold red]")
-        sys.exit(1)
-
-    try:
-        r = get("/health")
-        ok = r.status_code == 200 and r.json().get("status") == "ok"
-        step("GET /health", ok, r.status_code, r.json().get("service", ""))
-    except Exception as e:
-        step("GET /health", False, 0, str(e))
-        sys.exit(1)
-
-    try:
-        r = get("/docs")
-        step("GET /docs (Swagger)", r.status_code == 200, r.status_code)
-    except Exception as e:
-        step("GET /docs (Swagger)", False, 0, str(e))
-
-    try:
-        r = get("/redoc")
-        step("GET /redoc", r.status_code == 200, r.status_code)
-    except Exception as e:
-        step("GET /redoc", False, 0, str(e))
-
-
-# ===========================================================================
-# BLOCO 2 — Autenticacao Admin
-# ===========================================================================
-
-def test_auth_admin():
-    console.print(Rule("[bold cyan]2. Autenticacao Admin[/bold cyan]", style="cyan"))
-
-    r = post("/auth/token", form={"username": ADMIN_USER, "password": ADMIN_PASS})
-    ok = r.status_code == 200
-    step("POST /auth/token (admin)", ok, r.status_code)
-    if not ok:
-        console.print(f"[red]  Falha no login admin: {r.text}[/red]")
-        sys.exit(1)
-
-    data = r.json()
-    kpis["token_admin"] = data["access_token"]
-
-    r2 = post("/auth/validate", json_body={"token": kpis["token_admin"]})
-    ok2 = r2.status_code == 200
-    payload = r2.json() if ok2 else {}
-    step("POST /auth/validate (admin)", ok2, r2.status_code,
-         f"sub={payload.get('sub')} superuser={payload.get('is_superuser')}")
-
-    r3 = post("/auth/token", form={"username": "admin", "password": "errada"})
-    step("POST /auth/token (senha errada → 401)", r3.status_code == 401, r3.status_code)
-
-    r4 = post("/auth/token", form={"username": "naoexiste", "password": "x"})
-    step("POST /auth/token (user inexistente → 401)", r4.status_code == 401, r4.status_code)
-
-
-# ===========================================================================
-# BLOCO 3 — Rotas Admin: Users, Roles, Permissions, Groups, RBAC, Settings
-# ===========================================================================
-
-def test_admin_routes():
-    tok = kpis["token_admin"]
-    console.print(Rule("[bold cyan]3. Rotas Admin — listagem[/bold cyan]", style="cyan"))
-
-    for path, label in [
-        ("/admin/users/",       "GET /admin/users/"),
-        ("/admin/roles/",       "GET /admin/roles/"),
-        ("/admin/permissions/", "GET /admin/permissions/"),
-        ("/admin/groups/",      "GET /admin/groups/"),
-        ("/admin/rbac/",        "GET /admin/rbac/"),
-        ("/admin/settings/",    "GET /admin/settings/"),
-        ("/admin/audit/",       "GET /admin/audit/"),
-    ]:
-        r = get(path, token=tok)
-        step(label, r.status_code == 200, r.status_code,
-             f"{len(r.json()) if isinstance(r.json(), list) else 'ok'} itens")
-
-    r = get("/admin/users/")
-    step("GET /admin/users/ sem token → 401", r.status_code == 401, r.status_code)
-
-
-# ===========================================================================
-# BLOCO 4 — Setup RBAC: Sistema de Cotacao
-# ===========================================================================
-
-def setup_rbac_cotacao():
-    tok = kpis["token_admin"]
-    console.print(Rule("[bold cyan]4. Setup RBAC — Sistema de Cotacao[/bold cyan]", style="cyan"))
-
-    perms_to_create = [
-        {"name": "cotacao:create", "resource": "cotacao", "action": "create",
-         "description": "Criar nova cotacao"},
-        {"name": "cotacao:read",   "resource": "cotacao", "action": "read",
-         "description": "Visualizar cotacoes"},
-        {"name": "cotacao:update", "resource": "cotacao", "action": "update",
-         "description": "Editar cotacao"},
-        {"name": "cotacao:delete", "resource": "cotacao", "action": "delete",
-         "description": "Excluir cotacao"},
-        {"name": "cotacao:approve","resource": "cotacao", "action": "approve",
-         "description": "Aprovar cotacao"},
-    ]
-
-    perm_ids: dict[str, str] = {}
-    for p in perms_to_create:
-        r = post("/admin/permissions/", json_body=p, token=tok)
-        ok = r.status_code in (200, 201, 409)
-        pid = r.json().get("id") if r.status_code in (200, 201) else None
-        if r.status_code == 409:
-            all_p = get("/admin/permissions/", token=tok).json()
-            existing = next((x for x in all_p if x["name"] == p["name"]), None)
-            pid = existing["id"] if existing else None
-        if pid:
-            perm_ids[p["name"]] = pid
-            kpis["created_permissions"].append(p["name"])
-        step(f"Permissao [{p['name']}]", ok, r.status_code,
-             "criada" if r.status_code == 201 else ("ja existe" if r.status_code == 409 else "erro"))
-
-    roles_to_create = [
-        {"name": "vendedor",   "description": "Vendedor — cria cotacoes"},
-        {"name": "aprovador",  "description": "Aprovador — aprova cotacoes"},
-        {"name": "gerente",    "description": "Gerente — acesso total a cotacoes"},
-    ]
-
-    role_ids: dict[str, str] = {}
-    for ro in roles_to_create:
-        r = post("/admin/roles/", json_body=ro, token=tok)
-        ok = r.status_code in (200, 201, 409)
-        rid = r.json().get("id") if r.status_code in (200, 201) else None
-        if r.status_code == 409:
-            all_r = get("/admin/roles/", token=tok).json()
-            existing = next((x for x in all_r if x["name"] == ro["name"]), None)
-            rid = existing["id"] if existing else None
-        if rid:
-            role_ids[ro["name"]] = rid
-            kpis["created_roles"].append(ro["name"])
-        step(f"Role [{ro['name']}]", ok, r.status_code,
-             "criada" if r.status_code == 201 else ("ja existe" if r.status_code == 409 else "erro"))
-
-    console.print()
-    console.print("  [dim]Atribuindo permissoes as roles...[/dim]")
-
-    vendedor_perms  = ["cotacao:create"]
-    aprovador_perms = ["cotacao:read", "cotacao:approve"]
-    gerente_perms   = list(perm_ids.keys())
-
-    assignments = (
-        [("vendedor",  p) for p in vendedor_perms] +
-        [("aprovador", p) for p in aprovador_perms] +
-        [("gerente",   p) for p in gerente_perms]
-    )
-
-    for role_name, perm_name in assignments:
-        rid = role_ids.get(role_name)
-        pid = perm_ids.get(perm_name)
-        if not rid or not pid:
-            step(f"  Assign {role_name} ← {perm_name}", False, 0, "id nao encontrado")
-            continue
-        r = post(f"/admin/permissions/{pid}/assign-role/{rid}", token=tok)
-        ok = r.status_code == 200
-        step(f"  Assign [{role_name}] ← [{perm_name}]", ok, r.status_code)
-
-    r = post("/admin/groups/",
-             json_body={"name": "Vendas", "description": "Time de Vendas"},
-             token=tok)
-    ok = r.status_code in (200, 201, 409)
-    gid = r.json().get("id") if r.status_code in (200, 201) else None
-    if r.status_code == 409:
-        all_g = get("/admin/groups/", token=tok).json()
-        ex = next((x for x in all_g if x["name"] == "Vendas"), None)
-        gid = ex["id"] if ex else None
-    kpis["created_groups"].append("Vendas")
-    step("Grupo [Vendas]", ok, r.status_code,
-         "criado" if r.status_code == 201 else "ja existe")
-
-    r = post("/admin/rbac/",
-             json_body={"key": "sistema", "label": "Sistema de Acesso",
-                        "value_type": "string",
-                        "description": "Sistema ao qual o usuario tem acesso"},
-             token=tok)
-    ok = r.status_code in (200, 201, 409)
-    step("Atributo RBAC [sistema]", ok, r.status_code,
-         "criado" if r.status_code == 201 else "ja existe")
-
-    return role_ids, perm_ids, gid
-
-
-# ===========================================================================
-# BLOCO 5 — Criar usuario1 / vendedor
-# ===========================================================================
-
-def create_usuario1(role_ids: dict, gid: str | None):
-    tok = kpis["token_admin"]
-    console.print(Rule("[bold cyan]5. Criar usuario1 (vendedor)[/bold cyan]", style="cyan"))
-
-    payload = {
-        "username":     "usuario1",
-        "password":     "usuario1",
-        "email":        "usuario1@cotacao.local",
-        "full_name":    "Usuario Um — Vendedor",
-        "is_active":    True,
-        "is_superuser": False,
-        "role_names":   [],
-    }
-    r = post("/admin/users/", json_body=payload, token=tok)
-    ok = r.status_code in (200, 201, 409)
-    uid = r.json().get("id") if r.status_code in (200, 201) else None
-
-    if r.status_code == 409:
-        all_u = get("/admin/users/", token=tok).json()
-        ex = next((x for x in all_u if x["username"] == "usuario1"), None)
-        uid = ex["id"] if ex else None
-        step("Criar usuario1", True, 409, "ja existe — reutilizando")
-    else:
-        step("Criar usuario1", ok, r.status_code,
-             f"id={uid}" if uid else r.text[:80])
-
-    if not uid:
-        step("usuario1 id nao encontrado", False, 0)
-        return None
-
-    kpis["created_users"].append("usuario1")
-
-    rid = role_ids.get("vendedor")
-    if rid:
-        r2 = post(f"/admin/roles/{rid}/assign-user/{uid}", token=tok)
-        step("Atribuir role [vendedor] a usuario1", r2.status_code == 200, r2.status_code)
-
-    if gid:
-        r3 = post(f"/admin/groups/{gid}/assign-user/{uid}", token=tok)
-        step("Atribuir grupo [Vendas] a usuario1", r3.status_code == 200, r3.status_code)
-
-    r4 = post(f"/admin/rbac/assign/{uid}",
-              json_body={"attribute_key": "sistema", "value": "cotacao"},
-              token=tok)
-    step("Atribuir RBAC [sistema=cotacao] a usuario1", r4.status_code == 200, r4.status_code)
-
-    return uid
-
-
-# ===========================================================================
-# BLOCO 6 — Login usuario1 e validacao de roles
-# ===========================================================================
-
-def test_usuario1_login_and_roles(uid: str | None):
-    console.print(Rule("[bold cyan]6. Login usuario1 + Validacao de Roles[/bold cyan]", style="cyan"))
-
-    r = post("/auth/token", form={"username": "usuario1", "password": "usuario1"})
-    ok = r.status_code == 200
-    step("POST /auth/token (usuario1)", ok, r.status_code)
-    if not ok:
-        step("Login usuario1 falhou", False, r.status_code, r.text[:120])
-        return
-
-    data = r.json()
-    kpis["token_usuario1"] = data["access_token"]
-
-    r2 = post("/auth/validate", json_body={"token": kpis["token_usuario1"]})
-    ok2 = r2.status_code == 200
-    payload = r2.json() if ok2 else {}
-    step("POST /auth/validate (usuario1)", ok2, r2.status_code,
-         f"sub={payload.get('sub')}")
-
-    roles_no_token = payload.get("roles", [])
-    tem_vendedor = "vendedor" in roles_no_token
-    step("Token contem role [vendedor]", tem_vendedor, 0, f"roles={roles_no_token}")
-
-    nao_superuser = not payload.get("is_superuser", True)
-    step("usuario1 NAO e superuser", nao_superuser, 0,
-         f"is_superuser={payload.get('is_superuser')}")
-
-    r3 = get("/admin/users/", token=kpis["token_usuario1"])
-    step("GET /admin/users/ com token usuario1 → 403 (nao superuser)",
-         r3.status_code == 403, r3.status_code)
-
-    refresh = data.get("refresh_token")
-    if refresh:
-        r4 = post("/auth/refresh", json_body={"refresh_token": refresh})
-        step("POST /auth/refresh (usuario1)", r4.status_code == 200, r4.status_code)
-
-    r5 = post("/auth/logout", token=kpis["token_usuario1"])
-    step("POST /auth/logout (usuario1)", r5.status_code == 200, r5.status_code)
-
-    r6 = post("/auth/validate", json_body={"token": kpis["token_usuario1"]})
-    step("Token usuario1 invalido apos logout → 401", r6.status_code == 401, r6.status_code)
-
-
-# ===========================================================================
-# BLOCO 7 — Testes de integridade adicionais
-# ===========================================================================
-
-def test_integrity():
-    tok = kpis["token_admin"]
-    console.print(Rule("[bold cyan]7. Integridade & Edge Cases[/bold cyan]", style="cyan"))
-
-    r = post("/auth/token", form={"username": "usuario1", "password": "errada"})
-    step("Login usuario1 senha errada → 401", r.status_code == 401, r.status_code)
-
-    r = post("/auth/token", form={"username": "fantasma", "password": "x"})
-    step("Login usuario inexistente → 401", r.status_code == 401, r.status_code)
-
-    r = post("/auth/validate", json_body={"token": "token.invalido.aqui"})
-    step("Validar token invalido → 401", r.status_code == 401, r.status_code)
-
-    r = get("/admin/settings/", token=tok)
-    step("GET /admin/settings/", r.status_code == 200, r.status_code)
-
-    r2 = put("/admin/settings/",
-             json_body={"access_token_expire_minutes": 90,
-                        "refresh_token_expire_days": 7,
-                        "allow_registration": False,
-                        "max_login_attempts": 5,
-                        "lockout_minutes": 15},
-             token=tok)
-    step("PUT /admin/settings/ (expire=90min)", r2.status_code == 200, r2.status_code,
-         f"expire={r2.json().get('access_token_expire_minutes')}min" if r2.status_code == 200 else "")
-
-    r3 = get("/admin/audit/", token=tok)
-    ok3 = r3.status_code == 200
-    n_logs = len(r3.json()) if ok3 and isinstance(r3.json(), list) else 0
-    step("GET /admin/audit/", ok3, r3.status_code, f"{n_logs} entradas")
-
-
-# ===========================================================================
-# BLOCO 8 — Testes ABAC (/auth/check)
-# ===========================================================================
-
-def _fresh_token(username: str, password: str) -> str | None:
-    """Faz login e retorna access_token fresco."""
+        return _FakeResponse(e), round((time.perf_counter() - t0) * 1000, 1)
+
+def get(path, token=None, params=None):
+    r, _ = _req("get", path, token=token, params=params); return r
+def post(path, json_body=None, form=None, token=None):
+    r, _ = _req("post", path, token=token, json_body=json_body, form=form); return r
+def put(path, json_body, token=None):
+    r, _ = _req("put", path, token=token, json_body=json_body); return r
+def patch(path, token=None, params=None):
+    r, _ = _req("patch", path, token=token, params=params); return r
+def delete(path, token=None):
+    r, _ = _req("delete", path, token=token); return r
+def _timed_post(path, json_body=None, form=None, token=None):
+    return _req("post", path, token=token, json_body=json_body, form=form)
+def _fresh_token(username, password):
     r = post("/auth/token", form={"username": username, "password": password})
-    if r.status_code == 200:
-        return r.json().get("access_token")
-    return None
-
-
-def _check(token: str, **kwargs) -> dict:
-    """Chama /auth/check e retorna o JSON."""
+    return r.json().get("access_token") if r.status_code == 200 else None
+def _check(token, **kwargs):
     body = {"token": token, **kwargs}
     r = post("/auth/check", json_body=body)
-    if r.status_code == 200:
-        return r.json()
-    return {"allowed": False, "reason": f"HTTP {r.status_code}: {r.text[:80]}"}
+    return r.json() if r.status_code == 200 else {"allowed": False, "reason": f"HTTP {r.status_code}: {r.text[:80]}"}
+
+def _hdr(title: str):
+    console.print()
+    console.print(Rule(f"[bold cyan]{title}[/bold cyan]"))
 
 
-def setup_abac_usuarios(role_ids: dict, gid: str | None):
-    """
-    Cria usuarios adicionais para os testes ABAC:
-      - gerente1  → role gerente, grupo Vendas, sistema=cotacao, cargo=gerente
-      - aprovador1 → role aprovador, sistema=cotacao
-    Retorna (uid_gerente, uid_aprovador)
-    """
+# ══════════════════════════════════════════════════════════════════════════════
+# 1. HEALTH CHECK — "Finn verifica se o castelo ainda está de pé"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_health():
+    _hdr("🏰 1. HEALTH CHECK")
+    r, ms = _req("get", "/health")
+    step("GET /health", r.status_code == 200,
+         r.status_code, r.json().get("status", ""), latency_ms=ms)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 2. AUTH — "Jake usa a magia do JWT para entrar no reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_auth():
+    _hdr("🔑 2. AUTH — Login, Refresh, Validate, Logout")
+
+    # login admin
+    r, ms = _timed_post("/auth/token", form={"username": ADMIN_USER, "password": ADMIN_PASS})
+    ok = r.status_code == 200
+    step("Login admin", ok, r.status_code, latency_ms=ms)
+    if not ok:
+        console.print(f"  [red]Detalhe: {r.text[:200]}[/red]")
+        return
+    data = r.json()
+    kpis["token_admin"] = data["access_token"]
+    refresh_token = data.get("refresh_token", "")
+
+    # validate
+    r2, ms2 = _timed_post("/auth/validate", json_body={"token": kpis["token_admin"]})
+    step("Validate token admin", r2.status_code == 200, r2.status_code, latency_ms=ms2)
+
+    # refresh
+    if refresh_token:
+        r3, ms3 = _timed_post("/auth/refresh", json_body={"refresh_token": refresh_token})
+        step("Refresh token", r3.status_code == 200, r3.status_code, latency_ms=ms3)
+
+    # check superuser
+    chk = _check(kpis["token_admin"])
+    step("Check superuser bypass", chk.get("allowed") is True,
+         detail=chk.get("reason", ""))
+
+    # token inválido
+    r4, ms4 = _timed_post("/auth/validate", json_body={"token": "token.invalido.aqui"})
+    step("Validate token inválido → 401/422", r4.status_code in (401, 422),
+         r4.status_code, latency_ms=ms4)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 3. ROLES — "As roles são as espadas do reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_roles():
+    _hdr("⚔️  3. ROLES")
     tok = kpis["token_admin"]
+    if not tok: return
 
-    # ── cria tipo de entidade 'cargo' (ABAC) ──────────────────────────────────
-    r = post("/admin/custom-entities/types",
-             json_body={"slug": "cargo", "label": "Cargo", "description": "Cargo do usuario"},
-             token=tok)
-    cargo_type_ok = r.status_code in (201, 409)
-    step("Entidade ABAC tipo [cargo]", cargo_type_ok, r.status_code,
-         "criado" if r.status_code == 201 else "ja existe")
-
-    # ── cria valor 'gerente' no tipo cargo ────────────────────────────────────
-    r = post("/admin/custom-entities/cargo/values",
-             json_body={"name": "gerente", "description": "Cargo de gerente"},
-             token=tok)
-    cargo_val_ok = r.status_code in (201, 409)
-    cargo_val_id = r.json().get("id") if r.status_code == 201 else None
-    if r.status_code == 409:
-        rv = get("/admin/custom-entities/cargo/values", token=tok)
-        ex = next((x for x in rv.json() if x["name"] == "gerente"), None)
-        cargo_val_id = ex["id"] if ex else None
-    step("Entidade ABAC valor [cargo=gerente]", cargo_val_ok, r.status_code,
-         "criado" if r.status_code == 201 else "ja existe")
-
-    # ── cria valor 'vendedor' no tipo cargo ───────────────────────────────────
-    r = post("/admin/custom-entities/cargo/values",
-             json_body={"name": "vendedor", "description": "Cargo de vendedor"},
-             token=tok)
-    cargo_vend_id = r.json().get("id") if r.status_code == 201 else None
-    if r.status_code == 409:
-        rv = get("/admin/custom-entities/cargo/values", token=tok)
-        ex = next((x for x in rv.json() if x["name"] == "vendedor"), None)
-        cargo_vend_id = ex["id"] if ex else None
-    step("Entidade ABAC valor [cargo=vendedor]", r.status_code in (201, 409), r.status_code,
-         "criado" if r.status_code == 201 else "ja existe")
-
-    # ── gerente1 ──────────────────────────────────────────────────────────────
-    r = post("/admin/users/",
-             json_body={"username": "gerente1", "password": "gerente1",
-                        "email": "gerente1@cotacao.local",
-                        "full_name": "Gerente Um", "is_active": True,
-                        "is_superuser": False, "role_names": []},
-             token=tok)
-    uid_g = r.json().get("id") if r.status_code in (200, 201) else None
-    if r.status_code == 409:
-        all_u = get("/admin/users/", token=tok).json()
-        ex = next((x for x in all_u if x["username"] == "gerente1"), None)
-        uid_g = ex["id"] if ex else None
-    step("Criar gerente1", r.status_code in (200, 201, 409), r.status_code,
-         "ja existe" if r.status_code == 409 else f"id={uid_g}")
-
-    if uid_g:
-        kpis["created_users"].append("gerente1")
-        rid_g = role_ids.get("gerente")
-        if rid_g:
-            r2 = post(f"/admin/roles/{rid_g}/assign-user/{uid_g}", token=tok)
-            step("Atribuir role [gerente] a gerente1", r2.status_code == 200, r2.status_code)
-        if gid:
-            r3 = post(f"/admin/groups/{gid}/assign-user/{uid_g}", token=tok)
-            step("Atribuir grupo [Vendas] a gerente1", r3.status_code == 200, r3.status_code)
-        r4 = post(f"/admin/rbac/assign/{uid_g}",
-                  json_body={"attribute_key": "sistema", "value": "cotacao"}, token=tok)
-        step("Atribuir RBAC [sistema=cotacao] a gerente1", r4.status_code == 200, r4.status_code)
-        if cargo_val_id:
-            r5 = post(f"/admin/custom-entities/assign/{uid_g}",
-                      json_body={"entity_type_slug": "cargo", "entity_value_id": cargo_val_id},
-                      token=tok)
-            step("Atribuir ABAC [cargo=gerente] a gerente1", r5.status_code == 200, r5.status_code)
-
-    # ── aprovador1 ────────────────────────────────────────────────────────────
-    r = post("/admin/users/",
-             json_body={"username": "aprovador1", "password": "aprovador1",
-                        "email": "aprovador1@cotacao.local",
-                        "full_name": "Aprovador Um", "is_active": True,
-                        "is_superuser": False, "role_names": []},
-             token=tok)
-    uid_a = r.json().get("id") if r.status_code in (200, 201) else None
-    if r.status_code == 409:
-        all_u = get("/admin/users/", token=tok).json()
-        ex = next((x for x in all_u if x["username"] == "aprovador1"), None)
-        uid_a = ex["id"] if ex else None
-    step("Criar aprovador1", r.status_code in (200, 201, 409), r.status_code,
-         "ja existe" if r.status_code == 409 else f"id={uid_a}")
-
-    if uid_a:
-        kpis["created_users"].append("aprovador1")
-        rid_a = role_ids.get("aprovador")
-        if rid_a:
-            r2 = post(f"/admin/roles/{rid_a}/assign-user/{uid_a}", token=tok)
-            step("Atribuir role [aprovador] a aprovador1", r2.status_code == 200, r2.status_code)
-        r3 = post(f"/admin/rbac/assign/{uid_a}",
-                  json_body={"attribute_key": "sistema", "value": "cotacao"}, token=tok)
-        step("Atribuir RBAC [sistema=cotacao] a aprovador1", r3.status_code == 200, r3.status_code)
-
-    # atribui cargo=vendedor a usuario1 (para testes ABAC de cargo)
-    all_u = get("/admin/users/", token=tok).json()
-    uid_u1 = next((x["id"] for x in all_u if x["username"] == "usuario1"), None)
-    if uid_u1 and cargo_vend_id:
-        r = post(f"/admin/custom-entities/assign/{uid_u1}",
-                 json_body={"entity_type_slug": "cargo", "entity_value_id": cargo_vend_id},
+    for role_name in ["vendedor", "gerente", "aprovador"]:
+        r = post("/admin/roles/", json_body={"name": role_name, "description": f"Role {role_name}"},
                  token=tok)
-        step("Atribuir ABAC [cargo=vendedor] a usuario1", r.status_code == 200, r.status_code)
+        ok = r.status_code in (200, 201, 409)
+        step(f"Criar role '{role_name}'", ok, r.status_code)
+        if r.status_code in (200, 201):
+            kpis["created_roles"].append(r.json().get("id", ""))
 
-    return uid_g, uid_a
+    r = get("/admin/roles/", token=tok)
+    step("Listar roles", r.status_code == 200, r.status_code,
+         f"{len(r.json())} roles" if r.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 4. PERMISSIONS — "Permissões são as chaves do castelo"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_permissions():
+    _hdr("🗝️  4. PERMISSIONS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    perms = [
+        ("cotacao:create", "cotacao", "create"),
+        ("cotacao:read",   "cotacao", "read"),
+        ("cotacao:update", "cotacao", "update"),
+        ("relatorio:read", "relatorio", "read"),
+    ]
+    for name, resource, action in perms:
+        r = post("/admin/permissions/",
+                 json_body={"name": name, "resource": resource, "action": action},
+                 token=tok)
+        ok = r.status_code in (200, 201, 409)
+        step(f"Criar permissão '{name}'", ok, r.status_code)
+        if r.status_code in (200, 201):
+            kpis["created_permissions"].append(r.json().get("id", ""))
+
+    r = get("/admin/permissions/", token=tok)
+    step("Listar permissões", r.status_code == 200, r.status_code,
+         f"{len(r.json())} permissões" if r.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 5. USERS — "Finn cria os heróis do reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_users():
+    _hdr("🧙 5. USERS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    uid = uuid.uuid4().hex[:6]
+    users = [
+        {"username": f"usuario1_{uid}", "password": "Senha123!", "email": f"u1_{uid}@test.com",
+         "full_name": "Usuário Um", "is_active": True},
+        {"username": f"gerente_{uid}",  "password": "Senha123!", "email": f"ger_{uid}@test.com",
+         "full_name": "Gerente Teste", "is_active": True},
+        {"username": f"aprovador_{uid}","password": "Senha123!", "email": f"apr_{uid}@test.com",
+         "full_name": "Aprovador Teste","is_active": True},
+    ]
+    for u in users:
+        r = post("/admin/users/", json_body=u, token=tok)
+        ok = r.status_code in (200, 201, 409)
+        step(f"Criar usuário '{u['username']}'", ok, r.status_code)
+        if r.status_code in (200, 201):
+            kpis["created_users"].append({"id": r.json().get("id"), "username": u["username"],
+                                          "password": u["password"]})
+
+    # login dos usuários criados
+    for u in kpis["created_users"]:
+        tok_u = _fresh_token(u["username"], u["password"])
+        if "usuario1" in u["username"]:
+            kpis["token_usuario1"] = tok_u
+        elif "gerente" in u["username"]:
+            kpis["token_gerente"] = tok_u
+        elif "aprovador" in u["username"]:
+            kpis["token_aprovador"] = tok_u
+        step(f"Login '{u['username']}'", tok_u is not None)
+
+    # listar
+    r = get("/admin/users/", token=tok)
+    step("Listar usuários", r.status_code == 200, r.status_code,
+         f"{len(r.json())} usuários" if r.status_code == 200 else "")
 
 
-def test_abac(role_ids: dict, gid: str | None):
-    console.print(Rule("[bold cyan]8. Testes ABAC — /auth/check[/bold cyan]", style="cyan"))
+# ══════════════════════════════════════════════════════════════════════════════
+# 6. RBAC — "Jake distribui as espadas para os heróis"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_rbac():
+    _hdr("🛡️  6. RBAC — Assign roles e permissions")
+    tok = kpis["token_admin"]
+    if not tok or not kpis["created_users"] or not kpis["created_roles"]: return
 
-    # ── setup: cria usuarios ABAC e obtém tokens frescos ─────────────────────
-    uid_g, uid_a = setup_abac_usuarios(role_ids, gid)
-    console.print()
+    # busca IDs de roles por nome
+    r = get("/admin/roles/", token=tok)
+    if r.status_code != 200: return
+    roles_by_name = {ro["name"]: ro["id"] for ro in r.json()}
 
-    tok_admin    = kpis["token_admin"]
-    tok_usuario1 = _fresh_token("usuario1", "usuario1")
-    tok_gerente  = _fresh_token("gerente1", "gerente1")
-    tok_aprovador = _fresh_token("aprovador1", "aprovador1")
-    kpis["token_gerente"] = tok_gerente
+    # busca IDs de permissões
+    rp = get("/admin/permissions/", token=tok)
+    perms_by_name = {p["name"]: p["id"] for p in rp.json()} if rp.status_code == 200 else {}
 
-    if not tok_usuario1:
-        step("Login usuario1 para ABAC", False, 0, "falhou")
-        return
-    if not tok_gerente:
-        step("Login gerente1 para ABAC", False, 0, "falhou")
-        return
+    # assign role vendedor ao usuario1
+    u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
+    if u1 and "vendedor" in roles_by_name:
+        r2 = post(f"/admin/roles/{roles_by_name['vendedor']}/assign/{u1['id']}", token=tok)
+        step("Assign role 'vendedor' → usuario1", r2.status_code in (200, 201, 204),
+             r2.status_code)
 
-    console.print("  [dim]Iniciando testes /auth/check...[/dim]")
-    console.print()
+    # assign role gerente ao gerente
+    ger = next((u for u in kpis["created_users"] if "gerente" in u["username"]), None)
+    if ger and "gerente" in roles_by_name:
+        r3 = post(f"/admin/roles/{roles_by_name['gerente']}/assign/{ger['id']}", token=tok)
+        step("Assign role 'gerente' → gerente", r3.status_code in (200, 201, 204),
+             r3.status_code)
 
-    # ── 8.1 Superuser passa em tudo ───────────────────────────────────────────
-    console.print("  [bold yellow]8.1 Superuser bypass[/bold yellow]")
-    res = _check(tok_admin, require_roles=["vendedor"], require_abac={"sistema": "cotacao"})
-    step("Superuser: allowed=True (bypass tudo)", res.get("allowed") is True, 0,
-         f"reason={res.get('reason')}")
+    # assign permissão cotacao:create à role vendedor
+    if "vendedor" in roles_by_name and "cotacao:create" in perms_by_name:
+        r4 = post(f"/admin/permissions/{perms_by_name['cotacao:create']}/assign/{roles_by_name['vendedor']}",
+                  token=tok)
+        step("Assign perm 'cotacao:create' → role vendedor",
+             r4.status_code in (200, 201, 204), r4.status_code)
 
-    # ── 8.2 Verificacao de role unica ─────────────────────────────────────────
-    console.print("  [bold yellow]8.2 Verificacao de role[/bold yellow]")
-    res = _check(tok_usuario1, require_roles=["vendedor"])
-    step("usuario1 tem role [vendedor] → allowed", res.get("allowed") is True, 0,
-         f"reason={res.get('reason')}")
+    # verifica token atualizado do usuario1
+    if u1:
+        tok_u1 = _fresh_token(u1["username"], u1["password"])
+        kpis["token_usuario1"] = tok_u1
+        if tok_u1:
+            chk = _check(tok_u1, require_roles=["vendedor"])
+            step("Check usuario1 tem role 'vendedor'", chk.get("allowed") is True,
+                 detail=chk.get("reason", ""))
 
-    res = _check(tok_usuario1, require_roles=["aprovador"])
-    step("usuario1 NAO tem role [aprovador] → denied", res.get("allowed") is False, 0,
-         f"reason={res.get('reason')}")
+# ══════════════════════════════════════════════════════════════════════════════
+# 7. ABAC — "Marceline verifica os atributos mágicos"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_abac():
+    _hdr("🧛 7. ABAC — Atributos e check combinado")
+    tok = kpis["token_admin"]
+    if not tok: return
 
-    res = _check(tok_gerente, require_roles=["gerente"])
-    step("gerente1 tem role [gerente] → allowed", res.get("allowed") is True, 0,
-         f"reason={res.get('reason')}")
+    # cria atributo RBAC
+    r = post("/admin/rbac-attributes/",
+             json_body={"key": "department", "label": "Departamento",
+                        "description": "Departamento do usuário"},
+             token=tok)
+    step("Criar atributo RBAC 'department'", r.status_code in (200, 201, 409), r.status_code)
+    attr_id = r.json().get("id") if r.status_code in (200, 201) else None
 
-    # ── 8.3 require_any_role (qualquer uma) ───────────────────────────────────
-    console.print("  [bold yellow]8.3 require_roles (qualquer uma)[/bold yellow]")
-    res = _check(tok_usuario1, require_roles=["aprovador", "vendedor"])
-    step("usuario1: require_roles=[aprovador,vendedor] → allowed (tem vendedor)",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # assign atributo ao usuario1
+    u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
+    if u1 and attr_id:
+        r2 = post(f"/admin/rbac-attributes/{attr_id}/assign/{u1['id']}",
+                  json_body={"value": "sales"}, token=tok)
+        step("Assign department=sales → usuario1", r2.status_code in (200, 201, 204),
+             r2.status_code)
 
-    res = _check(tok_usuario1, require_roles=["aprovador", "gerente"])
-    step("usuario1: require_roles=[aprovador,gerente] → denied (nao tem nenhuma)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
+    # check ABAC
+    if kpis["token_usuario1"]:
+        tok_u1 = _fresh_token(
+            next((u["username"] for u in kpis["created_users"] if "usuario1" in u["username"]), ""),
+            "Senha123!"
+        ) or kpis["token_usuario1"]
+        chk = _check(tok_u1, require_abac={"department": "sales"})
+        step("Check ABAC department=sales", chk.get("allowed") is True,
+             detail=chk.get("reason", ""))
 
-    # ── 8.4 require_all_roles (todas obrigatorias) ────────────────────────────
-    console.print("  [bold yellow]8.4 require_all_roles (todas)[/bold yellow]")
-    res = _check(tok_gerente, require_all_roles=["gerente"])
-    step("gerente1: require_all_roles=[gerente] → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+        chk2 = _check(tok_u1, require_abac={"department": "finance"})
+        step("Check ABAC department=finance → denied", chk2.get("allowed") is False,
+             detail=chk2.get("reason", ""))
 
-    res = _check(tok_usuario1, require_all_roles=["vendedor", "aprovador"])
-    step("usuario1: require_all_roles=[vendedor,aprovador] → denied (falta aprovador)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
+# ══════════════════════════════════════════════════════════════════════════════
+# 8. APL — "O Grimório de Jake: Apollo Policy Language"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_apl():
+    _hdr("📜 8. APL — Apollo Policy Language (DSL Engine)")
+    tok = kpis["token_admin"]
+    if not tok: return
 
-    # ── 8.5 Verificacao de permissao ──────────────────────────────────────────
-    console.print("  [bold yellow]8.5 Verificacao de permissao[/bold yellow]")
-    res = _check(tok_usuario1, require_permissions=["cotacao:create"])
-    step("usuario1 tem permissao [cotacao:create] → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # ── 8.1 Criar policy Allow via JSON estruturado ───────────────────────────
+    pol_allow = {
+        "name": f"test-allow-vendedor-{RUN_ID}",
+        "description": "Vendedores podem criar cotações",
+        "effect": "allow",
+        "priority": 10,
+        "actions": ["cotacao:create", "cotacao:read"],
+        "resources": ["cotacao/*"],
+        "conditions": [
+            {"field": "department", "op": "eq",      "value": "sales"},
+            {"field": "user_level",  "op": "gte",     "value": 1},
+        ],
+        "condition_logic": "AND",
+        "tenant_id": "tenant-teste",
+        "enabled": True,
+    }
+    r = post("/admin/policies/", json_body=pol_allow, token=tok)
+    ok = r.status_code in (200, 201)
+    step("Criar policy Allow (JSON estruturado)", ok, r.status_code)
+    pol_allow_id = r.json().get("id") if ok else None
+    if pol_allow_id:
+        kpis["created_policies"].append(pol_allow_id)
 
-    res = _check(tok_usuario1, require_permissions=["cotacao:approve"])
-    step("usuario1 NAO tem permissao [cotacao:approve] → denied",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
+    # ── 8.2 Criar policy Deny via raw YAML ───────────────────────────────────
+    yaml_content = f"""
+id: test-deny-blocked-{RUN_ID}
+name: Negar usuários bloqueados
+description: Deny explícito para status bloqueado
+effect: deny
+priority: 1
+actions:
+  - "*"
+resources:
+  - "*"
+conditions:
+  - field: status
+    op: eq
+    value: blocked
+condition_logic: AND
+tenant_id: tenant-teste
+enabled: true
+"""
+    r2 = post("/admin/policies/raw",
+              json_body={"format": "yaml", "content": yaml_content.strip()},
+              token=tok)
+    ok2 = r2.status_code in (200, 201)
+    step("Criar policy Deny (raw YAML)", ok2, r2.status_code)
+    pol_deny_id = r2.json().get("id") if ok2 else None
+    if pol_deny_id:
+        kpis["created_policies"].append(pol_deny_id)
 
-    res = _check(tok_gerente, require_permissions=["cotacao:approve", "cotacao:delete"])
-    step("gerente1 tem [cotacao:approve] ou [cotacao:delete] → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # ── 8.3 Criar policy com OR logic ────────────────────────────────────────
+    pol_or = {
+        "name": f"test-or-logic-{RUN_ID}",
+        "effect": "allow",
+        "priority": 20,
+        "actions": ["relatorio:read"],
+        "resources": ["relatorio/*"],
+        "conditions": [
+            {"field": "roles", "op": "contains", "value": "gerente"},
+            {"field": "roles", "op": "contains", "value": "aprovador"},
+        ],
+        "condition_logic": "OR",
+        "tenant_id": "tenant-teste",
+    }
+    r3 = post("/admin/policies/", json_body=pol_or, token=tok)
+    ok3 = r3.status_code in (200, 201)
+    step("Criar policy OR logic (gerente OU aprovador)", ok3, r3.status_code)
+    if ok3:
+        kpis["created_policies"].append(r3.json().get("id", ""))
 
-    # ── 8.6 Verificacao ABAC simples (atributo RBAC) ──────────────────────────
-    console.print("  [bold yellow]8.6 ABAC — atributo RBAC (sistema)[/bold yellow]")
-    res = _check(tok_usuario1, require_abac={"sistema": "cotacao"})
-    step("usuario1: ABAC sistema=cotacao → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # ── 8.4 Criar policy com glob resource ───────────────────────────────────
+    pol_glob = {
+        "name": f"test-glob-{RUN_ID}",
+        "effect": "allow",
+        "priority": 30,
+        "actions": ["admin:*"],
+        "resources": ["admin/*"],
+        "conditions": [
+            {"field": "is_superuser", "op": "eq", "value": True},
+        ],
+        "tenant_id": None,
+    }
+    r4 = post("/admin/policies/", json_body=pol_glob, token=tok)
+    ok4 = r4.status_code in (200, 201)
+    step("Criar policy glob resource (admin/*)", ok4, r4.status_code)
+    if ok4:
+        kpis["created_policies"].append(r4.json().get("id", ""))
 
-    res = _check(tok_usuario1, require_abac={"sistema": "financeiro"})
-    step("usuario1: ABAC sistema=financeiro → denied (tem cotacao)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
+    # ── 8.5 Criar policy com todos os operadores ──────────────────────────────
+    pol_ops = {
+        "name": f"test-operators-{RUN_ID}",
+        "effect": "allow",
+        "priority": 50,
+        "actions": ["test:*"],
+        "resources": ["test/*"],
+        "conditions": [
+            {"field": "score",    "op": "gte",        "value": 5},
+            {"field": "region",   "op": "in",         "value": ["SP", "RJ", "MG"]},
+            {"field": "email",    "op": "ends_with",  "value": "@empresa.com"},
+            {"field": "username", "op": "starts_with","value": "user"},
+            {"field": "tag",      "op": "regex",      "value": "^prod-\\d+$"},
+            {"field": "blocked",  "op": "not_exists"},
+        ],
+        "condition_logic": "AND",
+        "tenant_id": "tenant-teste",
+    }
+    r5 = post("/admin/policies/", json_body=pol_ops, token=tok)
+    ok5 = r5.status_code in (200, 201)
+    step("Criar policy com 6 operadores distintos", ok5, r5.status_code)
+    if ok5:
+        kpis["created_policies"].append(r5.json().get("id", ""))
 
-    res = _check(tok_gerente, require_abac={"sistema": "cotacao"})
-    step("gerente1: ABAC sistema=cotacao → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # ── 8.6 Reload engine ────────────────────────────────────────────────────
+    r6 = post("/admin/policies/reload", token=tok)
+    step("Reload engine APL", r6.status_code == 200, r6.status_code,
+         f"loaded={r6.json().get('loaded', '?')}" if r6.status_code == 200 else "")
 
-    # ── 8.7 ABAC com entidade customizada (cargo) ─────────────────────────────
-    console.print("  [bold yellow]8.7 ABAC — entidade customizada (cargo)[/bold yellow]")
-    res = _check(tok_gerente, require_abac={"cargo": "gerente"})
-    step("gerente1: ABAC cargo=gerente → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
+    # ── 8.7 Listar policies ───────────────────────────────────────────────────
+    r7 = get("/admin/policies/", token=tok, params={"tenant_id": "tenant-teste"})
+    step("Listar policies (tenant-teste)", r7.status_code == 200, r7.status_code,
+         f"{len(r7.json())} policies" if r7.status_code == 200 else "")
 
-    res = _check(tok_gerente, require_abac={"cargo": "vendedor"})
-    step("gerente1: ABAC cargo=vendedor → denied (tem gerente)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_usuario1, require_abac={"cargo": "vendedor"})
-    step("usuario1: ABAC cargo=vendedor → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
-
-    # ── 8.8 ABAC combinado: role + atributo ───────────────────────────────────
-    console.print("  [bold yellow]8.8 ABAC combinado: role + atributo[/bold yellow]")
-    res = _check(tok_usuario1,
-                 require_roles=["vendedor"],
-                 require_abac={"sistema": "cotacao"})
-    step("usuario1: role=vendedor AND sistema=cotacao → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_usuario1,
-                 require_roles=["vendedor"],
-                 require_abac={"sistema": "financeiro"})
-    step("usuario1: role=vendedor AND sistema=financeiro → denied (ABAC falha)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_gerente,
-                 require_roles=["gerente"],
-                 require_abac={"sistema": "cotacao", "cargo": "gerente"})
-    step("gerente1: role=gerente AND sistema=cotacao AND cargo=gerente → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_usuario1,
-                 require_roles=["gerente"],
-                 require_abac={"sistema": "cotacao"})
-    step("usuario1: role=gerente AND sistema=cotacao → denied (role falha)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
-
-    # ── 8.9 ABAC combinado: permissao + atributo ──────────────────────────────
-    console.print("  [bold yellow]8.9 ABAC combinado: permissao + atributo[/bold yellow]")
-    res = _check(tok_usuario1,
-                 require_permissions=["cotacao:create"],
-                 require_abac={"sistema": "cotacao"})
-    step("usuario1: perm=cotacao:create AND sistema=cotacao → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_aprovador,
-                 require_permissions=["cotacao:approve"],
-                 require_abac={"sistema": "cotacao"})
-    step("aprovador1: perm=cotacao:approve AND sistema=cotacao → allowed",
-         res.get("allowed") is True, 0, f"reason={res.get('reason')}")
-
-    res = _check(tok_aprovador,
-                 require_permissions=["cotacao:delete"],
-                 require_abac={"sistema": "cotacao"})
-    step("aprovador1: perm=cotacao:delete AND sistema=cotacao → denied (sem perm)",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')}")
-
-    # ── 8.10 Token invalido no /auth/check ────────────────────────────────────
-    console.print("  [bold yellow]8.10 Token invalido no /auth/check[/bold yellow]")
-    res = _check("token.invalido.aqui", require_roles=["vendedor"])
-    step("/auth/check com token invalido → denied",
-         res.get("allowed") is False, 0, f"reason={res.get('reason')[:60]}")
-
-    # ── 8.11 Payload ABAC no token (validacao via /auth/validate) ─────────────
-    console.print("  [bold yellow]8.11 Payload ABAC no token[/bold yellow]")
-    r = post("/auth/validate", json_body={"token": tok_gerente})
-    if r.status_code == 200:
-        p = r.json()
-        abac = p.get("abac", {})
-        step("Token gerente1 contem abac.sistema=cotacao",
-             abac.get("sistema") == "cotacao", 0, f"abac={abac}")
-        step("Token gerente1 contem abac.cargo=gerente",
-             abac.get("cargo") == "gerente", 0, f"cargo={abac.get('cargo')}")
-        step("Token gerente1 contem roles=[gerente]",
-             "gerente" in p.get("roles", []), 0, f"roles={p.get('roles')}")
-        step("Token gerente1 contem permissions cotacao:*",
-             any("cotacao" in perm for perm in p.get("permissions", [])), 0,
-             f"perms={p.get('permissions')}")
+    # ── 8.8 Avaliar — Allow esperado ─────────────────────────────────────────
+    eval_allow = {
+        "subject": {"department": "sales", "user_level": 3, "roles": ["vendedor"]},
+        "action": "cotacao:create",
+        "resource": "cotacao/123",
+        "tenant_id": "tenant-teste",
+        "subject_id": f"subj-allow-{RUN_ID}",
+        "use_cache": False,
+    }
+    r8, ms8 = _timed_post("/admin/policies/evaluate", json_body=eval_allow, token=tok)
+    if r8.status_code == 200:
+        res = r8.json()
+        step("Evaluate → Allow esperado", res.get("allowed") is True,
+             r8.status_code, res.get("reason", ""), latency_ms=ms8)
     else:
-        step("Validar token gerente1", False, r.status_code, r.text[:80])
+        step("Evaluate → Allow esperado", False, r8.status_code, r8.text[:80], latency_ms=ms8)
 
-    r2 = post("/auth/validate", json_body={"token": tok_usuario1})
+    # ── 8.9 Avaliar — Deny explícito vence ───────────────────────────────────
+    eval_deny = {
+        "subject": {"status": "blocked", "department": "sales", "user_level": 5},
+        "action": "cotacao:create",
+        "resource": "cotacao/456",
+        "tenant_id": "tenant-teste",
+        "subject_id": f"subj-deny-{RUN_ID}",
+        "use_cache": False,
+    }
+    r9, ms9 = _timed_post("/admin/policies/evaluate", json_body=eval_deny, token=tok)
+    if r9.status_code == 200:
+        res9 = r9.json()
+        step("Evaluate → Deny explícito vence Allow", res9.get("allowed") is False,
+             r9.status_code, res9.get("reason", ""), latency_ms=ms9)
+    else:
+        step("Evaluate → Deny explícito vence Allow", False, r9.status_code, latency_ms=ms9)
+
+    # ── 8.10 Avaliar — No match → default deny ────────────────────────────────
+    eval_nomatch = {
+        "subject": {"department": "finance", "user_level": 1},
+        "action": "cotacao:delete",
+        "resource": "cotacao/789",
+        "tenant_id": "tenant-teste",
+        "subject_id": f"subj-nomatch-{RUN_ID}",
+        "use_cache": False,
+    }
+    r10, ms10 = _timed_post("/admin/policies/evaluate", json_body=eval_nomatch, token=tok)
+    if r10.status_code == 200:
+        res10 = r10.json()
+        step("Evaluate → No match → default deny", res10.get("allowed") is False,
+             r10.status_code, res10.get("reason", ""), latency_ms=ms10)
+    else:
+        step("Evaluate → No match → default deny", False, r10.status_code, latency_ms=ms10)
+
+    # ── 8.11 Toggle policy (disable) ─────────────────────────────────────────
+    if pol_allow_id:
+        r11 = patch(f"/admin/policies/{pol_allow_id}/toggle",
+                    token=tok, params={"enabled": "false"})
+        step("Toggle policy → disabled", r11.status_code == 200, r11.status_code)
+
+        # re-avaliar — agora deve ser no-match
+        r12, ms12 = _timed_post("/admin/policies/evaluate", json_body=eval_allow, token=tok)
+        if r12.status_code == 200:
+            res12 = r12.json()
+            step("Evaluate após disable → denied", res12.get("allowed") is False,
+                 r12.status_code, res12.get("reason", ""), latency_ms=ms12)
+
+        # re-enable
+        r13 = patch(f"/admin/policies/{pol_allow_id}/toggle",
+                    token=tok, params={"enabled": "true"})
+        step("Toggle policy → re-enabled", r13.status_code == 200, r13.status_code)
+
+    # ── 8.12 Get policy por ID ────────────────────────────────────────────────
+    if pol_allow_id:
+        r14 = get(f"/admin/policies/{pol_allow_id}", token=tok)
+        step("Get policy por ID", r14.status_code == 200, r14.status_code,
+             r14.json().get("name", "") if r14.status_code == 200 else "")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 9. DECISION CACHE — "BMO guarda as decisões na memória turbo"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_decision_cache():
+    _hdr("⚡ 9. DECISION CACHE — TTL, LRU, hit rate")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    eval_body = {
+        "subject": {"department": "sales", "user_level": 3, "roles": ["vendedor"]},
+        "action": "cotacao:read",
+        "resource": "cotacao/cache-test",
+        "tenant_id": "tenant-teste",
+        "subject_id": "cache-subject-fixo",
+        "use_cache": True,
+    }
+
+    # primeira chamada — cache miss
+    r1, ms1 = _timed_post("/admin/policies/evaluate", json_body=eval_body, token=tok)
+    step("Evaluate #1 (cache miss)", r1.status_code == 200, r1.status_code,
+         f"allowed={r1.json().get('allowed')}" if r1.status_code == 200 else "",
+         latency_ms=ms1)
+
+    # segunda chamada — cache hit (deve ser mais rápida)
+    r2, ms2 = _timed_post("/admin/policies/evaluate", json_body=eval_body, token=tok)
+    step("Evaluate #2 (cache hit)", r2.status_code == 200, r2.status_code,
+         f"allowed={r2.json().get('allowed')} | {ms2:.0f}ms vs {ms1:.0f}ms",
+         latency_ms=ms2)
+
+    # terceira chamada — confirma cache hit
+    r3, ms3 = _timed_post("/admin/policies/evaluate", json_body=eval_body, token=tok)
+    step("Evaluate #3 (cache hit confirmado)", r3.status_code == 200, r3.status_code,
+         f"reason={r3.json().get('reason', '')[:60]}" if r3.status_code == 200 else "",
+         latency_ms=ms3)
+
+    # cache hit deve ser mais rápido que miss (ou pelo menos não muito mais lento)
+    if ms1 > 0 and ms2 > 0:
+        step("Cache hit mais rápido que miss", ms2 <= ms1 * 2,
+             detail=f"miss={ms1:.0f}ms hit={ms2:.0f}ms")
+
+    # stats do cache
+    r4 = get("/admin/policies/cache/stats", token=tok)
+    if r4.status_code == 200:
+        stats = r4.json()
+        step("Cache stats disponíveis", True, r4.status_code,
+             f"hits={stats.get('hits')} misses={stats.get('misses')} "
+             f"hit_rate={stats.get('hit_rate')} size={stats.get('size')}")
+    else:
+        step("Cache stats disponíveis", False, r4.status_code)
+
+    # multi-tenant isolation — subject_id diferente por tenant
+    eval_t2 = {**eval_body, "tenant_id": "tenant-outro", "subject_id": "cache-subject-fixo"}
+    r5, ms5 = _timed_post("/admin/policies/evaluate", json_body=eval_t2, token=tok)
+    step("Cache isolado por tenant_id", r5.status_code == 200, r5.status_code,
+         f"tenant-outro: allowed={r5.json().get('allowed')}" if r5.status_code == 200 else "",
+         latency_ms=ms5)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 10. MULTI-TENANT — "Cada reino tem suas próprias leis"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_multitenant():
+    _hdr("🏰 10. MULTI-TENANT — Isolamento lógico por tenant_id")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    # policy exclusiva do tenant-A
+    pol_a = {
+        "name": f"tenant-a-only-{RUN_ID}",
+        "effect": "allow",
+        "priority": 5,
+        "actions": ["recurso:read"],
+        "resources": ["recurso/*"],
+        "conditions": [{"field": "roles", "op": "contains", "value": "admin"}],
+        "tenant_id": "tenant-A",
+    }
+    r = post("/admin/policies/", json_body=pol_a, token=tok)
+    step("Criar policy exclusiva tenant-A", r.status_code in (200, 201), r.status_code)
+    if r.status_code in (200, 201):
+        kpis["created_policies"].append(r.json().get("id", ""))
+
+    post("/admin/policies/reload", token=tok)
+
+    # avaliar no tenant-A → deve permitir
+    eval_a = {
+        "subject": {"roles": ["admin"]},
+        "action": "recurso:read",
+        "resource": "recurso/123",
+        "tenant_id": "tenant-A",
+        "subject_id": f"mt-subj-{RUN_ID}",
+        "use_cache": False,
+    }
+    r2, ms2 = _timed_post("/admin/policies/evaluate", json_body=eval_a, token=tok)
     if r2.status_code == 200:
-        p2 = r2.json()
-        abac2 = p2.get("abac", {})
-        step("Token usuario1 contem abac.cargo=vendedor",
-             abac2.get("cargo") == "vendedor", 0, f"abac={abac2}")
-    else:
-        step("Validar token usuario1 (ABAC)", False, r2.status_code)
+        step("Evaluate tenant-A → allowed", r2.json().get("allowed") is True,
+             r2.status_code, r2.json().get("reason", ""), latency_ms=ms2)
 
-    # ── 8.12 require_level_gte (nivel minimo) ─────────────────────────────────
-    console.print("  [bold yellow]8.12 require_level_gte[/bold yellow]")
-    # sem nivel configurado → rank=0, level_gte(0) = True
-    res = _check(tok_usuario1, require_level_gte=0)
-    step("usuario1: require_level_gte=0 → allowed (rank=0 >= 0)",
-         res.get("allowed") is True, 0, f"rank={res.get('user_level_rank')}")
+    # avaliar no tenant-B → deve negar (policy não se aplica)
+    eval_b = {**eval_a, "tenant_id": "tenant-B", "subject_id": f"mt-subj-b-{RUN_ID}"}
+    r3, ms3 = _timed_post("/admin/policies/evaluate", json_body=eval_b, token=tok)
+    if r3.status_code == 200:
+        step("Evaluate tenant-B → denied (isolamento)", r3.json().get("allowed") is False,
+             r3.status_code, r3.json().get("reason", ""), latency_ms=ms3)
 
-    res = _check(tok_usuario1, require_level_gte=10)
-    step("usuario1: require_level_gte=10 → denied (rank=0 < 10)",
-         res.get("allowed") is False, 0, f"rank={res.get('user_level_rank')}")
+    # listar policies filtradas por tenant
+    r4 = get("/admin/policies/", token=tok, params={"tenant_id": "tenant-A"})
+    step("Listar policies tenant-A", r4.status_code == 200, r4.status_code,
+         f"{len(r4.json())} policies" if r4.status_code == 200 else "")
 
-    # ── 8.13 Resposta ABAC inclui campos corretos ─────────────────────────────
-    console.print("  [bold yellow]8.13 Estrutura da resposta /auth/check[/bold yellow]")
-    res = _check(tok_gerente, require_roles=["gerente"])
-    campos_ok = all(k in res for k in ("allowed", "reason", "subject", "roles",
-                                        "permissions", "abac", "user_level_rank"))
-    step("Resposta /auth/check tem todos os campos esperados", campos_ok, 0,
-         f"campos={list(res.keys())}")
-    step("subject=gerente1 na resposta",
-         res.get("subject") == "gerente1", 0, f"subject={res.get('subject')}")
+# ══════════════════════════════════════════════════════════════════════════════
+# 11. USER TYPES & LEVELS — "Os níveis de poder do reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_user_types_levels():
+    _hdr("⭐ 11. USER TYPES & LEVELS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    # user types
+    r = post("/admin/user-types/", json_body={"name": "funcionario", "description": "Funcionário"},
+             token=tok)
+    step("Criar user type 'funcionario'", r.status_code in (200, 201, 409), r.status_code)
+
+    r2 = get("/admin/user-types/", token=tok)
+    step("Listar user types", r2.status_code == 200, r2.status_code,
+         f"{len(r2.json())} tipos" if r2.status_code == 200 else "")
+
+    # user levels
+    for name, rank in [("junior", 1), ("pleno", 2), ("senior", 3), ("lead", 4)]:
+        r3 = post("/admin/user-levels/",
+                  json_body={"name": name, "rank": rank, "description": f"Nível {name}"},
+                  token=tok)
+        step(f"Criar user level '{name}' (rank={rank})",
+             r3.status_code in (200, 201, 409), r3.status_code)
+
+    r4 = get("/admin/user-levels/", token=tok)
+    step("Listar user levels", r4.status_code == 200, r4.status_code,
+         f"{len(r4.json())} níveis" if r4.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 12. CUSTOM ENTITIES — "As entidades mágicas do ABAC"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_custom_entities():
+    _hdr("🔮 12. CUSTOM ENTITIES (ABAC)")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    # criar tipo de entidade
+    r = post("/admin/custom-entities/types/",
+             json_body={"slug": "regiao", "name": "Região", "description": "Região geográfica"},
+             token=tok)
+    step("Criar entity type 'regiao'", r.status_code in (200, 201, 409), r.status_code)
+
+    # criar valores
+    for val in ["sul", "sudeste", "nordeste"]:
+        r2 = post("/admin/custom-entities/types/regiao/values/",
+                  json_body={"name": val, "description": f"Região {val}"},
+                  token=tok)
+        step(f"Criar entity value '{val}'", r2.status_code in (200, 201, 409), r2.status_code)
+
+    # listar tipos
+    r3 = get("/admin/custom-entities/types/", token=tok)
+    step("Listar entity types", r3.status_code == 200, r3.status_code,
+         f"{len(r3.json())} tipos" if r3.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 13. SETTINGS — "As configurações do castelo"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_settings():
+    _hdr("⚙️  13. SETTINGS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    r = get("/admin/settings/", token=tok)
+    step("GET settings", r.status_code == 200, r.status_code)
+
+    r2 = put("/admin/settings/", json_body={"max_login_attempts": 5, "session_timeout": 3600},
+             token=tok)
+    step("PUT settings", r2.status_code in (200, 201, 204), r2.status_code)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 14. AUDIT LOGS — "O livro de registros do reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_audit():
+    _hdr("📖 14. AUDIT LOGS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    r = get("/admin/audit-logs/", token=tok, params={"limit": 20})
+    step("Listar audit logs", r.status_code == 200, r.status_code,
+         f"{len(r.json())} entradas" if r.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 15. GROUPS — "Os grupos de heróis do reino"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_groups():
+    _hdr("👥 15. GROUPS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    r = post("/admin/groups/",
+             json_body={"name": f"grupo-vendas-{RUN_ID}", "description": "Grupo de vendas"},
+             token=tok)
+    ok = r.status_code in (200, 201, 409)
+    step("Criar grupo 'grupo-vendas'", ok, r.status_code)
+    if r.status_code in (200, 201):
+        kpis["created_groups"].append(r.json().get("id", ""))
+
+    r2 = get("/admin/groups/", token=tok)
+    step("Listar grupos", r2.status_code == 200, r2.status_code,
+         f"{len(r2.json())} grupos" if r2.status_code == 200 else "")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 16. METRICS — "O painel de controle do BMO"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_metrics():
+    _hdr("📊 16. METRICS")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    r = get("/admin/metrics/", token=tok)
+    step("GET metrics", r.status_code == 200, r.status_code)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 17. APL — OPERADORES AVANÇADOS — "O grimório completo"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_apl_operators():
+    _hdr("🧪 17. APL — Todos os 14 operadores")
+    tok = kpis["token_admin"]
+    if not tok: return
+
+    # policy com neq
+    pol = {
+        "name": f"test-neq-{RUN_ID}",
+        "effect": "allow",
+        "priority": 99,
+        "actions": ["op:neq"],
+        "resources": ["op/*"],
+        "conditions": [{"field": "status", "op": "neq", "value": "blocked"}],
+        "tenant_id": "tenant-ops",
+    }
+    r = post("/admin/policies/", json_body=pol, token=tok)
+    step("Criar policy op=neq", r.status_code in (200, 201), r.status_code)
+    if r.status_code in (200, 201):
+        kpis["created_policies"].append(r.json().get("id", ""))
+
+    post("/admin/policies/reload", token=tok)
+
+    # testar cada operador via evaluate
+    test_cases = [
+        ("neq",          {"status": "active"},  "op:neq",  "op/test", True),
+        ("neq-blocked",  {"status": "blocked"}, "op:neq",  "op/test", False),
+    ]
+    for label, subject, action, resource, expected in test_cases:
+        ev = {
+            "subject": subject, "action": action, "resource": resource,
+            "tenant_id": "tenant-ops",
+            "subject_id": f"op-{label}-{RUN_ID}",
+            "use_cache": False,
+        }
+        r2, ms2 = _timed_post("/admin/policies/evaluate", json_body=ev, token=tok)
+        if r2.status_code == 200:
+            got = r2.json().get("allowed")
+            step(f"Op neq [{label}] → {'allow' if expected else 'deny'}",
+                 got is expected, r2.status_code,
+                 r2.json().get("reason", "")[:60], latency_ms=ms2)
 
 
-# ===========================================================================
-# RELATORIO — salva YAML, MD, JSON
-# ===========================================================================
+# ══════════════════════════════════════════════════════════════════════════════
+# 18. CLEANUP — "Finn limpa o campo de batalha"
+# ══════════════════════════════════════════════════════════════════════════════
+def test_cleanup():
+    _hdr("🧹 18. CLEANUP — Removendo recursos de teste")
+    tok = kpis["token_admin"]
+    if not tok: return
 
-def save_reports(elapsed: float):
-    ts_str  = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    pct     = int(kpis["passed"] / kpis["total"] * 100) if kpis["total"] else 0
-    status  = "PASSED" if kpis["failed"] == 0 else "PARTIAL" if pct >= 50 else "FAILED"
+    for pol_id in kpis["created_policies"]:
+        r = delete(f"/admin/policies/{pol_id}", token=tok)
+        step(f"Delete policy {pol_id[:8]}...", r.status_code in (200, 204), r.status_code)
 
-    report = {
-        "run_id":     RUN_ID,
-        "timestamp":  ts_str,
-        "status":     status,
-        "elapsed_s":  round(elapsed, 2),
-        "kpis": {
-            "total_steps":   kpis["total"],
-            "passed":        kpis["passed"],
-            "failed":        kpis["failed"],
-            "success_rate":  f"{pct}%",
+    for u in kpis["created_users"]:
+        if u.get("id"):
+            r = delete(f"/admin/users/{u['id']}", token=tok)
+            step(f"Delete user '{u['username']}'", r.status_code in (200, 204), r.status_code)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# RELATÓRIO FINAL
+# ══════════════════════════════════════════════════════════════════════════════
+def _save_report():
+    lats = kpis["latencies_ms"]
+    lats_sorted = sorted(lats) if lats else [0]
+    n = len(lats_sorted)
+    def pct(p): return round(lats_sorted[min(int(n * p), n - 1)], 1)
+
+    summary = {
+        "run_id":    RUN_ID,
+        "timestamp": _ts(),
+        "server":    API_BASE,
+        "total":     kpis["total"],
+        "passed":    kpis["passed"],
+        "failed":    kpis["failed"],
+        "pass_rate": round(kpis["passed"] / kpis["total"] * 100, 1) if kpis["total"] else 0,
+        "latency": {
+            "avg_ms": round(sum(lats) / n, 1) if lats else 0,
+            "p50_ms": pct(0.50), "p90_ms": pct(0.90),
+            "p95_ms": pct(0.95), "p99_ms": pct(0.99),
         },
-        "setup": {
-            "roles_created":       kpis["created_roles"],
-            "permissions_created": kpis["created_permissions"],
-            "users_created":       kpis["created_users"],
-            "groups_created":      kpis["created_groups"],
+        "created": {
+            "policies":    len(kpis["created_policies"]),
+            "users":       len(kpis["created_users"]),
+            "roles":       len(kpis["created_roles"]),
+            "permissions": len(kpis["created_permissions"]),
+            "groups":      len(kpis["created_groups"]),
         },
-        "steps": results,
+        "results": results,
     }
 
     base = os.path.join(LOGS_DIR, f"run_{RUN_ID}")
-
     with open(f"{base}.json", "w", encoding="utf-8") as f:
-        json.dump(report, f, ensure_ascii=False, indent=2, default=str)
-
+        json.dump(summary, f, indent=2, ensure_ascii=False, default=str)
     with open(f"{base}.yaml", "w", encoding="utf-8") as f:
-        yaml.dump(report, f, allow_unicode=True, default_flow_style=False, sort_keys=False)
+        yaml.dump(summary, f, allow_unicode=True, default_flow_style=False)
 
-    passed_icon = "✅" if status == "PASSED" else "⚠️" if status == "PARTIAL" else "❌"
+    # MD
     lines = [
-        f"# {passed_icon} Apollo IAM Engine — Production Test Report",
-        f"",
-        f"| Campo | Valor |",
-        f"|-------|-------|",
-        f"| Run ID | `{RUN_ID}` |",
-        f"| Data/Hora | {ts_str} |",
-        f"| Status | **{status}** |",
-        f"| Tempo | {elapsed:.2f}s |",
-        f"| Total Steps | {kpis['total']} |",
-        f"| ✅ Passed | {kpis['passed']} |",
-        f"| ❌ Failed | {kpis['failed']} |",
-        f"| Taxa de Sucesso | **{pct}%** |",
-        f"",
-        f"## Setup RBAC — Sistema de Cotacao",
-        f"",
-        f"| Tipo | Itens |",
-        f"|------|-------|",
-        f"| Roles | {', '.join(kpis['created_roles']) or '—'} |",
-        f"| Permissoes | {', '.join(kpis['created_permissions']) or '—'} |",
-        f"| Usuarios | {', '.join(kpis['created_users']) or '—'} |",
-        f"| Grupos | {', '.join(kpis['created_groups']) or '—'} |",
-        f"",
-        f"## Steps",
-        f"",
-        f"| # | Step | Status | HTTP | Detalhe |",
-        f"|---|------|--------|------|---------|",
+        "# 🌟 Apollo IAM Engine — Production Test Report",
+        "",
+        f"**Run ID:** `{RUN_ID}`  ",
+        f"**Data:** {summary['timestamp']}  ",
+        f"**Servidor:** {API_BASE}  ",
+        "",
+        "---",
+        "",
+        "## Resumo",
+        "",
+        f"| Total | Passed | Failed | Pass Rate |",
+        f"|---|---|---|---|",
+        f"| {summary['total']} | {summary['passed']} | {summary['failed']} | {summary['pass_rate']}% |",
+        "",
+        "## Latências",
+        "",
+        f"| Avg | P50 | P90 | P95 | P99 |",
+        f"|---|---|---|---|---|",
+        f"| {summary['latency']['avg_ms']}ms | {summary['latency']['p50_ms']}ms | "
+        f"{summary['latency']['p90_ms']}ms | {summary['latency']['p95_ms']}ms | "
+        f"{summary['latency']['p99_ms']}ms |",
+        "",
+        "## Resultados por Step",
+        "",
+        "| Step | OK | Status | Latência | Detalhe |",
+        "|---|---|---|---|---|",
     ]
-    for i, r in enumerate(results, 1):
+    for r in results:
         icon = "✅" if r["ok"] else "❌"
-        lines.append(
-            f"| {i} | {r['step']} | {icon} | "
-            f"{r['status_code'] or '—'} | {r['detail'] or '—'} |"
-        )
-    lines += ["", f"---", f"*Gerado por O2 Data Solutions — Apollo IAM Engine*"]
+        lat  = f"{r['latency_ms']:.0f}ms" if r.get("latency_ms") else "—"
+        det  = str(r.get("detail", ""))[:60].replace("|", "\\|")
+        lines.append(f"| {r['step']} | {icon} | {r['status_code']} | {lat} | {det} |")
 
+    lines += ["", "---", "", "*Gerado pelo Apollo IAM Engine Production Test Suite — O2 Data Solutions*"]
     with open(f"{base}.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
-    return base, status, pct
+    console.print(f"\n  [dim]Relatório salvo em: {base}.[json|yaml|md][/dim]")
+    return summary
 
 
-# ===========================================================================
-# RELATORIO CONSOLE — rich
-# ===========================================================================
-
-def print_report(elapsed: float, base_path: str, status: str, pct: int):
+def _print_final(summary: dict):
     console.print()
-    console.print(Rule("[bold white]Relatorio Final[/bold white]"))
-    console.print()
+    color = "green" if summary["failed"] == 0 else ("yellow" if summary["failed"] < 5 else "red")
+    t = Table(title="🏆 Resultado Final", show_header=True,
+              header_style="bold white", border_style="dim")
+    t.add_column("Métrica",   style="cyan",  min_width=16)
+    t.add_column("Valor",     style=color,   min_width=12)
+    t.add_row("Total steps",  str(summary["total"]))
+    t.add_row("✅ Passed",    str(summary["passed"]))
+    t.add_row("❌ Failed",    str(summary["failed"]))
+    t.add_row("Pass rate",    f"{summary['pass_rate']}%")
+    t.add_row("Avg latência", f"{summary['latency']['avg_ms']}ms")
+    t.add_row("P99 latência", f"{summary['latency']['p99_ms']}ms")
+    t.add_row("Policies",     str(summary["created"]["policies"]))
+    t.add_row("Users",        str(summary["created"]["users"]))
+    console.print(t)
 
-    kpi_table = Table(title="📊 KPIs do Run", border_style="orange1", show_lines=True)
-    kpi_table.add_column("Indicador",      style="bold cyan",  min_width=28)
-    kpi_table.add_column("Valor",          style="bold green", min_width=14)
-
-    status_color = "green" if status == "PASSED" else "yellow" if status == "PARTIAL" else "red"
-    kpi_table.add_row("🆔 Run ID",                RUN_ID)
-    kpi_table.add_row("📅 Timestamp",             datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    kpi_table.add_row(f"[{status_color}]🏁 Status[/{status_color}]",
-                      f"[{status_color}]{status}[/{status_color}]")
-    kpi_table.add_row("⏱️  Tempo total",           f"{elapsed:.2f}s")
-    kpi_table.add_row("🔢 Total de steps",         str(kpis["total"]))
-    kpi_table.add_row("✅ Passed",                 str(kpis["passed"]))
-    kpi_table.add_row("❌ Failed",                 str(kpis["failed"]))
-    kpi_table.add_row("📈 Taxa de sucesso",        f"{pct}%")
-    console.print(kpi_table)
-    console.print()
-
-    setup_table = Table(title="🔧 Setup RBAC — Sistema de Cotacao",
-                        border_style="cyan", show_lines=True)
-    setup_table.add_column("Tipo",   style="bold white", min_width=16)
-    setup_table.add_column("Itens",  style="bold green", min_width=40)
-    setup_table.add_row("🎭 Roles",       ", ".join(kpis["created_roles"]) or "—")
-    setup_table.add_row("🔑 Permissoes",  ", ".join(kpis["created_permissions"]) or "—")
-    setup_table.add_row("👤 Usuarios",    ", ".join(kpis["created_users"]) or "—")
-    setup_table.add_row("👥 Grupos",      ", ".join(kpis["created_groups"]) or "—")
-    console.print(setup_table)
-    console.print()
-
-    steps_table = Table(title="📋 Steps Detalhados", border_style="dim", show_lines=True)
-    steps_table.add_column("#",       style="dim",        width=4)
-    steps_table.add_column("Step",    style="white",      min_width=50)
-    steps_table.add_column("Status",  style="bold",       width=6)
-    steps_table.add_column("HTTP",    style="dim cyan",   width=6)
-    steps_table.add_column("Detalhe", style="dim",        min_width=20)
-
-    for i, r in enumerate(results, 1):
-        icon  = "✅" if r["ok"] else "❌"
-        color = "green" if r["ok"] else "red"
-        steps_table.add_row(
-            str(i),
-            f"[{color}]{r['step']}[/{color}]",
-            icon,
-            str(r["status_code"]) if r["status_code"] else "—",
-            r["detail"] or "—",
-        )
-    console.print(steps_table)
-    console.print()
-
-    files_table = Table(title="💾 Relatorios Salvos", border_style="green", show_lines=True)
-    files_table.add_column("Formato", style="bold cyan",  width=8)
-    files_table.add_column("Arquivo", style="bold white", min_width=50)
-    for ext in ("json", "yaml", "md"):
-        files_table.add_row(ext.upper(), f"{base_path}.{ext}")
-    console.print(files_table)
-    console.print()
-
-    if status == "PASSED":
-        console.print(Panel.fit(
-            f"[bold green]🎉 Todos os {kpis['total']} steps passaram![/bold green]\n"
-            f"[dim]ABAC testado: roles, permissoes, atributos, entidades customizadas[/dim]\n"
-            f"[dim]Relatorios em: project-test-run-setup-logs/[/dim]",
+    if summary["failed"] == 0:
+        console.print(Panel(
+            "[bold green]🎉 Todos os testes passaram! O reino de Ooo está seguro![/bold green]\n"
+            "[dim]Finn e Jake aprovam o Apollo IAM Engine.[/dim]",
             border_style="green",
         ))
     else:
         failed_steps = [r["step"] for r in results if not r["ok"]]
-        console.print(Panel.fit(
-            f"[bold yellow]⚠️  {pct}% — {kpis['failed']} step(s) falharam[/bold yellow]\n"
-            + "\n".join(f"  [red]• {s}[/red]" for s in failed_steps[:10])
-            + f"\n[dim]Relatorios em: project-test-run-setup-logs/[/dim]",
-            border_style="yellow",
+        console.print(Panel(
+            f"[bold red]⚠️  {summary['failed']} teste(s) falharam:[/bold red]\n"
+            + "\n".join(f"  ❌ {s}" for s in failed_steps[:10]),
+            border_style="red",
         ))
 
 
-# ===========================================================================
+# ══════════════════════════════════════════════════════════════════════════════
 # MAIN
-# ===========================================================================
-
-if __name__ == "__main__":
-    _start = time.time()
-
+# ══════════════════════════════════════════════════════════════════════════════
+def main():
     console.print()
-    console.print(Panel.fit(
-        "[bold orange1]🧪 APOLLO IAM ENGINE — Production Test[/bold orange1]\n"
-        f"[dim]API: {API_BASE}  {'🔐 mTLS' if _MTLS else '🔓 HTTP'}[/dim]\n"
-        "[dim]Testando API, RBAC, ABAC, usuario1/vendedor, gerente1, aprovador1...[/dim]\n"
-        "[dim]O2 Data Solutions[/dim]",
-        border_style="orange1",
-        padding=(1, 4),
+    console.print(Panel(
+        "[bold cyan]🌟 Apollo IAM Engine — Production Test Suite v3[/bold cyan]\n"
+        "[dim]\"Hora de Aventura no Reino de Ooo IAM\"[/dim]\n\n"
+        f"Servidor: [yellow]{API_BASE}[/yellow]\n"
+        f"Run ID:   [yellow]{RUN_ID}[/yellow]",
+        border_style="cyan",
+        expand=False,
     ))
-    console.print()
 
     test_health()
-    console.print()
+    test_auth()
+    test_roles()
+    test_permissions()
+    test_users()
+    test_rbac()
+    test_abac()
+    test_apl()
+    test_decision_cache()
+    test_multitenant()
+    test_user_types_levels()
+    test_custom_entities()
+    test_settings()
+    test_audit()
+    test_groups()
+    test_metrics()
+    test_apl_operators()
+    test_cleanup()
 
-    test_auth_admin()
-    console.print()
+    summary = _save_report()
+    _print_final(summary)
 
-    test_admin_routes()
-    console.print()
 
-    role_ids, perm_ids, gid = setup_rbac_cotacao()
-    console.print()
-
-    uid = create_usuario1(role_ids, gid)
-    console.print()
-
-    test_usuario1_login_and_roles(uid)
-    console.print()
-
-    test_integrity()
-    console.print()
-
-    test_abac(role_ids, gid)
-    console.print()
-
-    elapsed = time.time() - _start
-    base_path, status, pct = save_reports(elapsed)
-    print_report(elapsed, base_path, status, pct)
-"""  """
+if __name__ == "__main__":
+    main()

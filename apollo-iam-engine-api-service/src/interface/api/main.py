@@ -20,6 +20,7 @@ from src.interface.api.routes.admin.user_types import router as user_types_route
 from src.interface.api.routes.admin.user_levels import router as user_levels_router
 from src.interface.api.routes.admin.custom_entities import router as custom_entities_router
 from src.interface.api.routes.admin.metrics import router as metrics_router
+from src.interface.api.routes.admin.policies import router as policies_router
 from src.infrastructure.logging.console_logger import success, info
 from src.infrastructure.logging.log_middleware import RequestLogMiddleware
 from src.infrastructure.logging.event_logger import log_event
@@ -136,7 +137,7 @@ async def integrity_error_handler(request: Request, exc: IntegrityError):
 for router in [auth_router, users_router, roles_router, perms_router,
                groups_router, rbac_router, settings_router, audit_router,
                user_types_router, user_levels_router, custom_entities_router,
-               metrics_router]:
+               metrics_router, policies_router]:
     app.include_router(router)
 
 

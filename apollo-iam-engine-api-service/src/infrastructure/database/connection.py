@@ -61,7 +61,21 @@ def init_db():
         settings_model, audit_log_model, token_blacklist_model,
     )
     from src.infrastructure.database.models import custom_entity_model  # noqa: F401
+    from src.infrastructure.database.models import policy_model  # noqa: F401
     Base.metadata.create_all(bind=engine)
+
+    # migração de schema: adiciona colunas novas em tabelas existentes (SQLite)
+    _migrations = [
+        # policies v2: composition fields
+        ("policies", "scope",      "VARCHAR(20) DEFAULT 'tenant'"),
+        ("policies", "subject_id", "VARCHAR(120)"),
+        ("policies", "inherits",   "TEXT DEFAULT '[]'"),
+    ]
+    with engine.begin() as conn:
+        for table, col, col_def in _migrations:
+            existing = {row[1] for row in conn.execute(text(f"PRAGMA table_info({table})"))}
+            if col not in existing:
+                conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {col_def}"))
 
     # cria índices extras para queries frequentes
     _indexes = [
