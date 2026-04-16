@@ -1,0 +1,66 @@
+version: "3.9"
+
+# Apollo IAM Engine — mTLS stack
+# Os certificados são gerados automaticamente em certs/ no primeiro boot.
+# Para usar externamente: copie certs/ca/ca.crt e certs/client/client.p12
+
+services:
+  api:
+    build: .
+    # roda apenas a API (sem webapp)
+    command: >
+      python -m uvicorn src.interface.api.main:app
+      --host 0.0.0.0
+      --port 8443
+      --ssl-keyfile  /app/certs/server/server.key
+      --ssl-certfile /app/certs/server/server.crt
+      --ssl-ca-certs /app/certs/ca/ca.crt
+      --ssl-cert-reqs 2
+    ports:
+      - "8443:8443"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./certs:/app/certs        # certs persistidos no host
+      - ./config:/app/config
+    env_file: .env
+    depends_on: []
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import ssl, urllib.request; ctx=ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT); ctx.load_verify_locations('/app/certs/ca/ca.crt'); ctx.load_cert_chain('/app/certs/client/client.crt','/app/certs/client/client.key'); urllib.request.urlopen('https://localhost:8443/health', context=ctx)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  webapp:
+    build: .
+    command: >
+      python -m uvicorn src.interface.webapp.main:app
+      --host 0.0.0.0
+      --port 8444
+      --ssl-keyfile  /app/certs/server/server.key
+      --ssl-certfile /app/certs/server/server.crt
+      --ssl-ca-certs /app/certs/ca/ca.crt
+      --ssl-cert-reqs 2
+    ports:
+      - "8444:8444"
+    volumes:
+      - ./data:/app/data
+      - ./certs:/app/certs
+      - ./config:/app/config
+    env_file: .env
+
+  # serviço auxiliar: gera os certs antes de subir api/webapp
+  cert-init:
+    build: .
+    command: python -c "
+      import sys; sys.path.insert(0,'.');
+      from src.infrastructure.config.security_config import load_security_config, get_certs_dir;
+      from src.infrastructure.security.cert_manager import ensure_certs;
+      ensure_certs(get_certs_dir(), load_security_config());
+      print('Certs OK')
+      "
+    volumes:
+      - ./certs:/app/certs
+      - ./config:/app/config
+    profiles: ["init"]   # rode com: docker compose --profile init run cert-init

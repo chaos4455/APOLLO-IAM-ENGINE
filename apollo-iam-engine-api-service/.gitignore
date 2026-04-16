@@ -1,0 +1,30 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.env
+*.db
+*.sqlite3
+.venv/
+venv/
+logs/*.yaml
+logs/*.json
+logs/*.md
+logs/yaml/
+logs/json/
+logs/md/
+data/
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# ── PKI / certificados — NUNCA commitar chaves privadas ──────
+certs/ca/ca.key
+certs/server/server.key
+certs/client/client.key
+certs/client/client.p12
+# manter os .crt no repo é opcional — são públicos
+# descomente abaixo para ignorar tudo em certs/
+# certs/

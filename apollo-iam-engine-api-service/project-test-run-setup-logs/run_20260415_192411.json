@@ -1,0 +1,442 @@
+{
+  "run_id": "20260415_192411",
+  "timestamp": "2026-04-15 19:25:56",
+  "status": "PASSED",
+  "elapsed_s": 104.95,
+  "kpis": {
+    "total_steps": 51,
+    "passed": 51,
+    "failed": 0,
+    "success_rate": "100%"
+  },
+  "setup": {
+    "roles_created": [
+      "vendedor",
+      "aprovador",
+      "gerente"
+    ],
+    "permissions_created": [
+      "cotacao:create",
+      "cotacao:read",
+      "cotacao:update",
+      "cotacao:delete",
+      "cotacao:approve"
+    ],
+    "users_created": [
+      "usuario1"
+    ],
+    "groups_created": [
+      "Vendas"
+    ]
+  },
+  "steps": [
+    {
+      "step": "GET /health",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Apollo IAM Engine",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:15.662995+00:00"
+    },
+    {
+      "step": "GET /docs (Swagger)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:17.691600+00:00"
+    },
+    {
+      "step": "GET /redoc",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:19.727583+00:00"
+    },
+    {
+      "step": "POST /auth/token (admin)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:22.011315+00:00"
+    },
+    {
+      "step": "POST /auth/validate (admin)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "sub=admin superuser=True",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:24.055747+00:00"
+    },
+    {
+      "step": "POST /auth/token (senha errada → 401)",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:26.317336+00:00"
+    },
+    {
+      "step": "POST /auth/token (user inexistente → 401)",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:28.368093+00:00"
+    },
+    {
+      "step": "GET /admin/users/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "2 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:30.421280+00:00"
+    },
+    {
+      "step": "GET /admin/roles/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "7 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:32.448163+00:00"
+    },
+    {
+      "step": "GET /admin/permissions/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "19 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:34.483043+00:00"
+    },
+    {
+      "step": "GET /admin/groups/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "1 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:36.515993+00:00"
+    },
+    {
+      "step": "GET /admin/rbac/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "1 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:38.555478+00:00"
+    },
+    {
+      "step": "GET /admin/settings/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "ok itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:40.587916+00:00"
+    },
+    {
+      "step": "GET /admin/audit/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "18 itens",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:42.629225+00:00"
+    },
+    {
+      "step": "GET /admin/users/ sem token → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:44.666916+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:create]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:46.706634+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:read]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:48.739813+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:update]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:50.773000+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:delete]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:52.815662+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:approve]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:54.853293+00:00"
+    },
+    {
+      "step": "Role [vendedor]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:56.886536+00:00"
+    },
+    {
+      "step": "Role [aprovador]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:24:58.939910+00:00"
+    },
+    {
+      "step": "Role [gerente]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:00.983761+00:00"
+    },
+    {
+      "step": "  Assign [vendedor] ← [cotacao:create]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:03.034228+00:00"
+    },
+    {
+      "step": "  Assign [aprovador] ← [cotacao:read]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:05.068138+00:00"
+    },
+    {
+      "step": "  Assign [aprovador] ← [cotacao:approve]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:07.117972+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:create]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:09.158695+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:read]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:11.192011+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:update]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:13.223157+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:delete]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:15.262991+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:approve]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:17.297342+00:00"
+    },
+    {
+      "step": "Grupo [Vendas]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:19.336536+00:00"
+    },
+    {
+      "step": "Atributo RBAC [sistema]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:21.375928+00:00"
+    },
+    {
+      "step": "Criar usuario1",
+      "ok": true,
+      "status_code": 409,
+      "detail": "ja existe — reutilizando",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:25.457044+00:00"
+    },
+    {
+      "step": "Atribuir role [vendedor] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:27.515991+00:00"
+    },
+    {
+      "step": "Atribuir grupo [Vendas] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:29.553640+00:00"
+    },
+    {
+      "step": "Atribuir RBAC [sistema=cotacao] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:31.595003+00:00"
+    },
+    {
+      "step": "POST /auth/token (usuario1)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:33.853095+00:00"
+    },
+    {
+      "step": "POST /auth/validate (usuario1)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "sub=usuario1",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:35.889698+00:00"
+    },
+    {
+      "step": "Token contem role [vendedor]",
+      "ok": true,
+      "status_code": 0,
+      "detail": "roles=['vendedor']",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:35.890699+00:00"
+    },
+    {
+      "step": "usuario1 NAO e superuser",
+      "ok": true,
+      "status_code": 0,
+      "detail": "is_superuser=False",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:35.891698+00:00"
+    },
+    {
+      "step": "GET /admin/users/ com token usuario1 → 403 (nao superuser)",
+      "ok": true,
+      "status_code": 403,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:37.929267+00:00"
+    },
+    {
+      "step": "POST /auth/refresh (usuario1)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:39.965188+00:00"
+    },
+    {
+      "step": "POST /auth/logout (usuario1)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:42.011406+00:00"
+    },
+    {
+      "step": "Token usuario1 invalido apos logout → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:44.055891+00:00"
+    },
+    {
+      "step": "Login usuario1 senha errada → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:46.314751+00:00"
+    },
+    {
+      "step": "Login usuario inexistente → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:48.380557+00:00"
+    },
+    {
+      "step": "Validar token invalido → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:50.418367+00:00"
+    },
+    {
+      "step": "GET /admin/settings/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:52.456842+00:00"
+    },
+    {
+      "step": "PUT /admin/settings/ (expire=90min)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "expire=90min",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:54.497653+00:00"
+    },
+    {
+      "step": "GET /admin/audit/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "21 entradas",
+      "data": {},
+      "timestamp": "2026-04-15T22:25:56.531767+00:00"
+    }
+  ]
+}

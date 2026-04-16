@@ -1,0 +1,110 @@
+# ============================================================
+# Apollo IAM Engine — Security Configuration
+# config/security.yaml
+# O2 Data Solutions
+# ============================================================
+
+# ── mTLS / TLS ───────────────────────────────────────────────
+tls:
+  enabled: true
+  # pasta onde os certificados sao gerados/armazenados
+  certs_dir: "certs"
+
+  # CA (Certificate Authority) interna
+  ca:
+    common_name: "Apollo IAM Internal CA"
+    organization: "O2 Data Solutions"
+    country: "BR"
+    validity_days: 3650          # 10 anos
+
+  # Certificado do servidor (API + WebApp)
+  server:
+    common_name: "apollo-iam-server"
+    san_dns:
+      - "localhost"
+      - "apollo-iam-api"
+      - "apollo-iam-webapp"
+    san_ip:
+      - "127.0.0.1"
+    validity_days: 825           # ~2 anos (limite Apple/Chrome)
+    key_size: 2048               # RSA-2048
+
+  # Certificado do cliente (para mTLS — sistemas externos)
+  client:
+    common_name: "apollo-iam-client"
+    organization: "O2 Data Solutions"
+    validity_days: 825
+    key_size: 2048
+
+  # Portas HTTPS
+  api_port: 8443
+  webapp_port: 8444
+
+  # mTLS — exige certificado do cliente
+  # "required"  → rejeita conexoes sem cert cliente (sistemas externos/API-to-API)
+  # "optional"  → aceita com ou sem cert cliente (browser + sistemas externos)
+  # "disabled"  → TLS simples (sem verificacao de cliente)
+  client_auth: "optional"
+
+# ── JWT ──────────────────────────────────────────────────────
+jwt:
+  algorithm: "HS256"
+  access_token_expire_minutes: 60
+  refresh_token_expire_days: 7
+
+# ── Seed inicial ─────────────────────────────────────────────
+seed:
+  admin:
+    username: "admin"
+    password: "admin"          # TROQUE em producao
+    email: "admin@apollo.local"
+    full_name: "Administrator"
+
+  roles:
+    - name: "superadmin"
+      description: "Acesso total ao sistema"
+    - name: "admin"
+      description: "Administrador"
+    - name: "operator"
+      description: "Operador"
+    - name: "viewer"
+      description: "Somente leitura"
+
+  permissions:
+    - { name: "users:read",     resource: "users",       action: "read"   }
+    - { name: "users:write",    resource: "users",       action: "write"  }
+    - { name: "users:delete",   resource: "users",       action: "delete" }
+    - { name: "roles:read",     resource: "roles",       action: "read"   }
+    - { name: "roles:write",    resource: "roles",       action: "write"  }
+    - { name: "perms:read",     resource: "permissions", action: "read"   }
+    - { name: "perms:write",    resource: "permissions", action: "write"  }
+    - { name: "groups:read",    resource: "groups",      action: "read"   }
+    - { name: "groups:write",   resource: "groups",      action: "write"  }
+    - { name: "rbac:read",      resource: "rbac",        action: "read"   }
+    - { name: "rbac:write",     resource: "rbac",        action: "write"  }
+    - { name: "settings:read",  resource: "settings",    action: "read"   }
+    - { name: "settings:write", resource: "settings",    action: "write"  }
+    - { name: "audit:read",     resource: "audit",       action: "read"   }
+
+# ── Rate limiting (referencia — implementar via middleware) ───
+rate_limit:
+  enabled: true
+  requests_per_minute: 120
+  burst: 20
+
+# ── CORS ─────────────────────────────────────────────────────
+cors:
+  # Em producao, substitua "*" pelos dominios reais
+  origins: ["*"]
+  allow_credentials: true
+  allow_methods: ["*"]
+  allow_headers: ["*"]
+
+# ── Headers de segurança HTTP ─────────────────────────────────
+security_headers:
+  enabled: true
+  hsts_max_age: 31536000        # 1 ano
+  content_security_policy: "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.redoc.ly; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; worker-src blob:; connect-src 'self'"
+  x_frame_options: "DENY"
+  x_content_type_options: "nosniff"
+  referrer_policy: "strict-origin-when-cross-origin"

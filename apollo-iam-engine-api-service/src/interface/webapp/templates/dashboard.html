@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">📊 Dashboard</h1>
+</div>
+
+<div class="stat-grid">
+  <a href="/admin/users" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">👤</div>
+    <div><div class="stat-value">{{ stats.users }}</div><div class="stat-label">Usuários</div></div>
+  </a>
+  <a href="/admin/roles" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">🎭</div>
+    <div><div class="stat-value">{{ stats.roles }}</div><div class="stat-label">Roles</div></div>
+  </a>
+  <a href="/admin/groups" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">👥</div>
+    <div><div class="stat-value">{{ stats.groups }}</div><div class="stat-label">Grupos</div></div>
+  </a>
+  <a href="/admin/permissions" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">🔑</div>
+    <div><div class="stat-value">{{ stats.permissions }}</div><div class="stat-label">Permissões</div></div>
+  </a>
+  <a href="/admin/rbac" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">⚙️</div>
+    <div><div class="stat-value">{{ stats.rbac_attrs }}</div><div class="stat-label">Attrs RBAC</div></div>
+  </a>
+  <a href="/admin/entities" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">🧩</div>
+    <div><div class="stat-value">{{ stats.entity_types }}</div><div class="stat-label">Entidades ABAC</div></div>
+  </a>
+  <a href="/admin/user-types" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">🏷️</div>
+    <div><div class="stat-value">{{ stats.user_types }}</div><div class="stat-label">Tipos</div></div>
+  </a>
+  <a href="/admin/metrics" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">📈</div>
+    <div><div class="stat-value">KPIs</div><div class="stat-label">Métricas</div></div>
+  </a>
+  <a href="/admin/user-levels" class="stat-card" style="text-decoration:none">
+    <div class="stat-icon">📶</div>
+    <div><div class="stat-value">{{ stats.user_levels }}</div><div class="stat-label">Níveis</div></div>
+  </a>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <span class="card-title">📋 Últimos Eventos</span>
+    <a href="/admin/audit" class="btn btn-outline btn-sm">Ver todos</a>
+  </div>
+  {% if recent_logs %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Ação</th><th>Actor</th><th>Recurso</th><th>Status</th><th>Data</th></tr></thead>
+      <tbody>
+      {% for log in recent_logs %}
+      <tr>
+        <td><span class="mono">{{ log.action }}</span></td>
+        <td>{{ log.actor }}</td>
+        <td>{{ log.resource }}</td>
+        <td>
+          {% if log.status == 'success' %}<span class="badge badge-success">✓ ok</span>
+          {% else %}<span class="badge badge-danger">✗ falha</span>{% endif %}
+        </td>
+        <td class="text-muted">{{ log.created_at[:19] if log.created_at else '—' }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum evento registrado ainda.</p></div>
+  {% endif %}
+</div>
+{% endblock %}

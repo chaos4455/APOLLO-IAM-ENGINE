@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block title %}Event Logs{% endblock %}
+{% block head %}
+<style>
+.log-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+.log-filters input,.log-filters select{
+  background:var(--bg-card);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--radius);padding:6px 10px;font-size:.83rem;outline:none}
+.log-filters input:focus,.log-filters select:focus{border-color:var(--primary)}
+.log-table-wrap{overflow-x:auto}
+.log-table{width:100%;border-collapse:collapse;font-size:.83rem}
+.log-table th{background:var(--bg-sidebar);color:var(--text-muted);font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;text-align:left;
+  border-bottom:1px solid var(--border);white-space:nowrap}
+.log-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.log-table tr:hover td{background:rgba(255,255,255,.03)}
+.log-table tr:last-child td{border-bottom:none}
+.mono{font-family:monospace;font-size:.8rem}
+.badge-ok{background:rgba(34,197,94,.15);color:#22c55e;border-radius:4px;
+  padding:2px 7px;font-size:.72rem;font-weight:600}
+.badge-fail{background:rgba(239,68,68,.15);color:#ef4444;border-radius:4px;
+  padding:2px 7px;font-size:.72rem;font-weight:600}
+.pager{display:flex;gap:8px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.pager a,.pager span{padding:5px 12px;border-radius:var(--radius);font-size:.82rem;
+  border:1px solid var(--border);text-decoration:none;color:var(--text)}
+.pager a:hover{border-color:var(--primary);color:var(--primary)}
+.pager .active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.total-badge{font-size:.8rem;color:var(--text-muted);margin-left:auto}
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">🗂️ Event Logs</h1>
+  <a href="/admin/metrics" class="btn btn-outline btn-sm">← Métricas</a>
+</div>
+
+<div class="card">
+  <!-- filtros client-side -->
+  <div class="log-filters">
+    <input id="f-actor"    placeholder="Filtrar actor..."   oninput="filterLogs()" style="width:140px"/>
+    <input id="f-action"   placeholder="Filtrar ação..."    oninput="filterLogs()" style="width:160px"/>
+    <input id="f-resource" placeholder="Filtrar recurso..." oninput="filterLogs()" style="width:130px"/>
+    <select id="f-status" onchange="filterLogs()">
+      <option value="">Todos status</option>
+      <option value="success">✓ success</option>
+      <option value="failure">✗ failure</option>
+    </select>
+    <button class="btn btn-outline btn-sm" onclick="clearFilters()">✕ Limpar</button>
+    <span class="total-badge" id="count-badge">{{ data.total }} registros</span>
+  </div>
+
+  <div class="log-table-wrap">
+    <table class="log-table" id="log-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ação</th>
+          <th>Actor</th>
+          <th>Recurso</th>
+          <th>IP</th>
+          <th>Status</th>
+          <th>Data/Hora</th>
+          <th>Detalhe</th>
+        </tr>
+      </thead>
+      <tbody id="log-body">
+        {% for log in data.logs %}
+        <tr data-actor="{{ log.actor or '' }}"
+            data-action="{{ log.action or '' }}"
+            data-resource="{{ log.resource or '' }}"
+            data-status="{{ log.status or '' }}">
+          <td class="text-muted mono">{{ loop.index + skip }}</td>
+          <td><span class="mono">{{ log.action }}</span></td>
+          <td>{{ log.actor or '—' }}</td>
+          <td><span class="badge badge-muted">{{ log.resource or '—' }}</span></td>
+          <td class="mono text-muted">{{ log.ip_address or '—' }}</td>
+          <td>
+            {% if log.status == 'success' %}
+              <span class="badge-ok">✓ ok</span>
+            {% else %}
+              <span class="badge-fail">✗ falha</span>
+            {% endif %}
+          </td>
+          <td class="text-muted mono" style="white-space:nowrap">
+            {{ log.created_at[:19] if log.created_at else '—' }}
+          </td>
+          <td class="text-muted" style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+              title="{{ log.detail or '' }}">
+            {{ log.detail[:60] if log.detail else '—' }}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">
+          Nenhum log encontrado.
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- paginação -->
+  <div class="pager">
+    {% if skip > 0 %}
+    <a href="/admin/metrics/logs?skip={{ [skip - limit, 0]|max }}&limit={{ limit }}">← Anterior</a>
+    {% else %}
+    <span style="opacity:.4">← Anterior</span>
+    {% endif %}
+
+    <span class="active">{{ (skip // limit) + 1 }}</span>
+
+    {% if skip + limit < data.total %}
+    <a href="/admin/metrics/logs?skip={{ skip + limit }}&limit={{ limit }}">Próximo →</a>
+    {% else %}
+    <span style="opacity:.4">Próximo →</span>
+    {% endif %}
+
+    <span class="total-badge">
+      {{ skip + 1 }}–{{ [skip + limit, data.total]|min }} de {{ data.total }}
+    </span>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function filterLogs() {
+  const actor    = document.getElementById('f-actor').value.toLowerCase();
+  const action   = document.getElementById('f-action').value.toLowerCase();
+  const resource = document.getElementById('f-resource').value.toLowerCase();
+  const status   = document.getElementById('f-status').value.toLowerCase();
+  const rows = document.querySelectorAll('#log-body tr[data-actor]');
+  let visible = 0;
+  rows.forEach(r => {
+    const match =
+      (!actor    || r.dataset.actor.toLowerCase().includes(actor)) &&
+      (!action   || r.dataset.action.toLowerCase().includes(action)) &&
+      (!resource || r.dataset.resource.toLowerCase().includes(resource)) &&
+      (!status   || r.dataset.status === status);
+    r.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  const badge = document.getElementById('count-badge');
+  if (badge) badge.textContent = visible + ' registros (filtrado)';
+}
+
+function clearFilters() {
+  ['f-actor','f-action','f-resource'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-status').value = '';
+  filterLogs();
+  const badge = document.getElementById('count-badge');
+  if (badge) badge.textContent = '{{ data.total }} registros';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+from abc import ABC, abstractmethod
+from typing import Optional
+from src.domain.entities.rbac_attribute import RbacAttribute
+
+
+class RbacAttributeRepository(ABC):
+    @abstractmethod
+    def save(self, attr: RbacAttribute) -> RbacAttribute: ...
+    @abstractmethod
+    def find_by_id(self, attr_id: str) -> Optional[RbacAttribute]: ...
+    @abstractmethod
+    def find_by_key(self, key: str) -> Optional[RbacAttribute]: ...
+    @abstractmethod
+    def list_all(self) -> list[RbacAttribute]: ...
+    @abstractmethod
+    def delete(self, attr_id: str) -> None: ...

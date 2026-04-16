@@ -1,0 +1,57 @@
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🔐</div>
+    <div><span>Apollo IAM</span><small>O2 Data Solutions</small></div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Principal</div>
+    <a href="/admin/dashboard" class="nav-item {% if request.url.path == '/admin/dashboard' %}active{% endif %}">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+
+    <div class="nav-section">Identidade</div>
+    <a href="/admin/users" class="nav-item {% if '/admin/users' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">👤</span> Usuários
+    </a>
+    <a href="/admin/groups" class="nav-item {% if '/admin/groups' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">👥</span> Grupos
+    </a>
+    <a href="/admin/user-types" class="nav-item {% if '/admin/user-types' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">🏷️</span> Tipos de Usuário
+    </a>
+    <a href="/admin/user-levels" class="nav-item {% if '/admin/user-levels' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">📶</span> Níveis de Usuário
+    </a>
+
+    <div class="nav-section">Acesso</div>
+    <a href="/admin/roles" class="nav-item {% if '/admin/roles' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">🎭</span> Roles
+    </a>
+    <a href="/admin/permissions" class="nav-item {% if '/admin/permissions' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">🔑</span> Permissões
+    </a>
+    <a href="/admin/rbac" class="nav-item {% if '/admin/rbac' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">⚙️</span> Atributos RBAC
+    </a>
+    <a href="/admin/entities" class="nav-item {% if '/admin/entities' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">🧩</span> Entidades ABAC
+    </a>
+
+    <div class="nav-section">Sistema</div>
+    <a href="/admin/metrics" class="nav-item {% if '/admin/metrics' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">📈</span> Métricas & KPIs
+    </a>
+    <a href="/admin/metrics/logs" class="nav-item {% if '/admin/metrics/logs' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">🗂️</span> Event Logs
+    </a>
+    <a href="/admin/audit" class="nav-item {% if '/admin/audit' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">📋</span> Audit Logs
+    </a>
+    <a href="/admin/settings" class="nav-item {% if '/admin/settings' in request.url.path %}active{% endif %}">
+      <span class="nav-icon">⚙️</span> Configurações
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <a href="/admin/logout">🚪 Sair</a>
+  </div>
+</nav>

@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% block title %}Métricas & KPIs{% endblock %}
+{% block head %}
+<style>
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.metric-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:18px;position:relative;overflow:hidden;transition:border-color .2s}
+.metric-card:hover{border-color:var(--primary)}
+.metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient)}
+.metric-card.green::before{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.metric-card.blue::before{background:linear-gradient(90deg,#3b82f6,#1d4ed8)}
+.metric-card.purple::before{background:linear-gradient(90deg,#a855f7,#7c3aed)}
+.metric-card.yellow::before{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.metric-card.red::before{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.metric-label{font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.metric-value{font-size:1.9rem;font-weight:700;line-height:1;margin-bottom:4px}
+.metric-sub{font-size:.75rem;color:var(--text-muted)}
+.metric-icon{position:absolute;right:14px;top:14px;font-size:1.6rem;opacity:.25}
+.gauge-wrap{margin-top:8px}
+.gauge-bar{height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.gauge-fill{height:100%;border-radius:3px;transition:width .6s ease;background:var(--gradient)}
+.gauge-fill.green{background:linear-gradient(90deg,#22c55e,#16a34a)}
+.gauge-fill.yellow{background:linear-gradient(90deg,#f59e0b,#d97706)}
+.gauge-fill.red{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.section-title{font-size:.85rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;
+  letter-spacing:.08em;margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+.info-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.info-row:last-child{border-bottom:none}
+.info-key{color:var(--text-muted)}
+.info-val{font-weight:500;font-family:monospace;font-size:.82rem}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);
+  display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.refresh-badge{font-size:.72rem;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+.log-row{display:flex;align-items:center;gap:10px;padding:7px 0;
+  border-bottom:1px solid var(--border);font-size:.82rem}
+.log-row:last-child{border-bottom:none}
+.log-action{font-family:monospace;color:var(--primary);min-width:160px}
+.log-actor{color:var(--text-dim);min-width:90px}
+.log-time{color:var(--text-muted);font-size:.72rem;margin-left:auto;white-space:nowrap}
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">📈 Métricas & KPIs
+    <span class="live-dot" title="Atualização automática"></span>
+  </h1>
+  <div class="refresh-badge">
+    <span id="refresh-countdown">⟳ 5s</span>
+    <button class="btn btn-outline btn-sm" onclick="loadMetrics()">↺ Agora</button>
+    <a href="/admin/metrics/logs" class="btn btn-outline btn-sm">🗂️ Event Logs</a>
+  </div>
+</div>
+
+<!-- ── Uptime & Sistema ── -->
+<div class="section-title">🖥️ Sistema</div>
+<div class="metrics-grid" id="sys-grid">
+  <div class="metric-card green">
+    <div class="metric-icon">⏱️</div>
+    <div class="metric-label">Uptime</div>
+    <div class="metric-value" id="m-uptime">{{ m.uptime_fmt }}</div>
+    <div class="metric-sub">{{ m.platform }} · Python {{ m.python }}</div>
+  </div>
+  <div class="metric-card blue">
+    <div class="metric-icon">🔢</div>
+    <div class="metric-label">PID do Processo</div>
+    <div class="metric-value" id="m-pid">{{ m.process.pid or '—' }}</div>
+    <div class="metric-sub" id="m-threads">{{ m.process.threads or 0 }} threads · {{ m.process.status or '' }}</div>
+  </div>
+  <div class="metric-card purple">
+    <div class="metric-icon">📂</div>
+    <div class="metric-label">Arquivos Abertos</div>
+    <div class="metric-value" id="m-files">{{ m.process.open_files or 0 }}</div>
+    <div class="metric-sub" id="m-conns-proc">{{ m.process.connections or 0 }} conexões</div>
+  </div>
+  <div class="metric-card yellow">
+    <div class="metric-icon">🌐</div>
+    <div class="metric-label">Conexões Ativas</div>
+    <div class="metric-value" id="m-net-conns">{{ m.network.active_connections or 0 }}</div>
+    <div class="metric-sub" id="m-net-total">{{ m.network.total_connections or 0 }} total</div>
+  </div>
+</div>
+
+<!-- ── CPU ── -->
+<div class="section-title">⚡ CPU</div>
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-icon">⚡</div>
+    <div class="metric-label">Uso CPU</div>
+    <div class="metric-value" id="m-cpu-pct">{{ m.cpu.percent or 0 }}%</div>
+    <div class="gauge-wrap">
+      <div class="gauge-bar">
+        <div class="gauge-fill {% if (m.cpu.percent or 0) > 80 %}red{% elif (m.cpu.percent or 0) > 50 %}yellow{% else %}green{% endif %}"
+             id="g-cpu" style="width:{{ m.cpu.percent or 0 }}%"></div>
+      </div>
+    </div>
+    <div class="metric-sub" id="m-cpu-cores">{{ m.cpu.count_logical or 0 }} lógicos · {{ m.cpu.count_physical or 0 }} físicos</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-icon">📡</div>
+    <div class="metric-label">Frequência CPU</div>
+    <div class="metric-value" id="m-cpu-freq">{{ m.cpu.freq_mhz or 0 }} <span style="font-size:.9rem">MHz</span></div>
+    <div class="metric-sub">Processo: <span id="m-proc-cpu">{{ m.process.cpu_percent or 0 }}%</span></div>
+  </div>
+</div>
+{% if m.cpu.per_core %}
+<div class="card mb-4" style="margin-bottom:16px">
+  <div class="card-title mb-3" style="margin-bottom:10px">⚡ Uso por Core</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap" id="per-core">
+    {% for pct in m.cpu.per_core %}
+    <div style="text-align:center;min-width:44px">
+      <div style="font-size:.7rem;color:var(--text-muted)">C{{ loop.index0 }}</div>
+      <div style="font-size:.85rem;font-weight:600">{{ pct }}%</div>
+      <div class="gauge-bar" style="width:44px;margin-top:3px">
+        <div class="gauge-fill {% if pct > 80 %}red{% elif pct > 50 %}yellow{% else %}green{% endif %}"
+             style="width:{{ pct }}%"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- ── Memória ── -->
+<div class="section-title">🧠 Memória</div>
+<div class="metrics-grid">
+  <div class="metric-card blue">
+    <div class="metric-icon">🧠</div>
+    <div class="metric-label">RAM Usada</div>
+    <div class="metric-value" id="m-mem-pct">{{ m.memory.percent or 0 }}%</div>
+    <div class="gauge-wrap">
+      <div class="gauge-bar">
+        <div class="gauge-fill {% if (m.memory.percent or 0) > 85 %}red{% elif (m.memory.percent or 0) > 60 %}yellow{% else %}green{% endif %}"
+             id="g-mem" style="width:{{ m.memory.percent or 0 }}%"></div>
+      </div>
+    </div>
+    <div class="metric-sub" id="m-mem-detail">{{ m.memory.used_mb or 0 }} MB / {{ m.memory.total_mb or 0 }} MB</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-icon">💾</div>
+    <div class="metric-label">RAM Disponível</div>
+    <div class="metric-value" id="m-mem-avail">{{ m.memory.available_mb or 0 }} <span style="font-size:.9rem">MB</span></div>
+    <div class="metric-sub">Processo: <span id="m-proc-mem">{{ m.process.mem_rss_mb or 0 }} MB RSS</span></div>
+  </div>
+  <div class="metric-card yellow">
+    <div class="metric-icon">🔄</div>
+    <div class="metric-label">Swap</div>
+    <div class="metric-value" id="m-swap-pct">{{ m.memory.swap_percent or 0 }}%</div>
+    <div class="gauge-wrap">
+      <div class="gauge-bar">
+        <div class="gauge-fill yellow" id="g-swap" style="width:{{ m.memory.swap_percent or 0 }}%"></div>
+      </div>
+    </div>
+    <div class="metric-sub" id="m-swap-detail">{{ m.memory.swap_used_mb or 0 }} / {{ m.memory.swap_total_mb or 0 }} MB</div>
+  </div>
+</div>
+
+<!-- ── Disco & Rede ── -->
+<div class="two-col">
+  <div>
+    <div class="section-title">💿 Disco</div>
+    <div class="card">
+      <div class="info-row"><span class="info-key">Total</span><span class="info-val" id="m-disk-total">{{ m.disk.total_gb or 0 }} GB</span></div>
+      <div class="info-row"><span class="info-key">Usado</span><span class="info-val" id="m-disk-used">{{ m.disk.used_gb or 0 }} GB</span></div>
+      <div class="info-row"><span class="info-key">Livre</span><span class="info-val" id="m-disk-free">{{ m.disk.free_gb or 0 }} GB</span></div>
+      <div class="info-row"><span class="info-key">Uso %</span>
+        <span class="info-val">
+          <span id="m-disk-pct">{{ m.disk.percent or 0 }}</span>%
+        </span>
+      </div>
+      <div class="gauge-bar" style="margin-top:8px">
+        <div class="gauge-fill {% if (m.disk.percent or 0) > 85 %}red{% elif (m.disk.percent or 0) > 70 %}yellow{% else %}green{% endif %}"
+             id="g-disk" style="width:{{ m.disk.percent or 0 }}%"></div>
+      </div>
+      <div class="info-row mt-3"><span class="info-key">Leituras</span><span class="info-val" id="m-disk-reads">{{ m.disk.read_count or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Escritas</span><span class="info-val" id="m-disk-writes">{{ m.disk.write_count or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Lido</span><span class="info-val" id="m-disk-rmb">{{ m.disk.read_mb or 0 }} MB</span></div>
+      <div class="info-row"><span class="info-key">Escrito</span><span class="info-val" id="m-disk-wmb">{{ m.disk.write_mb or 0 }} MB</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-title">🌐 Rede</div>
+    <div class="card">
+      <div class="info-row"><span class="info-key">Enviado</span><span class="info-val" id="m-net-sent">{{ m.network.bytes_sent_mb or 0 }} MB</span></div>
+      <div class="info-row"><span class="info-key">Recebido</span><span class="info-val" id="m-net-recv">{{ m.network.bytes_recv_mb or 0 }} MB</span></div>
+      <div class="info-row"><span class="info-key">Pkts Enviados</span><span class="info-val" id="m-net-psent">{{ m.network.packets_sent or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Pkts Recebidos</span><span class="info-val" id="m-net-precv">{{ m.network.packets_recv or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Erros In</span><span class="info-val" id="m-net-ein">{{ m.network.errors_in or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Erros Out</span><span class="info-val" id="m-net-eout">{{ m.network.errors_out or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Drop In</span><span class="info-val" id="m-net-din">{{ m.network.drop_in or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Drop Out</span><span class="info-val" id="m-net-dout">{{ m.network.drop_out or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Conexões Ativas</span><span class="info-val" id="m-net-active">{{ m.network.active_connections or 0 }}</span></div>
+      <div class="info-row"><span class="info-key">Total Conexões</span><span class="info-val" id="m-net-tot">{{ m.network.total_connections or 0 }}</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── KPIs do Banco ── -->
+<div class="section-title">🗄️ Banco de Dados — KPIs</div>
+<div class="metrics-grid">
+  {% set db = m.db %}
+  <div class="metric-card green"><div class="metric-icon">👤</div><div class="metric-label">Usuários</div><div class="metric-value" id="kpi-users">{{ db.users }}</div></div>
+  <div class="metric-card blue"><div class="metric-icon">🎭</div><div class="metric-label">Roles</div><div class="metric-value" id="kpi-roles">{{ db.roles }}</div></div>
+  <div class="metric-card purple"><div class="metric-icon">🔑</div><div class="metric-label">Permissões</div><div class="metric-value" id="kpi-perms">{{ db.permissions }}</div></div>
+  <div class="metric-card yellow"><div class="metric-icon">👥</div><div class="metric-label">Grupos</div><div class="metric-value" id="kpi-groups">{{ db.groups }}</div></div>
+  <div class="metric-card"><div class="metric-icon">⚙️</div><div class="metric-label">Attrs RBAC</div><div class="metric-value" id="kpi-rbac">{{ db.rbac_attrs }}</div></div>
+  <div class="metric-card"><div class="metric-icon">📋</div><div class="metric-label">Audit Logs</div><div class="metric-value" id="kpi-audit">{{ db.audit_logs }}</div></div>
+  <div class="metric-card"><div class="metric-icon">🏷️</div><div class="metric-label">Tipos</div><div class="metric-value" id="kpi-types">{{ db.user_types }}</div></div>
+  <div class="metric-card red"><div class="metric-icon">🚫</div><div class="metric-label">Tokens Revogados</div><div class="metric-value" id="kpi-bl">{{ db.token_blacklist }}</div></div>
+</div>
+
+<!-- ── Log KPIs ── -->
+<div class="section-title">📊 Logs — Estatísticas</div>
+<div class="three-col">
+  <div class="metric-card green">
+    <div class="metric-icon">✅</div>
+    <div class="metric-label">Eventos com Sucesso</div>
+    <div class="metric-value" id="log-ok">{{ m.logs.success }}</div>
+    <div class="metric-sub">de {{ m.logs.total }} total</div>
+  </div>
+  <div class="metric-card red">
+    <div class="metric-icon">❌</div>
+    <div class="metric-label">Eventos com Falha</div>
+    <div class="metric-value" id="log-fail">{{ m.logs.failure }}</div>
+  </div>
+  <div class="metric-card blue">
+    <div class="metric-icon">🔐</div>
+    <div class="metric-label">Logins com Sucesso</div>
+    <div class="metric-value" id="log-logins">{{ m.logs.logins }}</div>
+  </div>
+</div>
+
+<!-- ── Eventos Recentes ── -->
+<div class="section-title">🕐 Eventos Recentes</div>
+<div class="card">
+  <div id="recent-logs">
+    {% for log in m.logs.recent %}
+    <div class="log-row">
+      <span class="{% if log.status == 'success' %}text-success{% else %}text-danger{% endif %}">
+        {% if log.status == 'success' %}✓{% else %}✗{% endif %}
+      </span>
+      <span class="log-action">{{ log.action }}</span>
+      <span class="log-actor">{{ log.actor }}</span>
+      <span class="badge badge-muted">{{ log.resource }}</span>
+      <span class="log-time">{{ log.created_at[:19] if log.created_at else '' }}</span>
+    </div>
+    {% else %}
+    <div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum evento.</p></div>
+    {% endfor %}
+  </div>
+  <div style="margin-top:12px">
+    <a href="/admin/metrics/logs" class="btn btn-outline btn-sm">Ver todos os logs →</a>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let _countdown = 5;
+let _timer;
+
+function _gauge(id, pct) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.width = Math.min(pct, 100) + '%';
+  el.className = 'gauge-fill ' + (pct > 80 ? 'red' : pct > 50 ? 'yellow' : 'green');
+}
+function _set(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+async function loadMetrics() {
+  try {
+    const r = await fetch('/admin/metrics/live');
+    if (!r.ok) return;
+    const m = await r.json();
+
+    // sistema
+    _set('m-uptime', m.uptime_fmt);
+    _set('m-pid', m.process?.pid ?? '—');
+    _set('m-threads', (m.process?.threads ?? 0) + ' threads · ' + (m.process?.status ?? ''));
+    _set('m-files', m.process?.open_files ?? 0);
+    _set('m-conns-proc', (m.process?.connections ?? 0) + ' conexões');
+
+    // cpu
+    const cpu = m.cpu?.percent ?? 0;
+    _set('m-cpu-pct', cpu + '%');
+    _gauge('g-cpu', cpu);
+    _set('m-cpu-freq', (m.cpu?.freq_mhz ?? 0) + ' MHz');
+    _set('m-proc-cpu', (m.process?.cpu_percent ?? 0) + '%');
+
+    // per core
+    if (m.cpu?.per_core) {
+      const wrap = document.getElementById('per-core');
+      if (wrap) {
+        wrap.innerHTML = m.cpu.per_core.map((pct, i) =>
+          `<div style="text-align:center;min-width:44px">
+            <div style="font-size:.7rem;color:var(--text-muted)">C${i}</div>
+            <div style="font-size:.85rem;font-weight:600">${pct}%</div>
+            <div class="gauge-bar" style="width:44px;margin-top:3px">
+              <div class="gauge-fill ${pct>80?'red':pct>50?'yellow':'green'}" style="width:${pct}%"></div>
+            </div>
+          </div>`
+        ).join('');
+      }
+    }
+
+    // memory
+    const mem = m.memory?.percent ?? 0;
+    _set('m-mem-pct', mem + '%');
+    _gauge('g-mem', mem);
+    _set('m-mem-detail', (m.memory?.used_mb ?? 0) + ' MB / ' + (m.memory?.total_mb ?? 0) + ' MB');
+    _set('m-mem-avail', (m.memory?.available_mb ?? 0) + ' MB');
+    _set('m-proc-mem', (m.process?.mem_rss_mb ?? 0) + ' MB RSS');
+    const swap = m.memory?.swap_percent ?? 0;
+    _set('m-swap-pct', swap + '%');
+    _gauge('g-swap', swap);
+    _set('m-swap-detail', (m.memory?.swap_used_mb ?? 0) + ' / ' + (m.memory?.swap_total_mb ?? 0) + ' MB');
+
+    // disk
+    _set('m-disk-total', (m.disk?.total_gb ?? 0) + ' GB');
+    _set('m-disk-used',  (m.disk?.used_gb  ?? 0) + ' GB');
+    _set('m-disk-free',  (m.disk?.free_gb  ?? 0) + ' GB');
+    _set('m-disk-pct',   m.disk?.percent ?? 0);
+    _gauge('g-disk', m.disk?.percent ?? 0);
+    _set('m-disk-reads',  m.disk?.read_count  ?? 0);
+    _set('m-disk-writes', m.disk?.write_count ?? 0);
+    _set('m-disk-rmb',   (m.disk?.read_mb  ?? 0) + ' MB');
+    _set('m-disk-wmb',   (m.disk?.write_mb ?? 0) + ' MB');
+
+    // network
+    _set('m-net-sent',  (m.network?.bytes_sent_mb ?? 0) + ' MB');
+    _set('m-net-recv',  (m.network?.bytes_recv_mb ?? 0) + ' MB');
+    _set('m-net-psent', m.network?.packets_sent ?? 0);
+    _set('m-net-precv', m.network?.packets_recv ?? 0);
+    _set('m-net-ein',   m.network?.errors_in  ?? 0);
+    _set('m-net-eout',  m.network?.errors_out ?? 0);
+    _set('m-net-din',   m.network?.drop_in  ?? 0);
+    _set('m-net-dout',  m.network?.drop_out ?? 0);
+    _set('m-net-active', m.network?.active_connections ?? 0);
+    _set('m-net-tot',    m.network?.total_connections  ?? 0);
+    _set('m-net-conns',  m.network?.active_connections ?? 0);
+    _set('m-net-total',  (m.network?.total_connections ?? 0) + ' total');
+
+    // db kpis
+    _set('kpi-users',  m.db?.users ?? 0);
+    _set('kpi-roles',  m.db?.roles ?? 0);
+    _set('kpi-perms',  m.db?.permissions ?? 0);
+    _set('kpi-groups', m.db?.groups ?? 0);
+    _set('kpi-rbac',   m.db?.rbac_attrs ?? 0);
+    _set('kpi-audit',  m.db?.audit_logs ?? 0);
+    _set('kpi-types',  m.db?.user_types ?? 0);
+    _set('kpi-bl',     m.db?.token_blacklist ?? 0);
+
+    // log kpis
+    _set('log-ok',     m.logs?.success ?? 0);
+    _set('log-fail',   m.logs?.failure ?? 0);
+    _set('log-logins', m.logs?.logins  ?? 0);
+
+    // recent logs
+    const wrap = document.getElementById('recent-logs');
+    if (wrap && m.logs?.recent?.length) {
+      wrap.innerHTML = m.logs.recent.map(l =>
+        `<div class="log-row">
+          <span class="${l.status==='success'?'text-success':'text-danger'}">${l.status==='success'?'✓':'✗'}</span>
+          <span class="log-action">${l.action}</span>
+          <span class="log-actor">${l.actor}</span>
+          <span class="badge badge-muted">${l.resource}</span>
+          <span class="log-time">${(l.created_at||'').slice(0,19)}</span>
+        </div>`
+      ).join('');
+    }
+
+    _countdown = 5;
+  } catch(e) { console.warn('metrics fetch failed', e); }
+}
+
+function startCountdown() {
+  clearInterval(_timer);
+  _timer = setInterval(() => {
+    _countdown--;
+    const el = document.getElementById('refresh-countdown');
+    if (el) el.textContent = `⟳ ${_countdown}s`;
+    if (_countdown <= 0) { loadMetrics(); _countdown = 5; }
+  }, 1000);
+}
+
+startCountdown();
+</script>
+{% endblock %}

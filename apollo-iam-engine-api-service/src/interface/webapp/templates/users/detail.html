@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">👤 {{ user.username }}
+    {% if user.is_superuser %}<span class="badge badge-warning">⭐ Superuser</span>{% endif %}
+    {% if user.is_active %}<span class="badge badge-success">● Ativo</span>
+    {% else %}<span class="badge badge-danger">● Inativo</span>{% endif %}
+  </h1>
+  <div class="page-actions">
+    <form method="post" action="/admin/users/{{ user.id }}/toggle">
+      <button class="btn btn-info btn-sm">⇄ Toggle Status</button>
+    </form>
+    <form method="post" action="/admin/users/{{ user.id }}/delete"
+          onsubmit="return confirm('Excluir {{ user.username }}?')">
+      <button class="btn btn-danger btn-sm">🗑 Excluir</button>
+    </form>
+    <a href="/admin/users" class="btn btn-outline btn-sm">← Voltar</a>
+  </div>
+</div>
+
+<div class="detail-grid">
+  <div class="detail-item"><div class="detail-label">ID</div><div class="detail-value mono">{{ user.id }}</div></div>
+  <div class="detail-item"><div class="detail-label">Email</div><div class="detail-value">{{ user.email or '—' }}</div></div>
+  <div class="detail-item"><div class="detail-label">Nome</div><div class="detail-value">{{ user.full_name or '—' }}</div></div>
+  <div class="detail-item"><div class="detail-label">Grupo</div><div class="detail-value">{{ user.group or '—' }}</div></div>
+  <div class="detail-item"><div class="detail-label">Tipo</div><div class="detail-value">{{ user.user_type or '—' }}</div></div>
+  <div class="detail-item"><div class="detail-label">Nível</div><div class="detail-value">{{ user.user_level or '—' }}</div></div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('edit')">✏️ Editar</div>
+  <div class="tab" onclick="switchTab('roles')">🎭 Roles</div>
+  <div class="tab" onclick="switchTab('rbac')">⚙️ RBAC</div>
+  <div class="tab" onclick="switchTab('abac')">🧩 ABAC</div>
+  <div class="tab" onclick="switchTab('password')">🔒 Senha</div>
+</div>
+
+<!-- Edit -->
+<div id="tab-edit" class="tab-panel active card">
+  <form method="post" action="/admin/users/{{ user.id }}/edit">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-control" type="email" name="email" value="{{ user.email or '' }}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nome Completo</label>
+        <input class="form-control" name="full_name" value="{{ user.full_name or '' }}"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Grupo</label>
+        <select class="form-control" name="group_id">
+          <option value="">— Sem grupo —</option>
+          {% for g in all_groups %}
+          <option value="{{ g.id }}" {% if user.group_id == g.id %}selected{% endif %}>{{ g.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select class="form-control" name="type_id">
+          <option value="">— Nenhum —</option>
+          {% for t in all_types %}
+          <option value="{{ t.id }}" {% if user.type_id == t.id %}selected{% endif %}>{{ t.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Nível</label>
+      <select class="form-control" name="level_id">
+        <option value="">— Nenhum —</option>
+        {% for l in all_levels %}
+        <option value="{{ l.id }}" {% if user.level_id == l.id %}selected{% endif %}>{{ l.name }} (rank {{ l.rank }})</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="flex gap-3 mt-2">
+      <label class="form-check"><input type="checkbox" name="is_active" {% if user.is_active %}checked{% endif %}/> Ativo</label>
+      <label class="form-check"><input type="checkbox" name="is_superuser" {% if user.is_superuser %}checked{% endif %}/> Superuser</label>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">💾 Salvar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Roles -->
+<div id="tab-roles" class="tab-panel card">
+  <div class="card-header">
+    <span class="card-title">Roles Atribuídas</span>
+  </div>
+  <div class="flex flex-wrap gap-2 mb-4">
+    {% for r in (user.roles or []) %}
+    <span class="badge badge-primary" style="font-size:.82rem;padding:5px 12px">🎭 {{ r }}</span>
+    {% else %}<span class="text-muted">Nenhuma role atribuída.</span>
+    {% endfor %}
+  </div>
+  <hr class="divider"/>
+  <div class="card-header mt-3"><span class="card-title">Atribuir Role</span></div>
+  <form method="post" action="/admin/users/{{ user.id }}/assign-role" class="flex gap-2">
+    <select class="form-control" name="role_id" style="max-width:280px">
+      {% for r in all_roles %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-primary" type="submit">＋ Atribuir</button>
+  </form>
+  <hr class="divider"/>
+  <div class="card-header mt-3"><span class="card-title">Revogar Role</span></div>
+  <form method="post" action="/admin/users/{{ user.id }}/revoke-role" class="flex gap-2">
+    <select class="form-control" name="role_id" style="max-width:280px">
+      {% for r in all_roles %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
+    </select>
+    <button class="btn btn-danger" type="submit">✕ Revogar</button>
+  </form>
+</div>
+
+<!-- RBAC -->
+<div id="tab-rbac" class="tab-panel card">
+  <div class="card-header"><span class="card-title">Atribuir Atributo RBAC</span></div>
+  <form method="post" action="/admin/users/{{ user.id }}/assign-rbac" class="flex gap-2 flex-wrap">
+    <select class="form-control" name="attribute_key" style="max-width:220px">
+      {% for a in all_attrs %}<option value="{{ a.key }}">{{ a.key }} ({{ a.label }})</option>{% endfor %}
+    </select>
+    <input class="form-control" name="value" placeholder="valor" style="max-width:180px"/>
+    <button class="btn btn-primary" type="submit">＋ Atribuir</button>
+  </form>
+  <div class="form-hint mt-2">Os atributos RBAC são incluídos no token JWT e usados em políticas de acesso.</div>
+</div>
+
+<!-- ABAC -->
+<div id="tab-abac" class="tab-panel card">
+  <div class="card-header"><span class="card-title">Entidades ABAC Atribuídas</span></div>
+  <div class="table-wrap mb-4">
+    <table>
+      <thead><tr><th>Tipo</th><th>Valor</th><th>Atribuído em</th></tr></thead>
+      <tbody>
+      {% for e in user_entities %}
+      <tr>
+        <td><span class="badge badge-purple">{{ e.entity_type_slug }}</span></td>
+        <td>{{ e.entity_value_name }}</td>
+        <td class="text-muted">{{ e.assigned_at[:19] if e.assigned_at else '—' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3" class="text-muted">Nenhuma entidade ABAC atribuída.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <hr class="divider"/>
+  <div class="card-header mt-3"><span class="card-title">Atribuir Entidade ABAC</span></div>
+  <form method="post" action="/admin/users/{{ user.id }}/assign-entity" id="abac-form" class="flex gap-2 flex-wrap">
+    <select class="form-control" name="entity_type_slug" id="abac-type-sel" style="max-width:200px"
+            onchange="loadEntityValues(this.value)">
+      <option value="">— Tipo —</option>
+      {% for et in entity_types %}<option value="{{ et.slug }}">{{ et.label }}</option>{% endfor %}
+    </select>
+    <select class="form-control" name="entity_value_id" id="abac-val-sel" style="max-width:200px">
+      <option value="">— Valor —</option>
+    </select>
+    <button class="btn btn-primary" type="submit">＋ Atribuir</button>
+  </form>
+</div>
+
+<!-- Password -->
+<div id="tab-password" class="tab-panel card" style="max-width:400px">
+  <div class="card-header"><span class="card-title">🔒 Redefinir Senha</span></div>
+  <form method="post" action="/admin/users/{{ user.id }}/reset-password">
+    <div class="form-group">
+      <label class="form-label">Nova Senha <span class="req">*</span></label>
+      <input class="form-control" type="password" name="new_password" required placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-danger" type="submit">🔒 Redefinir Senha</button>
+  </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  const tabs = ['edit','roles','rbac','abac','password'];
+  const idx = tabs.indexOf(name);
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+async function loadEntityValues(slug) {
+  const sel = document.getElementById('abac-val-sel');
+  sel.innerHTML = '<option value="">Carregando...</option>';
+  if (!slug) { sel.innerHTML = '<option value="">— Valor —</option>'; return; }
+  const r = await fetch('/admin/entities/'+slug+'/values-json');
+  if (r.ok) {
+    const data = await r.json();
+    sel.innerHTML = '<option value="">— Valor —</option>' +
+      data.map(v => `<option value="${v.id}">${v.name}</option>`).join('');
+  }
+}
+</script>
+{% endblock %}

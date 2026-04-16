@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Roles{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">🎭 Roles</h1>
+  <button class="btn btn-primary" onclick="document.getElementById('modal-new').classList.add('open')">＋ Nova Role</button>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Descrição</th><th>Permissões</th><th>Ações</th></tr></thead>
+      <tbody>
+      {% for r in roles %}
+      <tr>
+        <td><span class="badge badge-primary">🎭 {{ r.name }}</span></td>
+        <td class="text-muted">{{ r.description or '—' }}</td>
+        <td>{% for p in (r.permissions or []) %}<span class="badge badge-info" style="margin:1px">{{ p }}</span>{% endfor %}</td>
+        <td>
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-xs" onclick="openAssignPerm('{{ r.id }}','{{ r.name }}')">＋ Permissão</button>
+            <form method="post" action="/admin/roles/{{ r.id }}/delete" style="display:inline"
+                  onsubmit="return confirm('Excluir role {{ r.name }}?')">
+              <button class="btn btn-danger btn-xs">🗑</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4"><div class="empty-state"><div class="empty-icon">🎭</div><p>Nenhuma role.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal nova role -->
+<div class="modal-backdrop" id="modal-new">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🎭 Nova Role</span>
+      <button class="modal-close" onclick="document.getElementById('modal-new').classList.remove('open')">✕</button>
+    </div>
+    <form method="post" action="/admin/roles/new">
+      <div class="form-group"><label class="form-label">Nome <span class="req">*</span></label>
+        <input class="form-control" name="name" required placeholder="ex: vendedor"/></div>
+      <div class="form-group"><label class="form-label">Descrição</label>
+        <input class="form-control" name="description" placeholder="Descrição da role"/></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">✅ Criar</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-new').classList.remove('open')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal atribuir permissão -->
+<div class="modal-backdrop" id="modal-assign-perm">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🔑 Atribuir Permissão a <span id="assign-role-name"></span></span>
+      <button class="modal-close" onclick="document.getElementById('modal-assign-perm').classList.remove('open')">✕</button>
+    </div>
+    <form method="post" id="assign-perm-form">
+      <div class="form-group"><label class="form-label">Permissão</label>
+        <select class="form-control" name="perm_id">
+          {% for p in all_perms %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">＋ Atribuir</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-assign-perm').classList.remove('open')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function openAssignPerm(roleId, roleName) {
+  document.getElementById('assign-role-name').textContent = roleName;
+  document.getElementById('assign-perm-form').action = '/admin/roles/'+roleId+'/assign-perm';
+  document.getElementById('modal-assign-perm').classList.add('open');
+}
+</script>
+{% endblock %}

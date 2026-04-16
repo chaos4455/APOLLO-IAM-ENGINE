@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Níveis de Usuário{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">📶 Níveis de Usuário</h1>
+  <button class="btn btn-primary" onclick="document.getElementById('modal-new').classList.add('open')">＋ Novo Nível</button>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Rank</th><th>Descrição</th><th></th></tr></thead>
+      <tbody>
+      {% for l in levels %}
+      <tr>
+        <td><span class="badge badge-info">📶 {{ l.name }}</span></td>
+        <td><span class="badge badge-warning">{{ l.rank }}</span></td>
+        <td class="text-muted">{{ l.description or '—' }}</td>
+        <td>
+          <form method="post" action="/admin/user-levels/{{ l.id }}/delete" style="display:inline"
+                onsubmit="return confirm('Excluir nível {{ l.name }}?')">
+            <button class="btn btn-danger btn-xs">🗑</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4"><div class="empty-state"><div class="empty-icon">📶</div><p>Nenhum nível.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-new">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📶 Novo Nível</span>
+      <button class="modal-close" onclick="document.getElementById('modal-new').classList.remove('open')">✕</button>
+    </div>
+    <form method="post" action="/admin/user-levels/new">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Nome <span class="req">*</span></label>
+          <input class="form-control" name="name" required placeholder="ex: Júnior"/></div>
+        <div class="form-group"><label class="form-label">Rank (número)</label>
+          <input class="form-control" type="number" name="rank" value="0" min="0"/></div>
+      </div>
+      <div class="form-group"><label class="form-label">Descrição</label>
+        <input class="form-control" name="description" placeholder="Descrição"/></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">✅ Criar</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-new').classList.remove('open')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

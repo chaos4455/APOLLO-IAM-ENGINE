@@ -1,0 +1,16 @@
+from abc import ABC, abstractmethod
+from typing import Optional
+from src.domain.entities.group import Group
+
+
+class GroupRepository(ABC):
+    @abstractmethod
+    def save(self, group: Group) -> Group: ...
+    @abstractmethod
+    def find_by_id(self, group_id: str) -> Optional[Group]: ...
+    @abstractmethod
+    def find_by_name(self, name: str) -> Optional[Group]: ...
+    @abstractmethod
+    def list_all(self) -> list[Group]: ...
+    @abstractmethod
+    def delete(self, group_id: str) -> None: ...

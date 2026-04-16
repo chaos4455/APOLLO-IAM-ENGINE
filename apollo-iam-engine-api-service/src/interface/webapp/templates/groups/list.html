@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Grupos{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">👥 Grupos</h1>
+  <button class="btn btn-primary" onclick="document.getElementById('modal-new').classList.add('open')">＋ Novo Grupo</button>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Descrição</th><th>ID</th><th></th></tr></thead>
+      <tbody>
+      {% for g in groups %}
+      <tr>
+        <td><span class="badge badge-info">👥 {{ g.name }}</span></td>
+        <td class="text-muted">{{ g.description or '—' }}</td>
+        <td><span class="mono">{{ g.id[:8] }}…</span></td>
+        <td>
+          <form method="post" action="/admin/groups/{{ g.id }}/delete" style="display:inline"
+                onsubmit="return confirm('Excluir grupo {{ g.name }}?')">
+            <button class="btn btn-danger btn-xs">🗑</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4"><div class="empty-state"><div class="empty-icon">👥</div><p>Nenhum grupo.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-new">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">👥 Novo Grupo</span>
+      <button class="modal-close" onclick="document.getElementById('modal-new').classList.remove('open')">✕</button>
+    </div>
+    <form method="post" action="/admin/groups/new">
+      <div class="form-group"><label class="form-label">Nome <span class="req">*</span></label>
+        <input class="form-control" name="name" required placeholder="ex: Vendas"/></div>
+      <div class="form-group"><label class="form-label">Descrição</label>
+        <input class="form-control" name="description" placeholder="Descrição do grupo"/></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">✅ Criar</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-new').classList.remove('open')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

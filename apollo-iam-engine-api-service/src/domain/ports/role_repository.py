@@ -1,0 +1,16 @@
+from abc import ABC, abstractmethod
+from typing import Optional
+from src.domain.entities.role import Role
+
+
+class RoleRepository(ABC):
+    @abstractmethod
+    def save(self, role: Role) -> Role: ...
+    @abstractmethod
+    def find_by_id(self, role_id: str) -> Optional[Role]: ...
+    @abstractmethod
+    def find_by_name(self, name: str) -> Optional[Role]: ...
+    @abstractmethod
+    def list_all(self) -> list[Role]: ...
+    @abstractmethod
+    def delete(self, role_id: str) -> None: ...

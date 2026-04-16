@@ -1,0 +1,16 @@
+from abc import ABC, abstractmethod
+from typing import Optional
+from src.domain.entities.permission import Permission
+
+
+class PermissionRepository(ABC):
+    @abstractmethod
+    def save(self, perm: Permission) -> Permission: ...
+    @abstractmethod
+    def find_by_id(self, perm_id: str) -> Optional[Permission]: ...
+    @abstractmethod
+    def find_by_name(self, name: str) -> Optional[Permission]: ...
+    @abstractmethod
+    def list_all(self) -> list[Permission]: ...
+    @abstractmethod
+    def delete(self, perm_id: str) -> None: ...

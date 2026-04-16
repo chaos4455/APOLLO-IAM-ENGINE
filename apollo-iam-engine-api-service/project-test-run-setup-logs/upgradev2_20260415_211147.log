@@ -1,0 +1,9 @@
+[OK]  metrics/logs.html criado
+[OK]  rate_limit_middleware.py criado
+[OK]  request_queue_middleware.py criado
+[OK]  API main.py — imports rate limit + queue
+[OK]  API main.py — middlewares rate limit + queue
+[OK]  WebApp main.py — imports rate limit + queue
+[OK]  WebApp main.py — middlewares rate limit + queue
+[OK]  security_headers_middleware.py — headers extras (COOP, CORP, Cache-Control)
+[OK]  dashboard.html — card de métricas adicionado

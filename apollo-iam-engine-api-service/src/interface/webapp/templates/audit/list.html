@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Audit Logs{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">📋 Audit Logs</h1>
+  <div class="flex gap-2">
+    <a href="/admin/audit?limit=50" class="btn btn-outline btn-sm">50</a>
+    <a href="/admin/audit?limit=200" class="btn btn-outline btn-sm">200</a>
+    <a href="/admin/audit?limit=500" class="btn btn-outline btn-sm">500</a>
+  </div>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Ação</th><th>Actor</th><th>Recurso</th><th>ID Recurso</th><th>Status</th><th>IP</th><th>Data</th></tr></thead>
+      <tbody>
+      {% for log in logs %}
+      <tr>
+        <td><span class="mono">{{ log.action }}</span></td>
+        <td>{{ log.actor }}</td>
+        <td><span class="badge badge-muted">{{ log.resource }}</span></td>
+        <td class="text-muted">{{ (log.resource_id or '—')[:12] }}</td>
+        <td>{% if log.status == 'success' %}<span class="badge badge-success">✓</span>
+            {% else %}<span class="badge badge-danger">✗</span>{% endif %}</td>
+        <td class="text-muted">{{ log.ip_address or '—' }}</td>
+        <td class="text-muted" style="white-space:nowrap">{{ (log.created_at or '')[:19] }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum log.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

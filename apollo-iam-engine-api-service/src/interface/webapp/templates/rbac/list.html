@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Atributos RBAC{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">⚙️ Atributos RBAC</h1>
+  <button class="btn btn-primary" onclick="document.getElementById('modal-new').classList.add('open')">＋ Novo Atributo</button>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Chave</th><th>Label</th><th>Tipo</th><th>Descrição</th><th></th></tr></thead>
+      <tbody>
+      {% for a in attributes %}
+      <tr>
+        <td><span class="mono">{{ a.key }}</span></td>
+        <td>{{ a.label }}</td>
+        <td><span class="badge badge-muted">{{ a.value_type }}</span></td>
+        <td class="text-muted">{{ a.description or '—' }}</td>
+        <td>
+          <form method="post" action="/admin/rbac/{{ a.id }}/delete" style="display:inline"
+                onsubmit="return confirm('Excluir atributo {{ a.key }}?')">
+            <button class="btn btn-danger btn-xs">🗑</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">⚙️</div><p>Nenhum atributo RBAC.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-new">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">⚙️ Novo Atributo RBAC</span>
+      <button class="modal-close" onclick="document.getElementById('modal-new').classList.remove('open')">✕</button>
+    </div>
+    <form method="post" action="/admin/rbac/new">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Chave <span class="req">*</span></label>
+          <input class="form-control" name="key" required placeholder="ex: sistema"/></div>
+        <div class="form-group"><label class="form-label">Label <span class="req">*</span></label>
+          <input class="form-control" name="label" required placeholder="ex: Sistema de Acesso"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Tipo de Valor</label>
+          <select class="form-control" name="value_type">
+            <option value="string">string</option>
+            <option value="integer">integer</option>
+            <option value="boolean">boolean</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Descrição</label>
+          <input class="form-control" name="description" placeholder="Descrição"/></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit">✅ Criar</button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-new').classList.remove('open')">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,500 @@
+{
+  "run_id": "20260415_205842",
+  "timestamp": "2026-04-15 21:00:50",
+  "status": "PARTIAL",
+  "elapsed_s": 127.94,
+  "kpis": {
+    "total_steps": 58,
+    "passed": 55,
+    "failed": 3,
+    "success_rate": "94%"
+  },
+  "setup": {
+    "roles_created": [
+      "vendedor",
+      "aprovador",
+      "gerente"
+    ],
+    "permissions_created": [
+      "cotacao:create",
+      "cotacao:read",
+      "cotacao:update",
+      "cotacao:delete",
+      "cotacao:approve"
+    ],
+    "users_created": [
+      "usuario1",
+      "gerente1",
+      "aprovador1"
+    ],
+    "groups_created": [
+      "Vendas"
+    ]
+  },
+  "steps": [
+    {
+      "step": "GET /health",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Apollo IAM Engine",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:46.196602+00:00"
+    },
+    {
+      "step": "GET /docs (Swagger)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:48.235570+00:00"
+    },
+    {
+      "step": "GET /redoc",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:50.275108+00:00"
+    },
+    {
+      "step": "POST /auth/token (admin)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:52.560930+00:00"
+    },
+    {
+      "step": "POST /auth/validate (admin)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "sub=admin superuser=True",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:54.593604+00:00"
+    },
+    {
+      "step": "POST /auth/token (senha errada → 401)",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:56.869992+00:00"
+    },
+    {
+      "step": "POST /auth/token (user inexistente → 401)",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:58:58.921573+00:00"
+    },
+    {
+      "step": "GET /admin/users/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "1 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:00.971133+00:00"
+    },
+    {
+      "step": "GET /admin/roles/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "4 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:03.038160+00:00"
+    },
+    {
+      "step": "GET /admin/permissions/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "14 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:05.088556+00:00"
+    },
+    {
+      "step": "GET /admin/groups/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "0 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:07.125615+00:00"
+    },
+    {
+      "step": "GET /admin/rbac/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "0 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:09.177145+00:00"
+    },
+    {
+      "step": "GET /admin/settings/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "ok itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:11.241366+00:00"
+    },
+    {
+      "step": "GET /admin/audit/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "5 itens",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:13.292646+00:00"
+    },
+    {
+      "step": "GET /admin/users/ sem token → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:15.341132+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:create]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:17.397418+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:read]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:19.470464+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:update]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:21.530010+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:delete]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:23.607496+00:00"
+    },
+    {
+      "step": "Permissao [cotacao:approve]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:25.667602+00:00"
+    },
+    {
+      "step": "Role [vendedor]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:27.729957+00:00"
+    },
+    {
+      "step": "Role [aprovador]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:29.777612+00:00"
+    },
+    {
+      "step": "Role [gerente]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criada",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:31.832811+00:00"
+    },
+    {
+      "step": "  Assign [vendedor] ← [cotacao:create]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:33.898920+00:00"
+    },
+    {
+      "step": "  Assign [aprovador] ← [cotacao:read]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:35.981786+00:00"
+    },
+    {
+      "step": "  Assign [aprovador] ← [cotacao:approve]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:38.092278+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:create]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:40.154918+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:read]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:42.215608+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:update]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:44.282121+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:delete]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:46.345572+00:00"
+    },
+    {
+      "step": "  Assign [gerente] ← [cotacao:approve]",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:48.462268+00:00"
+    },
+    {
+      "step": "Grupo [Vendas]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:50.521301+00:00"
+    },
+    {
+      "step": "Atributo RBAC [sistema]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:52.625533+00:00"
+    },
+    {
+      "step": "Criar usuario1",
+      "ok": true,
+      "status_code": 201,
+      "detail": "id=2abb2f50-c3e5-4a5c-b74d-e8c1bda18d9f",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:54.977502+00:00"
+    },
+    {
+      "step": "Atribuir role [vendedor] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:57.058275+00:00"
+    },
+    {
+      "step": "Atribuir grupo [Vendas] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-15T23:59:59.112778+00:00"
+    },
+    {
+      "step": "Atribuir RBAC [sistema=cotacao] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:01.178129+00:00"
+    },
+    {
+      "step": "POST /auth/token (usuario1)",
+      "ok": false,
+      "status_code": 500,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:03.434116+00:00"
+    },
+    {
+      "step": "Login usuario1 falhou",
+      "ok": false,
+      "status_code": 500,
+      "detail": "Internal Server Error",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:03.435123+00:00"
+    },
+    {
+      "step": "Login usuario1 senha errada → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:05.702245+00:00"
+    },
+    {
+      "step": "Login usuario inexistente → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:07.749770+00:00"
+    },
+    {
+      "step": "Validar token invalido → 401",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:09.793718+00:00"
+    },
+    {
+      "step": "GET /admin/settings/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:11.844711+00:00"
+    },
+    {
+      "step": "PUT /admin/settings/ (expire=90min)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "expire=90min",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:13.904452+00:00"
+    },
+    {
+      "step": "GET /admin/audit/",
+      "ok": true,
+      "status_code": 200,
+      "detail": "7 entradas",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:15.950508+00:00"
+    },
+    {
+      "step": "Entidade ABAC tipo [cargo]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:18.038738+00:00"
+    },
+    {
+      "step": "Entidade ABAC valor [cargo=gerente]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:20.107902+00:00"
+    },
+    {
+      "step": "Entidade ABAC valor [cargo=vendedor]",
+      "ok": true,
+      "status_code": 201,
+      "detail": "criado",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:22.168587+00:00"
+    },
+    {
+      "step": "Criar gerente1",
+      "ok": true,
+      "status_code": 201,
+      "detail": "id=cbcb3603-9d12-47a4-bbdb-467e7bc04acb",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:24.456406+00:00"
+    },
+    {
+      "step": "Atribuir role [gerente] a gerente1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:26.512146+00:00"
+    },
+    {
+      "step": "Atribuir grupo [Vendas] a gerente1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:28.576324+00:00"
+    },
+    {
+      "step": "Atribuir RBAC [sistema=cotacao] a gerente1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:30.630358+00:00"
+    },
+    {
+      "step": "Atribuir ABAC [cargo=gerente] a gerente1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:32.702309+00:00"
+    },
+    {
+      "step": "Criar aprovador1",
+      "ok": true,
+      "status_code": 201,
+      "detail": "id=a3e75d18-985a-4cc1-9937-dc2eae8b68c4",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:34.992679+00:00"
+    },
+    {
+      "step": "Atribuir role [aprovador] a aprovador1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:37.056859+00:00"
+    },
+    {
+      "step": "Atribuir RBAC [sistema=cotacao] a aprovador1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:39.122520+00:00"
+    },
+    {
+      "step": "Atribuir ABAC [cargo=vendedor] a usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:43.229974+00:00"
+    },
+    {
+      "step": "Login usuario1 para ABAC",
+      "ok": false,
+      "status_code": 0,
+      "detail": "falhou",
+      "data": {},
+      "timestamp": "2026-04-16T00:00:50.041773+00:00"
+    }
+  ]
+}

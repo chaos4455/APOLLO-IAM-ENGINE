@@ -1,0 +1,11 @@
+<header class="navbar">
+  <div class="navbar-left">
+    <span class="navbar-title">{% block navbar_title %}Apollo IAM Engine{% endblock %}</span>
+  </div>
+  <div class="navbar-right">
+    <div class="navbar-user">
+      <div class="avatar">{{ request.session.user.username[0].upper() if request.session.user else 'A' }}</div>
+      <span>{{ request.session.user.username if request.session.user else '' }}</span>
+    </div>
+  </div>
+</header>

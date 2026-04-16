@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Usuários{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">👤 Usuários</h1>
+  <div class="page-actions">
+    <a href="/admin/users/new" class="btn btn-primary">＋ Novo Usuário</a>
+  </div>
+</div>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Usuário</th><th>Email</th><th>Roles</th><th>Grupo</th><th>Status</th><th>Superuser</th><th>Ações</th></tr></thead>
+      <tbody>
+      {% for u in users %}
+      <tr>
+        <td><a href="/admin/users/{{ u.id }}" style="color:var(--primary);font-weight:500">{{ u.username }}</a></td>
+        <td class="text-muted">{{ u.email or '—' }}</td>
+        <td>{% for r in (u.roles or []) %}<span class="badge badge-primary">{{ r }}</span> {% endfor %}</td>
+        <td class="text-muted">{{ u.group or '—' }}</td>
+        <td>{% if u.is_active %}<span class="badge badge-success">● Ativo</span>
+            {% else %}<span class="badge badge-danger">● Inativo</span>{% endif %}</td>
+        <td>{% if u.is_superuser %}<span class="badge badge-warning">⭐ Super</span>{% else %}—{% endif %}</td>
+        <td>
+          <div class="flex gap-2">
+            <a href="/admin/users/{{ u.id }}" class="btn btn-outline btn-xs">✏️ Editar</a>
+            <form method="post" action="/admin/users/{{ u.id }}/toggle" style="display:inline">
+              <button class="btn btn-info btn-xs" type="submit">⇄</button>
+            </form>
+            <form method="post" action="/admin/users/{{ u.id }}/delete" style="display:inline"
+                  onsubmit="return confirm('Excluir {{ u.username }}?')">
+              <button class="btn btn-danger btn-xs" type="submit">🗑</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👤</div><p>Nenhum usuário.</p></div></td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
