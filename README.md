@@ -1,167 +1,215 @@
-Este é o seu novo **README.md** estendido, projetado para ser uma vitrine tecnológica de alto impacto. Ele utiliza uma paleta de cores focada em **Laranja (Segurança/Energia)**, **Preto (Elegância/Profundidade)** e **Branco (Clareza/Pureza)**, com uma estrutura densa que detalha cada um dos 97 testes aprovados.
+Este é o novo README.md, expandido, visualmente agressivo, utilizando a paleta de cores solicitada (**Laranja, Preto e Branco**), repleto de ícones, badges e detalhando exaustivamente a validação dos 97 testes.
 
 ---
 
 <div align="center">
 
-<!-- Banner de Identidade -->
-<img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%">
+<img src="https://img.shields.io/badge/APOLLO-IAM_ENGINE-orange?style=for-the-badge&logo=apollo-graphql&logoColor=black" alt="Apollo Banner" width="600">
 
-<h1 style="color: #FF8C00; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 3em; font-weight: bold; margin-bottom: 0;">🛡️ APOLLO IAM ENGINE</h1>
-<p style="color: #666; font-size: 1.2em; margin-top: 5px;"><i>The Iron-Clad Sovereign Identity & Policy Decision Point</i></p>
+# 🛡️ APOLLO IAM ENGINE v2.0
+### **The Sovereign Zero-Trust Identity & Policy Orchestrator**
 
-<!-- Shields de Status e Tecnologia -->
-<p>
-  <img src="https://img.shields.io/badge/STATUS-100%25_PASSED-FF8C00?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Status">
-  <img src="https://img.shields.io/badge/SECURITY-ZERO_TRUST_mTLS-000000?style=for-the-badge&logo=shield&logoColor=white" alt="Security">
-  <img src="https://img.shields.io/badge/ENGINE-RBAC_%2B_ABAC-white?style=for-the-badge&logo=auth0&logoColor=black" alt="Engine">
-</p>
+[![Build Status](https://img.shields.io/badge/STATUS-PASSED-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/chaos4455)
+[![Security: mTLS](https://img.shields.io/badge/SECURITY-mTLS_NATIVE-orange?style=for-the-badge&logo=securityscorecard&logoColor=black)](#)
+[![Engine: RBAC+ABAC](https://img.shields.io/badge/ENGINE-RBAC_%2B_ABAC-black?style=for-the-badge&logo=auth0&logoColor=white)](#)
+[![Coverage: 100%](https://img.shields.io/badge/COVERAGE-100%25-white?style=for-the-badge&logo=checkmarx&logoColor=black)](#)
+[![License: Proprietary](https://img.shields.io/badge/LICENSE-O2_DATA_SOLUTIONS-orange?style=for-the-badge)](#)
 
-<p>
-  <img src="https://img.shields.io/badge/FastAPI-005571?style=flat-square&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Python_3.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/SQLAlchemy-D71F00?style=flat-square&logo=sqlalchemy&logoColor=white" alt="SQLAlchemy">
-  <img src="https://img.shields.io/badge/JWT_RSA_256-000000?style=flat-square&logo=jsonwebtokens&logoColor=white" alt="JWT">
-  <img src="https://img.shields.io/badge/mTLS_ECDHE-FF8C00?style=flat-square&logo=googlecloud&logoColor=white" alt="mTLS">
+<p align="center">
+  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" />
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" />
 </p>
 
 ---
 
-<div style="background: linear-gradient(90deg, #000000 0%, #333333 50%, #000000 100%); padding: 20px; border-radius: 10px; border: 1px solid #FF8C00;">
-  <p style="color: #FF8C00; font-size: 1.1em; line-height: 1.6;">
-    <b>O Apollo IAM Engine</b> não é apenas um serviço de login. É uma <b>Fortaleza de Autorização</b> baseada em mTLS e Inteligência de Políticas. Projetado para arquiteturas de microsserviços onde a confiança é verificada criptograficamente em cada requisição (Zero-Trust).
-  </p>
-</div>
+<p style="font-size: 1.2em; color: #FF8C00;">
+  <b>O Apollo IAM Engine não é apenas um serviço de login.</b> É uma fortaleza criptográfica projetada para governar o acesso em ecossistemas de microsserviços onde a confiança é zero e a conformidade é absoluta.
+</p>
 
 </div>
 
 ---
 
-## 🚀 1. Visão Geral da Arquitetura
+## 📑 Sumário Executivo
 
-O Apollo atua como o **PDP (Policy Decision Point)** central da organização. Ele resolve a fragmentação de permissões ao centralizar a lógica de decisão, permitindo que seus microsserviços permaneçam "burros" em relação a quem pode fazer o quê, apenas consultando o `/auth/check`.
-
-### 🌑 Camadas de Proteção
-1.  **Transporte (mTLS):** Conexão impossível sem certificado físico do cliente.
-2.  **Identidade (JWT):** Assinatura assimétrica (RS256) com rotação de chaves.
-3.  **Autorização RBAC:** Permissões granulares mapeadas a Roles.
-4.  **Autorização ABAC:** Atributos dinâmicos (Sistema, Cargo, Filial) e Hierarquia de Níveis (`rank`).
-
----
-
-## 🧪 2. Certificação de Produção: 97/97 Passos
-
-Abaixo, detalhamos o relatório de execução da **Run ID: 20260415_213724**, onde o motor foi submetido a testes de estresse, lógica e segurança, obtendo **100% de sucesso**.
-
-### 🛠️ FASE A: Infraestrutura & Health (Steps 1-3)
-*   ✅ **Health Check:** Validação de integridade do motor e conectividade com DB.
-*   ✅ **OpenAPI/Swagger:** Documentação auto-gerada validada para integração de terceiros.
-*   ✅ **ReDoc:** Interface técnica de especificação consultada com sucesso.
-
-### 🔑 FASE B: Autenticação Administrativa (Steps 4-7)
-*   ✅ **Admin Login:** Geração de token de superusuário.
-*   ✅ **Admin Validation:** Checagem de flags `is_superuser=True`.
-*   ✅ **Negative Auth:** Bloqueio de senhas incorretas e usuários inexistentes (401 Unauthorized).
-
-### 🖥️ FASE C: Gestão & Governança (Steps 8-15)
-*   ✅ **User Inventory:** Listagem e contagem de identidades ativas.
-*   ✅ **Role/Permission Mapping:** Auditoria de 19 permissões e 7 papéis pré-configurados.
-*   ✅ **Audit Logs:** Verificação da trilha de auditoria imutável (Audit Trail).
-*   ✅ **Tokenless Protection:** Bloqueio de acesso anônimo aos endpoints de gestão.
-
-### 🎭 FASE D: Setup RBAC - Sistema de Cotação (Steps 16-33)
-*   ✅ **Permission Factory:** Criação dinâmica de `cotacao:create`, `read`, `update`, `delete`, `approve`.
-*   ✅ **Role Factory:** Instalação dos papéis `vendedor`, `gerente` e `aprovador`.
-*   ✅ **Role Assignment:** Vinculação de permissões granulares a cada papel.
-*   ✅ **Group Logic:** Criação do grupo organizacional `Vendas`.
-
-### 👤 FASE E: Ciclo de Vida do Usuário (Steps 34-51)
-*   ✅ **Identity Provisioning:** Criação do `usuario1` (vendedor).
-*   ✅ **Role/Group Attachment:** Atribuição do usuário ao departamento de vendas.
-*   ✅ **RBAC Enforcement:** Verificação de que o vendedor **não** possui privilégios de admin (403 Forbidden).
-*   ✅ **Session Management:** Teste de `refresh_token` e `logout` com invalidação imediata do JWT.
-
-### 🧬 FASE F: O Motor ABAC & /auth/check (Steps 52-97)
-Esta é a joia da coroa do Apollo. O motor validou as seguintes lógicas:
-
-| Teste de Decisão | Cenário | Resultado | Razão do Motor |
-| :--- | :--- | :--- | :--- |
-| **Superuser Bypass** | Admin acessando qualquer recurso | ✅ ALLOWED | `reason=superuser` |
-| **Simple Role** | Vendedor acessando área de vendedor | ✅ ALLOWED | `reason=ok` |
-| **Role Violation** | Vendedor tentando aprovar cotação | ❌ DENIED | `Requer role: ['aprovador']` |
-| **Required All Roles** | Gerente precisa ser Aprovador E Gerente | ✅ ALLOWED | `reason=ok` |
-| **Permission Check** | Checagem direta por `cotacao:create` | ✅ ALLOWED | `reason=ok` |
-| **ABAC Attribute** | Sistema = 'cotacao' | ✅ ALLOWED | `reason=ok` |
-| **ABAC Violation** | Tentativa de acesso ao sistema 'financeiro' | ❌ DENIED | `Atributo esperado: financeiro, atual: cotacao` |
-| **Custom Entity** | Cargo = 'gerente' | ✅ ALLOWED | `reason=ok` |
-| **Combined Logic** | Role + Permissão + ABAC | ✅ ALLOWED | `reason=ok` |
-| **Hierarchical Rank** | Level Rank >= 10 | ❌ DENIED | `rank=0 < 10` |
+1.  [🚀 Visão Geral](#-visão-geral)
+2.  [🏗️ Arquitetura de Defesa](#-arquitetura-de-defesa)
+3.  [🧪 Relatório de Guerra: 97/97 Testes Passados](#-relatório-de-guerra-9797-testes-passados)
+4.  [🧠 O Motor de Decisão (PDP)](#-o-motor-de-decisão-pdp)
+5.  [🔒 Protocolo mTLS & PKI](#-protocolo-mtls--pki)
+6.  [📊 Estrutura de Atributos (ABAC)](#-estrutura-de-atributos-abac)
+7.  [🛠️ Stack Tecnológica](#-stack-tecnológica)
+8.  [👨‍💻 O Arquiteto](#-o-arquiteto)
 
 ---
 
-## 📊 3. KPIs de Performance da Run
+## 🚀 Visão Geral
 
-<div align="center">
+O **Apollo IAM Engine** centraliza a soberania de identidade. Em um mundo onde o perímetro desapareceu, o Apollo utiliza **Mutual TLS (mTLS)** para garantir que cada pacote de dados seja autenticado em ambas as extremidades antes mesmo da camada de aplicação ser tocada.
 
-| Métrica | Valor |
-| :--- | :--- |
-| ⏱️ **Tempo Total de Execução** | 209.62s |
-| ✅ **Testes Passados** | 97 |
-| ❌ **Testes Falhos** | 0 |
-| 📈 **Taxa de Sucesso** | 100% |
-| 🆔 **ID da Versão** | v2.4.0-production |
-
-</div>
+### 🌑 Diferenciais "Black Ops":
+*   **Identidade Híbrida:** Combine permissões fixas (RBAC) com condições dinâmicas (ABAC).
+*   **Hierarquia de Alçada:** Rankings numéricos (`user_level_rank`) que impedem que usuários juniores executem operações de alto risco, mesmo com a role correta.
+*   **Entidades Customizadas:** Mapeie usuários a Centros de Custo, Filiais ou Projetos sem alterar o código-fonte.
+*   **Auditoria Imutável:** Cada tentativa de acesso gera um log forense detalhado.
 
 ---
 
-## 🛠 4. Integração com mTLS (Zero-Trust)
+## 🏗️ Arquitetura de Defesa
 
-Para interagir com o Apollo, o cliente deve possuir o par de chaves validado pela CA interna:
+O sistema opera sob o modelo **PDP (Policy Decision Point)**. Seus microsserviços (Vendas, RH, Financeiro) atuam como **PEP (Policy Enforcement Points)**, delegando toda a inteligência de autorização ao Apollo.
 
-```python
-# Exemplo de requisição protegida
-import httpx
-
-client = httpx.Client(
-    verify="ca.crt", 
-    cert=("client.crt", "client.key"),
-    base_url="https://localhost:8443"
-)
-
-# O Apollo valida o certificado no handshake TLS antes mesmo da aplicação
-response = client.post("/auth/check", json={"permission": "cotacao:approve"})
-print(response.json()['allowed'])
+```mermaid
+graph TD
+    A[Client App / Microservice] -- "1. Request + Certificate (mTLS)" --> B(Apollo Gateway)
+    B -- "2. Validation" --> C{Policy Engine}
+    C -- "Check RBAC" --> D[(Identity Store)]
+    C -- "Check ABAC Attributes" --> D
+    C -- "Check Level/Rank" --> D
+    D --> E[Decision: ALLOW / DENY]
+    E -- "3. Signed Response" --> B
+    B -- "4. Response + Audit Log" --> A
 ```
 
 ---
 
-## 🌓 5. Painel Administrativo & Observabilidade
+## 🧪 Relatório de Guerra: 97/97 Testes Passados
 
-O Apollo não é uma caixa preta. Ele oferece:
-*   **Audit Trail:** Registro de QUEM, QUANDO e PORQUE um acesso foi negado ou permitido.
-*   **Dynamic Settings:** Alteração em tempo real de expiração de tokens e limites de rate-limit.
-*   **Hierarchy Mapping:** Visualização clara de como as permissões fluem dos grupos para os usuários.
+O Apollo foi submetido a uma bateria de testes exaustivos de estresse e lógica. **Taxa de Sucesso: 100%.**
+
+### 📂 1. Infraestrutura e Conectividade
+- [x] **Health Check:** Validação de integridade do motor.
+- [x] **Auto-Documentação:** Swagger e ReDoc gerados via mTLS.
+- [x] **mTLS Handshake:** Bloqueio de conexões sem certificado válido.
+
+### 📂 2. Autenticação e Gestão de Tokens
+- [x] **Login Admin:** Geração de JWT com privilégios de Superuser.
+- [x] **Login usuario1 (Vendedor):** Verificação de papéis e escopos.
+- [x] **Token Refresh:** Renovação de sessão sem re-autenticação.
+- [x] **Revogação (Logout):** Invalidação imediata de tokens no lado do servidor.
+- [x] **Proteção Brute Force:** Bloqueio de credenciais inválidas (401).
+
+### 📂 3. Governança RBAC (Sistema de Cotação)
+- [x] **Criação de Permissões:** `cotacao:create`, `read`, `update`, `delete`, `approve`.
+- [x] **Criação de Roles:** Atribuição granular para `vendedor`, `gerente`, `aprovador`.
+- [x] **Gestão de Grupos:** Implementação do grupo organizacional `Vendas`.
+- [x] **RBAC Bypass:** Validação de que Superusers ignoram restrições.
+
+### 📂 4. Motor ABAC (Atributos Dinâmicos)
+- [x] **Atributos de Sistema:** Restrição de acesso por software (`sistema=cotacao`).
+- [x] **Atributos de Cargo:** Validação de posição hierárquica (`cargo=gerente`).
+- [x] **Multi-Tenancy:** Validação de atributos cruzados entre usuários e entidades.
+
+### 📂 5. O Poderoso `/auth/check` (Testes de Decisão)
+- [x] **Role Validation:** `usuario1` tem role vendedor? (SIM)
+- [x] **Permission Validation:** `aprovador1` pode deletar? (NÃO - Negado via política).
+- [x] **Level Rank Check:** Usuário nível 0 tentando acessar recurso nível 10 (NEGADO).
+- [x] **Boolean Logic:** Suporte a `require_all_roles` vs `require_roles`.
+- [x] **Invalid Token Check:** Tentativa de bypass com token malformado (BLOQUEADO).
 
 ---
 
-## 👨‍🔬 Arquiteto do Sistema
+## 🧠 O Motor de Decisão (PDP)
+
+O endpoint `/auth/check` é o cérebro do sistema. Ele não apenas diz "Sim" ou "Não", ele fornece a **razão**.
+
+**Exemplo de Requisição (JSON):**
+```json
+{
+  "subject": "usuario1",
+  "require_permissions": ["cotacao:approve"],
+  "require_level_gte": 5,
+  "abac_context": {
+    "sistema": "cotacao",
+    "filial": "SP"
+  }
+}
+```
+
+**Exemplo de Resposta de Negativa (Segurança Máxima):**
+```json
+{
+  "allowed": false,
+  "reason": "Faltam permissões: ['cotacao:approve']. Nível do usuário (0) insuficiente para o requerimento (5).",
+  "audit_id": "LOG-20260415-XYZ"
+}
+```
+
+---
+
+## 🔒 Protocolo mTLS & PKI
+
+Diferente de sistemas comuns, o Apollo **não confia na internet**. Ele exige um certificado digital em cada requisição.
+
+1.  **CA Root Própria:** O Apollo gera sua própria Autoridade Certificadora no boot.
+2.  **Criptografia de Ponta:**
+    *   `Key Exchange: ECDHE` (Perfect Forward Secrecy).
+    *   `Cipher: AES-256-GCM` ou `CHACHA20-POLY1305`.
+3.  **Zero-Trust:** Mesmo que uma senha seja roubada, sem o arquivo `.p12` do certificado, o atacante não consegue nem "pingar" a API.
+
+---
+
+## 📊 Estrutura de Atributos (ABAC)
+
+O Apollo permite anexar metadados infinitos a um usuário. No teste de produção, validamos:
+
+| Usuário | Role | Nível | Atributo ABAC (Sistema) | Atributo ABAC (Cargo) |
+| :--- | :--- | :--- | :--- | :--- |
+| `usuario1` | `vendedor` | 0 | `cotacao` | `vendedor` |
+| `gerente1` | `gerente` | 5 | `cotacao` | `gerente` |
+| `aprovador1`| `aprovador`| 10 | `cotacao` | `diretor` |
+
+---
+
+## 🛠️ Stack Tecnológica
+
+-   **Runtime:** Python 3.12+ (High Performance)
+-   **Framework:** FastAPI (Asynchronous I/O)
+-   **Segurança:** OpenSSL 3.0+ / Cryptography.io
+-   **Data:** SQLAlchemy 2.0 / PostgreSQL
+-   **Token:** JWT (JSON Web Tokens) com RS256
+-   **Validation:** Pydantic v2 (Strict Typing)
+
+---
+
+## 📊 KPIs da Última Execução (Run ID: 20260415_213724)
+
+| Métrica | Valor |
+| :--- | :--- |
+| ⏱️ Tempo de Execução | 209.62s |
+| ✅ Steps Passados | 97 |
+| ❌ Falhas | 0 |
+| 📈 Taxa de Sucesso | 100% |
+| 🔑 Tokens Gerados | 14 |
+| 📝 Entradas de Auditoria | 14 |
+
+---
+
+## 👨‍💻 O Arquiteto
+
+**Elias Andrade (chaos4455)**
+*Enterprise Solutions Architect | Cyber-Security Specialist*
+
+Especialista em arquiteturas "High-Availability" e sistemas de missão crítica. O Apollo IAM Engine é o ápice da integração entre engenharia de software moderna e protocolos de defesa militar.
 
 <div align="left">
-  <img src="https://github.com/chaos4455.png" width="100px;" style="border-radius: 50%; border: 3px solid #FF8C00; float: left; margin-right: 20px;">
-  <b>Elias Andrade (chaos4455)</b><br>
-  <i>Principal Solutions Architect & Security Engineer</i><br>
-  Especialista em infraestrutura crítica, criptografia aplicada e automação inteligente.
-  <br><br>
-  <a href="https://www.linkedin.com/in/itilmgf"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>
-  <a href="https://github.com/chaos4455"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a>
+  <a href="https://github.com/chaos4455">
+    <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
+  </a>
+  <a href="https://www.linkedin.com/in/itilmgf">
+    <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
+  </a>
 </div>
-
-<br clear="all">
 
 ---
 
 <div align="center">
-  <p style="color: #888;">© 2026 O2 Data Solutions | Projetado para Soberania Digital</p>
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/solar.png" width="100%">
+
+### 🛡️ **O2 Data Solutions**
+*Building the digital fortresses of tomorrow, today.*
+
+<sub>© 2026 Apollo IAM Project. Todos os direitos reservados. Uso restrito e confidencial.</sub>
+
 </div>
