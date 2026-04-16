@@ -1,4 +1,3 @@
-Este é o novo README.md, expandido, visualmente agressivo, utilizando a paleta de cores solicitada (**Laranja, Preto e Branco**), repleto de ícones, badges e detalhando exaustivamente a validação dos 97 testes.
 
 ---
 
