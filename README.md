@@ -220,7 +220,6 @@ O texto foca na sua capacidade de entregar não apenas um código, mas uma **sol
 
 ---
 
-```markdown
 # 💎 THE FULL-STACK MASTERY: END-TO-END ENGINEERING
 
 <div align="center">
@@ -293,13 +292,6 @@ Eu não crio scripts; eu crio **fortalezas digitais prontas para produção**.
 </div>
 ```
 
-### O que este bloco diz sobre você:
-1.  **Visão Macro:** Você entende como o dado sai do banco, passa pela segurança da API e chega no pixel da tela do usuário.
-2.  **Organização:** O uso de Mind-Maps e Documentação Swagger mostra que você é um profissional de nível *Enterprise*.
-3.  **Capacidade de Entrega:** Você resolve o problema de ponta a ponta, eliminando a necessidade de múltiplos especialistas para tarefas de integração.
-4.  **Foco em Produto:** Você não entrega "código solto", você entrega um produto com UI, UX, API e Documentação.
-
-**Dica:** No seu GitHub, certifique-se de que a imagem do seu MindMap (a primeira que você enviou) esteja com um nome de arquivo claro (ex: `architecture_map.png`) para que o link no Markdown funcione perfeitamente!
 
 
 <img width="1040" height="954" alt="chrome_llUZmFosHn" src="https://github.com/user-attachments/assets/8c3b5c00-2c6b-49bb-9d0c-8b8a6cb361d5" />
