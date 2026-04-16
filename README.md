@@ -284,7 +284,6 @@ Eu não crio scripts; eu crio **fortalezas digitais prontas para produção**.
 
 ---
 <div align="center">
-  <b>Sistemas Complexos. Soluções Elegantes. Engenharia de Verdade.</b><br>
   <sub>PROJETADO POR ELIAS ANDRADE | O2 DATA SOLUTIONS</sub>
 </div>
 ```
