@@ -220,8 +220,6 @@ O texto foca na sua capacidade de entregar não apenas um código, mas uma **sol
 
 ---
 
-# 💎 THE FULL-STACK MASTERY: END-TO-END ENGINEERING
-
 <div align="center">
   <img src="https://img.shields.io/badge/ARCHITECTURE-FULL_STACK_INTEGRATION-orange?style=for-the-badge&logo=architecture&logoColor=black" />
 </div>
