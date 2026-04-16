@@ -10,6 +10,7 @@ from src.application.dtos.rbac_dto import CreateRbacAttributeDTO, AssignAttribut
 from src.interface.api.schemas.rbac_schema import RbacAttributeCreate, RbacAttributeResponse, AssignAttributeRequest
 from src.interface.api.dependencies import require_superuser
 from src.infrastructure.logging import log_hooks as lh
+from src.infrastructure.cache.memory_cache import invalidate_user
 
 router = APIRouter(prefix="/admin/rbac", tags=["Admin — RBAC Attributes"])
 
@@ -41,4 +42,5 @@ def assign_attr(user_id: str, body: AssignAttributeRequest, db: Session = Depend
         AssignAttributeDTO(user_id=user_id, attribute_key=body.attribute_key, value=body.value))
     lh.log_rbac_attr_assigned(actor=getattr(actor, "sub", "admin"),
                                user_id=user_id, key=body.attribute_key, value=body.value)
+    invalidate_user(user_id)
     return {"message": "Atributo atribuído."}

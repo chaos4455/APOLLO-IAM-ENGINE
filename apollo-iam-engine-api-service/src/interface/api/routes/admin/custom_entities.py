@@ -23,6 +23,7 @@ from src.infrastructure.database.models.custom_entity_model import (
 )
 from src.interface.api.dependencies import require_superuser
 from src.infrastructure.logging import log_hooks as lh
+from src.infrastructure.cache.memory_cache import invalidate_user
 
 router = APIRouter(prefix="/admin/custom-entities", tags=["Admin — Custom Entities"])
 
@@ -259,6 +260,7 @@ def assign_to_user(user_id: str, body: AssignEntityRequest,
     lh.log_entity_assigned_to_user(actor=getattr(actor, "sub", "admin"),
                                     user_id=user_id, slug=body.entity_type_slug,
                                     value_name=val.name)
+    invalidate_user(user_id)
     return {"message": f"Entidade '{body.entity_type_slug}' atribuída ao usuário."}
 
 

@@ -1,0 +1,612 @@
+run_id: '20260415_213724'
+timestamp: '2026-04-15 21:40:54'
+status: PASSED
+elapsed_s: 209.62
+kpis:
+  total_steps: 97
+  passed: 97
+  failed: 0
+  success_rate: 100%
+setup:
+  roles_created:
+  - vendedor
+  - aprovador
+  - gerente
+  permissions_created:
+  - cotacao:create
+  - cotacao:read
+  - cotacao:update
+  - cotacao:delete
+  - cotacao:approve
+  users_created:
+  - usuario1
+  - gerente1
+  - aprovador1
+  groups_created:
+  - Vendas
+steps:
+- step: GET /health
+  ok: true
+  status_code: 200
+  detail: Apollo IAM Engine
+  data: {}
+  timestamp: '2026-04-16T00:37:28.704759+00:00'
+- step: GET /docs (Swagger)
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:30.729360+00:00'
+- step: GET /redoc
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:32.782840+00:00'
+- step: POST /auth/token (admin)
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:35.095808+00:00'
+- step: POST /auth/validate (admin)
+  ok: true
+  status_code: 200
+  detail: sub=admin superuser=True
+  data: {}
+  timestamp: '2026-04-16T00:37:37.141960+00:00'
+- step: POST /auth/token (senha errada → 401)
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:39.442075+00:00'
+- step: POST /auth/token (user inexistente → 401)
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:41.499346+00:00'
+- step: GET /admin/users/
+  ok: true
+  status_code: 200
+  detail: 4 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:43.551142+00:00'
+- step: GET /admin/roles/
+  ok: true
+  status_code: 200
+  detail: 7 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:45.601345+00:00'
+- step: GET /admin/permissions/
+  ok: true
+  status_code: 200
+  detail: 19 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:47.649536+00:00'
+- step: GET /admin/groups/
+  ok: true
+  status_code: 200
+  detail: 1 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:49.698044+00:00'
+- step: GET /admin/rbac/
+  ok: true
+  status_code: 200
+  detail: 1 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:51.751782+00:00'
+- step: GET /admin/settings/
+  ok: true
+  status_code: 200
+  detail: ok itens
+  data: {}
+  timestamp: '2026-04-16T00:37:53.818780+00:00'
+- step: GET /admin/audit/
+  ok: true
+  status_code: 200
+  detail: 11 itens
+  data: {}
+  timestamp: '2026-04-16T00:37:55.872090+00:00'
+- step: GET /admin/users/ sem token → 401
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:37:57.918884+00:00'
+- step: Permissao [cotacao:create]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:37:59.987189+00:00'
+- step: Permissao [cotacao:read]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:02.057671+00:00'
+- step: Permissao [cotacao:update]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:04.140254+00:00'
+- step: Permissao [cotacao:delete]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:06.208663+00:00'
+- step: Permissao [cotacao:approve]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:08.289015+00:00'
+- step: Role [vendedor]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:10.362582+00:00'
+- step: Role [aprovador]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:12.424275+00:00'
+- step: Role [gerente]
+  ok: true
+  status_code: 201
+  detail: criada
+  data: {}
+  timestamp: '2026-04-16T00:38:14.480429+00:00'
+- step: '  Assign [vendedor] ← [cotacao:create]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:16.549061+00:00'
+- step: '  Assign [aprovador] ← [cotacao:read]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:18.612968+00:00'
+- step: '  Assign [aprovador] ← [cotacao:approve]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:20.671470+00:00'
+- step: '  Assign [gerente] ← [cotacao:create]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:22.730406+00:00'
+- step: '  Assign [gerente] ← [cotacao:read]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:24.802982+00:00'
+- step: '  Assign [gerente] ← [cotacao:update]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:26.865854+00:00'
+- step: '  Assign [gerente] ← [cotacao:delete]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:28.935490+00:00'
+- step: '  Assign [gerente] ← [cotacao:approve]'
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:30.997537+00:00'
+- step: Grupo [Vendas]
+  ok: true
+  status_code: 201
+  detail: criado
+  data: {}
+  timestamp: '2026-04-16T00:38:33.065104+00:00'
+- step: Atributo RBAC [sistema]
+  ok: true
+  status_code: 201
+  detail: criado
+  data: {}
+  timestamp: '2026-04-16T00:38:35.151420+00:00'
+- step: Criar usuario1
+  ok: true
+  status_code: 409
+  detail: ja existe — reutilizando
+  data: {}
+  timestamp: '2026-04-16T00:38:39.255926+00:00'
+- step: Atribuir role [vendedor] a usuario1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:41.320982+00:00'
+- step: Atribuir grupo [Vendas] a usuario1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:43.378970+00:00'
+- step: Atribuir RBAC [sistema=cotacao] a usuario1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:45.436382+00:00'
+- step: POST /auth/token (usuario1)
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:47.726057+00:00'
+- step: POST /auth/validate (usuario1)
+  ok: true
+  status_code: 200
+  detail: sub=usuario1
+  data: {}
+  timestamp: '2026-04-16T00:38:49.774534+00:00'
+- step: Token contem role [vendedor]
+  ok: true
+  status_code: 0
+  detail: roles=['vendedor']
+  data: {}
+  timestamp: '2026-04-16T00:38:49.775535+00:00'
+- step: usuario1 NAO e superuser
+  ok: true
+  status_code: 0
+  detail: is_superuser=False
+  data: {}
+  timestamp: '2026-04-16T00:38:49.776533+00:00'
+- step: GET /admin/users/ com token usuario1 → 403 (nao superuser)
+  ok: true
+  status_code: 403
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:51.825762+00:00'
+- step: POST /auth/refresh (usuario1)
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:53.865736+00:00'
+- step: POST /auth/logout (usuario1)
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:55.926179+00:00'
+- step: Token usuario1 invalido apos logout → 401
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:38:57.977605+00:00'
+- step: Login usuario1 senha errada → 401
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:00.246268+00:00'
+- step: Login usuario inexistente → 401
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:02.296227+00:00'
+- step: Validar token invalido → 401
+  ok: true
+  status_code: 401
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:04.337124+00:00'
+- step: GET /admin/settings/
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:06.385101+00:00'
+- step: PUT /admin/settings/ (expire=90min)
+  ok: true
+  status_code: 200
+  detail: expire=90min
+  data: {}
+  timestamp: '2026-04-16T00:39:08.441494+00:00'
+- step: GET /admin/audit/
+  ok: true
+  status_code: 200
+  detail: 14 entradas
+  data: {}
+  timestamp: '2026-04-16T00:39:10.490931+00:00'
+- step: Entidade ABAC tipo [cargo]
+  ok: true
+  status_code: 409
+  detail: ja existe
+  data: {}
+  timestamp: '2026-04-16T00:39:12.545338+00:00'
+- step: Entidade ABAC valor [cargo=gerente]
+  ok: true
+  status_code: 409
+  detail: ja existe
+  data: {}
+  timestamp: '2026-04-16T00:39:16.645878+00:00'
+- step: Entidade ABAC valor [cargo=vendedor]
+  ok: true
+  status_code: 409
+  detail: ja existe
+  data: {}
+  timestamp: '2026-04-16T00:39:20.755458+00:00'
+- step: Criar gerente1
+  ok: true
+  status_code: 409
+  detail: ja existe
+  data: {}
+  timestamp: '2026-04-16T00:39:24.872563+00:00'
+- step: Atribuir role [gerente] a gerente1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:26.931899+00:00'
+- step: Atribuir grupo [Vendas] a gerente1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:28.990452+00:00'
+- step: Atribuir RBAC [sistema=cotacao] a gerente1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:31.059304+00:00'
+- step: Atribuir ABAC [cargo=gerente] a gerente1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:33.124606+00:00'
+- step: Criar aprovador1
+  ok: true
+  status_code: 409
+  detail: ja existe
+  data: {}
+  timestamp: '2026-04-16T00:39:37.237696+00:00'
+- step: Atribuir role [aprovador] a aprovador1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:39.295310+00:00'
+- step: Atribuir RBAC [sistema=cotacao] a aprovador1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:41.352465+00:00'
+- step: Atribuir ABAC [cargo=vendedor] a usuario1
+  ok: true
+  status_code: 200
+  detail: ''
+  data: {}
+  timestamp: '2026-04-16T00:39:45.471172+00:00'
+- step: 'Superuser: allowed=True (bypass tudo)'
+  ok: true
+  status_code: 0
+  detail: reason=superuser
+  data: {}
+  timestamp: '2026-04-16T00:39:54.653554+00:00'
+- step: usuario1 tem role [vendedor] → allowed
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:39:56.712802+00:00'
+- step: usuario1 NAO tem role [aprovador] → denied
+  ok: true
+  status_code: 0
+  detail: 'reason=Requer uma das roles: [''aprovador'']. Usuario tem: [''vendedor'']'
+  data: {}
+  timestamp: '2026-04-16T00:39:58.765854+00:00'
+- step: gerente1 tem role [gerente] → allowed
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:00.824079+00:00'
+- step: 'usuario1: require_roles=[aprovador,vendedor] → allowed (tem vendedor)'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:02.886140+00:00'
+- step: 'usuario1: require_roles=[aprovador,gerente] → denied (nao tem nenhuma)'
+  ok: true
+  status_code: 0
+  detail: 'reason=Requer uma das roles: [''aprovador'', ''gerente'']. Usuario tem:
+    [''vendedor'']'
+  data: {}
+  timestamp: '2026-04-16T00:40:04.938299+00:00'
+- step: 'gerente1: require_all_roles=[gerente] → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:07.003884+00:00'
+- step: 'usuario1: require_all_roles=[vendedor,aprovador] → denied (falta aprovador)'
+  ok: true
+  status_code: 0
+  detail: 'reason=Faltam roles obrigatorias: [''aprovador'']'
+  data: {}
+  timestamp: '2026-04-16T00:40:09.056056+00:00'
+- step: usuario1 tem permissao [cotacao:create] → allowed
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:11.118562+00:00'
+- step: usuario1 NAO tem permissao [cotacao:approve] → denied
+  ok: true
+  status_code: 0
+  detail: 'reason=Requer uma das permissoes: [''cotacao:approve'']'
+  data: {}
+  timestamp: '2026-04-16T00:40:13.159137+00:00'
+- step: gerente1 tem [cotacao:approve] ou [cotacao:delete] → allowed
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:15.233922+00:00'
+- step: 'usuario1: ABAC sistema=cotacao → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:17.282690+00:00'
+- step: 'usuario1: ABAC sistema=financeiro → denied (tem cotacao)'
+  ok: true
+  status_code: 0
+  detail: 'reason=ABAC falhou: ''sistema'' esperado=''financeiro'' atual=''cotacao'''
+  data: {}
+  timestamp: '2026-04-16T00:40:19.320574+00:00'
+- step: 'gerente1: ABAC sistema=cotacao → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:21.383309+00:00'
+- step: 'gerente1: ABAC cargo=gerente → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:23.433988+00:00'
+- step: 'gerente1: ABAC cargo=vendedor → denied (tem gerente)'
+  ok: true
+  status_code: 0
+  detail: 'reason=ABAC falhou: ''cargo'' esperado=''vendedor'' atual=''gerente'''
+  data: {}
+  timestamp: '2026-04-16T00:40:25.493064+00:00'
+- step: 'usuario1: ABAC cargo=vendedor → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:27.577235+00:00'
+- step: 'usuario1: role=vendedor AND sistema=cotacao → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:29.629458+00:00'
+- step: 'usuario1: role=vendedor AND sistema=financeiro → denied (ABAC falha)'
+  ok: true
+  status_code: 0
+  detail: 'reason=ABAC falhou: ''sistema'' esperado=''financeiro'' atual=''cotacao'''
+  data: {}
+  timestamp: '2026-04-16T00:40:31.667675+00:00'
+- step: 'gerente1: role=gerente AND sistema=cotacao AND cargo=gerente → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:33.728744+00:00'
+- step: 'usuario1: role=gerente AND sistema=cotacao → denied (role falha)'
+  ok: true
+  status_code: 0
+  detail: 'reason=Requer uma das roles: [''gerente'']. Usuario tem: [''vendedor'']'
+  data: {}
+  timestamp: '2026-04-16T00:40:35.772443+00:00'
+- step: 'usuario1: perm=cotacao:create AND sistema=cotacao → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:37.832561+00:00'
+- step: 'aprovador1: perm=cotacao:approve AND sistema=cotacao → allowed'
+  ok: true
+  status_code: 0
+  detail: reason=ok
+  data: {}
+  timestamp: '2026-04-16T00:40:39.882633+00:00'
+- step: 'aprovador1: perm=cotacao:delete AND sistema=cotacao → denied (sem perm)'
+  ok: true
+  status_code: 0
+  detail: 'reason=Requer uma das permissoes: [''cotacao:delete'']'
+  data: {}
+  timestamp: '2026-04-16T00:40:41.926778+00:00'
+- step: /auth/check com token invalido → denied
+  ok: true
+  status_code: 0
+  detail: 'reason=Token invalido: '
+  data: {}
+  timestamp: '2026-04-16T00:40:43.982909+00:00'
+- step: Token gerente1 contem abac.sistema=cotacao
+  ok: true
+  status_code: 0
+  detail: 'abac={''sistema'': ''cotacao'', ''cargo'': ''gerente'', ''group'': ''Vendas''}'
+  data: {}
+  timestamp: '2026-04-16T00:40:46.030982+00:00'
+- step: Token gerente1 contem abac.cargo=gerente
+  ok: true
+  status_code: 0
+  detail: cargo=gerente
+  data: {}
+  timestamp: '2026-04-16T00:40:46.031990+00:00'
+- step: Token gerente1 contem roles=[gerente]
+  ok: true
+  status_code: 0
+  detail: roles=['gerente']
+  data: {}
+  timestamp: '2026-04-16T00:40:46.032996+00:00'
+- step: Token gerente1 contem permissions cotacao:*
+  ok: true
+  status_code: 0
+  detail: perms=['cotacao:read', 'cotacao:update', 'cotacao:delete', 'cotacao:create',
+    'cotacao:approve']
+  data: {}
+  timestamp: '2026-04-16T00:40:46.032996+00:00'
+- step: Token usuario1 contem abac.cargo=vendedor
+  ok: true
+  status_code: 0
+  detail: 'abac={''sistema'': ''cotacao'', ''cargo'': ''vendedor'', ''group'': ''Vendas''}'
+  data: {}
+  timestamp: '2026-04-16T00:40:48.080436+00:00'
+- step: 'usuario1: require_level_gte=0 → allowed (rank=0 >= 0)'
+  ok: true
+  status_code: 0
+  detail: rank=0
+  data: {}
+  timestamp: '2026-04-16T00:40:50.128655+00:00'
+- step: 'usuario1: require_level_gte=10 → denied (rank=0 < 10)'
+  ok: true
+  status_code: 0
+  detail: rank=0
+  data: {}
+  timestamp: '2026-04-16T00:40:52.168675+00:00'
+- step: Resposta /auth/check tem todos os campos esperados
+  ok: true
+  status_code: 0
+  detail: campos=['allowed', 'reason', 'subject', 'roles', 'permissions', 'abac',
+    'user_level_rank']
+  data: {}
+  timestamp: '2026-04-16T00:40:54.221296+00:00'
+- step: subject=gerente1 na resposta
+  ok: true
+  status_code: 0
+  detail: subject=gerente1
+  data: {}
+  timestamp: '2026-04-16T00:40:54.222303+00:00'

@@ -48,6 +48,18 @@ async def root():
     return RedirectResponse(url="/admin/login")
 
 
+@app.get("/admin")
+async def admin_root():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
+
+
+@app.get("/admin/")
+async def admin_root_slash():
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
+
+
 @app.exception_handler(Exception)
 async def global_error(request: Request, exc: Exception):
     return HTMLResponse(

@@ -4358,3 +4358,4740 @@
     http_status: 200
     elapsed_ms: 421.5
 ---
+- seq: 286
+  uid: f8940ae8-a2e8-4a0c-9410-b8ae059aa414
+  hash: cf4913f699927534e7a407e1dd1d6d6b8ab32605
+  timestamp: '2026-04-16T00:14:17.703934+00:00'
+  event: system.startup
+  actor: system
+  resource: api
+  resource_id: null
+  status: success
+  detail:
+    version: 1.0.0
+---
+- seq: 287
+  uid: 37d0b2fb-a595-46f3-9a82-ea85da830401
+  hash: 6f0882504219c7a100a278f54ea6f6b7804f5064
+  timestamp: '2026-04-16T00:14:44.129931+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 1.4
+---
+- seq: 288
+  uid: 2a21cfca-d2c5-4868-985e-e823326a8cc6
+  hash: 6bd9835e1de4f49f09c5d2a12c751fe13fc1bb4a
+  timestamp: '2026-04-16T00:14:46.168298+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 0.8
+---
+- seq: 289
+  uid: af409433-abef-4d27-b020-e55824719dbc
+  hash: 0ff24471763185dcc02a54d63980c46cc52d452f
+  timestamp: '2026-04-16T00:14:52.508192+00:00'
+  event: auth.login_success
+  actor: admin
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 290
+  uid: 1a5c2b29-7aab-473f-9a61-7a78ebb044e3
+  hash: f68cf8609707855e75db682360d384536732e5a6
+  timestamp: '2026-04-16T00:14:52.518712+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 247.7
+---
+- seq: 291
+  uid: 398ead80-c3a6-45e1-9dc9-ee0bb01320e5
+  hash: 94f4631592d2060dec48ccbe82dbbe06d382a69b
+  timestamp: '2026-04-16T00:14:54.569033+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.4
+---
+- seq: 292
+  uid: 58d8453a-1ab2-486e-ae66-47bbc06ece19
+  hash: c8865efa023c9b8426e9dee50d9142be85fd3858
+  timestamp: '2026-04-16T00:14:56.850688+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 234.3
+---
+- seq: 293
+  uid: b4fcfb69-db78-4505-a9e8-c0685ea8bab2
+  hash: 9a65933873c89b4a3362122807d61d8abf01925e
+  timestamp: '2026-04-16T00:14:58.898613+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 10.0
+---
+- seq: 294
+  uid: 0b1775c3-d3f8-438c-bef4-f169da04e09e
+  hash: e24828e7c5f223bd49327b12c6a487e7d33e07a4
+  timestamp: '2026-04-16T00:15:00.948190+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 8.5
+---
+- seq: 295
+  uid: df2c46cd-2238-433a-8b8a-13d923e59d8b
+  hash: 379296afab7cdcc7a975df5eb7eccb114887b3a5
+  timestamp: '2026-04-16T00:15:02.996869+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/roles/
+    query: ''
+    http_status: 200
+    elapsed_ms: 8.4
+---
+- seq: 296
+  uid: a988b732-ad70-46f5-9e5a-2fd447b57051
+  hash: 2930c52fdfddca67b448f3b9041b866bcd815d43
+  timestamp: '2026-04-16T00:15:05.044533+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/permissions/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.3
+---
+- seq: 297
+  uid: d1878cf5-7dde-4978-9ecd-d48f8e8ccb16
+  hash: 208b65dec849f6073dc500dba71f34133f2ebcb9
+  timestamp: '2026-04-16T00:15:07.094984+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/groups/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.2
+---
+- seq: 298
+  uid: e95a0d4a-f0d2-4bde-9f1b-cab68dca316b
+  hash: f556e22dfc23127199e6ca4ae4b0bc3b90a936c1
+  timestamp: '2026-04-16T00:15:09.145611+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/rbac/
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.7
+---
+- seq: 299
+  uid: 11078acd-705e-428d-b82d-8b637078675d
+  hash: 11671c98a9cbc257ddf3be6a92d1e23e8a0a0cfb
+  timestamp: '2026-04-16T00:15:11.193335+00:00'
+  event: settings.read
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail: {}
+---
+- seq: 300
+  uid: 38ab7354-ef0d-4e76-8641-857eb0e4c268
+  hash: 8e5db6d03243ede43200a76b6131936c45620f95
+  timestamp: '2026-04-16T00:15:11.212875+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 23.5
+---
+- seq: 301
+  uid: a1252773-cdc6-4f70-867f-21462489bd55
+  hash: 9dec9170eeb4ec6835bd83d07948af7012cadfc8
+  timestamp: '2026-04-16T00:15:13.267269+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.4
+---
+- seq: 302
+  uid: de01bf7e-f252-47d2-a701-1324fd3507c7
+  hash: a266163affc8cae28d87dda7c5b17c6f5f3db55a
+  timestamp: '2026-04-16T00:15:14.016458+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin
+    query: ''
+    http_status: 404
+    elapsed_ms: 0.4
+---
+- seq: 303
+  uid: 55d71a99-9562-4167-914f-88f78685bc97
+  hash: 49a0c8846079023f47a60c78c81d5ce0e90a876a
+  timestamp: '2026-04-16T00:15:15.311820+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 401
+    elapsed_ms: 0.9
+---
+- seq: 304
+  uid: cd3eebc4-a103-4ad4-851c-fc9cf6c9dbb5
+  hash: 3b1dc20ead2f8a092fe0d87e62ac0bcdc6125326
+  timestamp: '2026-04-16T00:15:17.356007+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    name: cotacao:create
+---
+- seq: 305
+  uid: 3986e741-7dcd-42b0-9016-6ed172aae6c5
+  hash: 9a276af75ef97c2c6fa90c5a01a67ca4f6303c8b
+  timestamp: '2026-04-16T00:15:17.368531+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 25.6
+---
+- seq: 306
+  uid: 957878af-7857-4d8e-a4f0-3921b0c55f46
+  hash: 9c5c71cf4c516e1a076138fc775d418498981328
+  timestamp: '2026-04-16T00:15:19.424305+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    name: cotacao:read
+---
+- seq: 307
+  uid: 74128984-44d1-47ba-9343-736ba1544b4d
+  hash: 27b94f15f47817caad08b6fc6fe5293a309131f3
+  timestamp: '2026-04-16T00:15:19.435818+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.8
+---
+- seq: 308
+  uid: 159911f5-6ff0-421e-8e81-29d74cb3c4a0
+  hash: 8e89b790f87d0ecaa8464b4561afe79787b36027
+  timestamp: '2026-04-16T00:15:21.488986+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    name: cotacao:update
+---
+- seq: 309
+  uid: 00f10286-4da5-45ba-80eb-7b2b309bb967
+  hash: f16e24e57f0677a27795b7bfeb4bb180a65af4de
+  timestamp: '2026-04-16T00:15:21.503030+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 23.8
+---
+- seq: 310
+  uid: f9e34758-344f-43f1-919d-6d0b8ad34acf
+  hash: 9be7b311c30059becfdcea821686e25f6ae63ac6
+  timestamp: '2026-04-16T00:15:23.554165+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    name: cotacao:delete
+---
+- seq: 311
+  uid: f9cbcfc4-e62f-4acb-8412-9a42e6078fd9
+  hash: 1d9581882ac18903fd498bbe7f416ad16be47b6a
+  timestamp: '2026-04-16T00:15:23.568690+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 24.3
+---
+- seq: 312
+  uid: 2f49cd39-34d7-4ed4-8ad3-9ec09946cf39
+  hash: 41d37dec1c95b406a9433d4b9d6742656002387b
+  timestamp: '2026-04-16T00:15:25.616695+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    name: cotacao:approve
+---
+- seq: 313
+  uid: 8db8c1ff-9201-481b-bcd7-3954833dc66b
+  hash: a17bc2d8950127c5deda4c6053dbbcd75cc4397b
+  timestamp: '2026-04-16T00:15:25.631216+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 25.5
+---
+- seq: 314
+  uid: 23f18b9f-60f1-4dc0-83ee-77da793de04a
+  hash: 819c5dbf6d78eadc343033e7748224e6344bdf06
+  timestamp: '2026-04-16T00:15:26.296297+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin
+    query: ''
+    http_status: 404
+    elapsed_ms: 0.5
+---
+- seq: 315
+  uid: 4de57c5c-00e8-45f0-9ada-bdc4ffaf24d0
+  hash: f4236639bac9d0d8c3381429212829c537635e63
+  timestamp: '2026-04-16T00:15:27.711562+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  status: success
+  detail:
+    name: vendedor
+---
+- seq: 316
+  uid: 02f8538f-2064-4f74-9ba5-d5af34d23abe
+  hash: ca5a01c651631a1c4a9e3a3e6d583283f0d26100
+  timestamp: '2026-04-16T00:15:27.765228+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 83.8
+---
+- seq: 317
+  uid: a135bf88-3112-4901-8152-df335fa56c2c
+  hash: ccc75e6e98462ab5533718cc7a1d103089048c04
+  timestamp: '2026-04-16T00:15:29.845324+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: c111b914-7374-4178-8d1f-75eba14a1004
+  status: success
+  detail:
+    name: aprovador
+---
+- seq: 318
+  uid: 6a7e80a0-b8d3-4a85-a075-34cb030a5282
+  hash: d86c9086a057f1997c957eb813ca940f611f66c9
+  timestamp: '2026-04-16T00:15:29.864378+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 41.5
+---
+- seq: 319
+  uid: d34c6a35-c6f3-4cfd-bf81-a7e045cac458
+  hash: e8bdefb942d07d0dd753898004124bfdafcc7c61
+  timestamp: '2026-04-16T00:15:31.933008+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  status: success
+  detail:
+    name: gerente
+---
+- seq: 320
+  uid: 90a04c76-0437-43c1-9efc-0b17281b09ae
+  hash: 9c1996276d3e87122e6ffb336d7eb00da8361751
+  timestamp: '2026-04-16T00:15:31.943038+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 21.7
+---
+- seq: 321
+  uid: 11b1a86d-e976-4477-9a5b-c3c425ad4125
+  hash: 59f21228464af35bdad3da5f49356be6cc658e9b
+  timestamp: '2026-04-16T00:15:34.002224+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+---
+- seq: 322
+  uid: 9ee7a949-38d2-4a3a-8a53-4c580e6d61ee
+  hash: 59bdec3351262f1fc1b7c1619f0e848306947cad
+  timestamp: '2026-04-16T00:15:34.012744+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+    query: ''
+    http_status: 200
+    elapsed_ms: 24.3
+---
+- seq: 323
+  uid: cb000185-932e-488b-ac35-8ab3e145914b
+  hash: 4b848317522b8cc938de5ae8ed0c459eb82f0e51
+  timestamp: '2026-04-16T00:15:36.081953+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 324
+  uid: 5589e134-8a4a-4e17-9d8e-5e802046e948
+  hash: 4c27d41ca7aaee54c404cb1a841a6046325d72db
+  timestamp: '2026-04-16T00:15:36.100998+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 36.6
+---
+- seq: 325
+  uid: 0f37fb8f-e043-4a97-bb97-33e7d83a59e4
+  hash: 23d4936fc94f79ff6b4a17654f50d30c2a43a32b
+  timestamp: '2026-04-16T00:15:38.151351+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 326
+  uid: 09a76c72-0048-455d-bd54-9fcd12f33117
+  hash: d55ea086d971148587d2d1ab25b9ecb862c515f4
+  timestamp: '2026-04-16T00:15:38.161868+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.3
+---
+- seq: 327
+  uid: 5128b187-cd54-462e-9461-285c1b609c45
+  hash: fe1c2a634eacbe0cce1665e32a6088a4acefafa8
+  timestamp: '2026-04-16T00:15:40.217011+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 328
+  uid: bb8e5b4e-b4c1-4b1f-9a25-9fd2f84699d6
+  hash: 4dc92738a26b1e73c1ff9283c0f4a1e4a34bd779
+  timestamp: '2026-04-16T00:15:40.228534+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.8
+---
+- seq: 329
+  uid: 560b6821-135c-4dae-b00c-bedc7e3ed879
+  hash: 1442a10888506cd81f8529e201621ab38bfee8e2
+  timestamp: '2026-04-16T00:15:42.282931+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 330
+  uid: f39e740d-0a1f-413a-b8e2-12acd0f9399d
+  hash: 0e74e7d7ee57c68bbd7d5f0bae3625823f7037dd
+  timestamp: '2026-04-16T00:15:42.292445+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.9
+---
+- seq: 331
+  uid: 4620b980-77f2-4751-9bf8-c9220a998fcd
+  hash: 625ea993bb675efad4e8df8ac8cd0df25f20a9a4
+  timestamp: '2026-04-16T00:15:44.067718+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin
+    query: ''
+    http_status: 404
+    elapsed_ms: 0.4
+---
+- seq: 332
+  uid: edda4339-6f1a-4f8f-aa72-0dd1961f55d9
+  hash: 4468705b6f263555eb9a714ac601666c3842d627
+  timestamp: '2026-04-16T00:15:44.354388+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 333
+  uid: d2870910-bfc7-43c6-bf1d-e4c0b321ba66
+  hash: cb603d5d263463ee3a3eade096f3ae2eae602cf8
+  timestamp: '2026-04-16T00:15:44.365418+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.1
+---
+- seq: 334
+  uid: 65ba9d45-3a55-46a5-a9b2-cf113304dd76
+  hash: 7077cd302bb0dbaac93ad6c1e1a979f2a4dd0596
+  timestamp: '2026-04-16T00:15:46.416866+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 335
+  uid: 10be02fc-64af-4149-b085-e7019ad4e5fa
+  hash: f085a0bbf918efb0ce79b609c4598befa3d3293b
+  timestamp: '2026-04-16T00:15:46.429888+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.0
+---
+- seq: 336
+  uid: 1e3960bb-9045-4dfa-a772-02d0c1a5da30
+  hash: 84bedabcce6188317d4a3d0f24360964b1543b2b
+  timestamp: '2026-04-16T00:15:48.485326+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 337
+  uid: f48baf7b-bd9f-41f2-a933-73cecf75ab64
+  hash: 8cb2b34d4689c5a094e6be00971e0cd3366215f3
+  timestamp: '2026-04-16T00:15:48.498846+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.7
+---
+- seq: 338
+  uid: 161cecb7-8717-4a5f-a9c4-f4616cee2bd2
+  hash: 92d3462f7cbb0c65c51e493c4e714e4181a4179a
+  timestamp: '2026-04-16T00:15:50.564329+00:00'
+  event: group.created
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    name: Vendas
+---
+- seq: 339
+  uid: f1650a3c-7b50-48f0-a652-c1edcbf4fe3b
+  hash: e4b8baea31dfd6ac7caa10ef6d126137843fb398
+  timestamp: '2026-04-16T00:15:50.596430+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/
+    query: ''
+    http_status: 201
+    elapsed_ms: 56.5
+---
+- seq: 340
+  uid: 6ea06e5e-89fd-40ed-ab11-8899aadca0e0
+  hash: 96c6d17fb833c45284007127c42b093f9b8648bd
+  timestamp: '2026-04-16T00:15:52.648518+00:00'
+  event: rbac.attribute_created
+  actor: admin
+  resource: rbac_attributes
+  resource_id: 29c0a137-413c-4099-ba20-26e65d6e115e
+  status: success
+  detail:
+    key: sistema
+---
+- seq: 341
+  uid: 23ff8cba-7736-4939-9b7c-04c3d2a9d0fb
+  hash: 4678bccf8f9bb4c96d46d48220bf6c880b5b64a9
+  timestamp: '2026-04-16T00:15:52.660539+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/
+    query: ''
+    http_status: 201
+    elapsed_ms: 23.1
+---
+- seq: 342
+  uid: 549c5590-4dd0-48c1-a3ba-85d9a78d34e4
+  hash: e4d7589073fcc1321d60d8d20e609bbf2ac43073
+  timestamp: '2026-04-16T00:17:38.699221+00:00'
+  event: system.startup
+  actor: system
+  resource: api
+  resource_id: null
+  status: success
+  detail:
+    version: 1.0.0
+---
+- seq: 343
+  uid: 40a04275-0c46-429c-b4fb-897fcbdde5c8
+  hash: ea6c21b5316918046a3bf1d58e564dc430696d5c
+  timestamp: '2026-04-16T00:17:39.580233+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 9.7
+---
+- seq: 344
+  uid: 4dbdf075-5725-4a24-8d2b-c19bfddf3203
+  hash: 48c9e3e50f563d064430493d163efde3a03cd334
+  timestamp: '2026-04-16T00:17:39.605280+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/roles/
+    query: ''
+    http_status: 200
+    elapsed_ms: 7.4
+---
+- seq: 345
+  uid: 0e685f27-6380-42f1-ad68-d9b865032c4a
+  hash: 20e06fcaf20ac2893866908aa89e17309f56a253
+  timestamp: '2026-04-16T00:17:39.628350+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/groups/
+    query: ''
+    http_status: 200
+    elapsed_ms: 7.1
+---
+- seq: 346
+  uid: 5077ff2a-36d6-463b-b1ea-b2148e1b4565
+  hash: 346acf21c7e413583ef7bcd17a052fa36ef6af45
+  timestamp: '2026-04-16T00:17:39.648406+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/permissions/
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.7
+---
+- seq: 347
+  uid: 0ec7cc81-7f7c-459a-a385-706dba8043fa
+  hash: 4cd8438dbd8c47ebccfae2a94e70940d03d7ac78
+  timestamp: '2026-04-16T00:17:39.679017+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/rbac/
+    query: ''
+    http_status: 200
+    elapsed_ms: 10.4
+---
+- seq: 348
+  uid: 5b6b8aaf-b35b-48ec-91d4-449b9b73f27d
+  hash: 30e99321d32e7cb015412b8ff2cc4a635e029e35
+  timestamp: '2026-04-16T00:17:39.708586+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: limit=5
+    http_status: 200
+    elapsed_ms: 10.0
+---
+- seq: 349
+  uid: 59c71808-eb06-4e49-9b42-c182a03b07b7
+  hash: c46a4279ba6c9ceb2623a2d8cda253a54cde255f
+  timestamp: '2026-04-16T00:17:39.731156+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/user-types/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/user-types/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.9
+---
+- seq: 350
+  uid: 24781cec-4ed3-47bc-898e-741f12f251b6
+  hash: 20e2db0346827a8659ccfe7c13f87714269f62d9
+  timestamp: '2026-04-16T00:17:39.760249+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/user-levels/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/user-levels/
+    query: ''
+    http_status: 200
+    elapsed_ms: 7.5
+---
+- seq: 351
+  uid: b1341385-d938-41ba-974e-477f6832c4a6
+  hash: 4c3a7e291ae36760bb091ccb90ccc58edc15340f
+  timestamp: '2026-04-16T00:17:39.784303+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/types
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/custom-entities/types
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.5
+---
+- seq: 352
+  uid: 6cbf3a0b-0067-45ee-920b-c6fc32dbd120
+  hash: 3bfb86644c7d971fdc549acf01f13cd655fb470d
+  timestamp: '2026-04-16T00:17:42.843931+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/metrics/logs
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/metrics/logs
+    query: skip=0&limit=200
+    http_status: 200
+    elapsed_ms: 8.6
+---
+- seq: 353
+  uid: 11fe3b4d-c5ec-49b4-9fe6-9f6ddf9c9ec6
+  hash: 207378e2bccd167427171ba170fe9abad38dae0e
+  timestamp: '2026-04-16T00:17:43.421266+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: skip=0&limit=100
+    http_status: 200
+    elapsed_ms: 4.7
+---
+- seq: 354
+  uid: 3ab07c19-3fad-460c-816c-17ea53030d42
+  hash: 21a5cfe206370a3dbb251343e0943769f7ae6762
+  timestamp: '2026-04-16T00:18:09.151610+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 1.8
+---
+- seq: 355
+  uid: 95ba7cfe-6299-4cb7-a6c7-4b4c98cad89e
+  hash: 76159099d49af1cce68fcdda89edf6477dfa4cc2
+  timestamp: '2026-04-16T00:18:11.238620+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 0.7
+---
+- seq: 356
+  uid: ddba85d3-2e13-4eb7-ba17-0bc26cda2c89
+  hash: 212eb3c6f296b8a3b85788bb6dc1481165464725
+  timestamp: '2026-04-16T00:18:17.604158+00:00'
+  event: auth.login_success
+  actor: admin
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 357
+  uid: ded21cd8-8268-40ed-845b-ed700f910357
+  hash: e83b144f9cc16a6bd7f4dd059ab6d7fd489157f8
+  timestamp: '2026-04-16T00:18:17.614671+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 266.2
+---
+- seq: 358
+  uid: e5042019-e3c9-4611-b2fe-8ea4ef5019ad
+  hash: a7de500e58bcdebd290195d8a6a00b7144f7b6e8
+  timestamp: '2026-04-16T00:18:19.654143+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.0
+---
+- seq: 359
+  uid: 9be77b51-b073-4b13-b08e-b0563bfb6bdf
+  hash: af71cb333c2388ee8992f9d509d680e60da6e062
+  timestamp: '2026-04-16T00:18:22.114451+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 281.8
+---
+- seq: 360
+  uid: fd79675d-c42f-43b2-81bc-caa7f813da8b
+  hash: 73f9266ea95e8af174b05133f323a93ac3a54d32
+  timestamp: '2026-04-16T00:18:24.161032+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 10.0
+---
+- seq: 361
+  uid: ec2b9f23-b006-406d-8e22-2b0d504bded4
+  hash: ccbc680a118309b5eb26eef5e88179cde011d2e9
+  timestamp: '2026-04-16T00:18:26.204015+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.7
+---
+- seq: 362
+  uid: 4fdf3533-f943-4a5c-af82-3d71981620c0
+  hash: 02f78b9420211fc347ba974e7f681ff5b0345d6f
+  timestamp: '2026-04-16T00:18:28.276897+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/roles/
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.6
+---
+- seq: 363
+  uid: b026f474-b165-4702-b19b-072478bfb5a7
+  hash: bfd3baaa60ef702a0cc2f379b3b9ad21172e4c84
+  timestamp: '2026-04-16T00:18:30.337460+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/permissions/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.5
+---
+- seq: 364
+  uid: 1b154200-3c5b-4c31-a35a-0449d3110175
+  hash: e81e58710b6efa1cee4fd6a7ef6188c0464589d5
+  timestamp: '2026-04-16T00:18:32.402044+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/groups/
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.0
+---
+- seq: 365
+  uid: dc0b2128-614f-45a0-b716-74972e5b9f1c
+  hash: aa98a8505702f09b916b0678bab2c1331982a208
+  timestamp: '2026-04-16T00:18:34.457167+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/rbac/
+    query: ''
+    http_status: 200
+    elapsed_ms: 8.4
+---
+- seq: 366
+  uid: d3e26172-eb23-455f-876a-b7966e846757
+  hash: 3957180b13b16b189616befd95da7bb8da267c64
+  timestamp: '2026-04-16T00:18:35.432992+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/metrics/logs
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/metrics/logs
+    query: skip=0&limit=200
+    http_status: 200
+    elapsed_ms: 4.5
+---
+- seq: 367
+  uid: ebb39081-b5c6-4669-8b80-4eee0354b2b5
+  hash: 408bce444d21c362fa1cce07834d6dd45d70fa12
+  timestamp: '2026-04-16T00:18:36.500673+00:00'
+  event: settings.read
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail: {}
+---
+- seq: 368
+  uid: 9c88ec81-c8b5-4c17-92a6-2168166e3514
+  hash: 33378440394293cbfbda6bb2d07ad19761f02d74
+  timestamp: '2026-04-16T00:18:36.516204+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.5
+---
+- seq: 369
+  uid: 595d10e5-adad-4360-a936-1458e04f6a42
+  hash: d27c648cf2b5f0ecd7e26fa09af7f42f5485db8e
+  timestamp: '2026-04-16T00:18:38.572275+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.1
+---
+- seq: 370
+  uid: 556ce1ea-1d4a-4a9b-b7f7-51bdc0a48115
+  hash: c00b59de6fadaa79ab263d549ef79203e167706e
+  timestamp: '2026-04-16T00:18:40.616962+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 401
+    elapsed_ms: 0.9
+---
+- seq: 371
+  uid: 086986a5-0250-4a41-a503-58179fcb6ba5
+  hash: 972f5c38cce68a5d0fbf2eed19f14fb9c2169537
+  timestamp: '2026-04-16T00:18:42.671092+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    name: cotacao:create
+---
+- seq: 372
+  uid: 96f913c5-d58f-43c7-a47a-e18a87e30e1f
+  hash: d247986412d7243ce027cf3554ac2a7a8f73f2ee
+  timestamp: '2026-04-16T00:18:42.683614+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 18.9
+---
+- seq: 373
+  uid: 08ab4e0a-b04a-457a-82e3-614d2140f0a8
+  hash: 5ceb1f070e2d8fdd13d1b934d7210731f8d0e95e
+  timestamp: '2026-04-16T00:18:44.720761+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    name: cotacao:read
+---
+- seq: 374
+  uid: cae6f52a-2e82-4629-8d13-2fd3c297dc8d
+  hash: b279a2ec45dd967707b26d990628568613c9aae9
+  timestamp: '2026-04-16T00:18:44.732285+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 16.9
+---
+- seq: 375
+  uid: 214247ae-44ea-40c3-bf95-463f60b20ce2
+  hash: d62ece75908e40167bed52d5db217248fb707c2f
+  timestamp: '2026-04-16T00:18:46.773674+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    name: cotacao:update
+---
+- seq: 376
+  uid: 541e1c3b-fe37-41d3-946f-695238cc3429
+  hash: e6047f6f760ad8d8e0abbb1adc82a4b8c46a9228
+  timestamp: '2026-04-16T00:18:46.785185+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 18.6
+---
+- seq: 377
+  uid: 5fd0b588-b077-400d-96e5-dd580b804a2a
+  hash: d432079e7a92540c27fea5157508da746faf2bc3
+  timestamp: '2026-04-16T00:18:48.842984+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    name: cotacao:delete
+---
+- seq: 378
+  uid: 60e237c9-d187-4a6b-a777-160d70b25c3b
+  hash: 437c865f399cfae5ff0370d05dec1a42bf2398c8
+  timestamp: '2026-04-16T00:18:48.858497+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 24.9
+---
+- seq: 379
+  uid: 396a1e59-af53-427a-b47c-b05dd4588111
+  hash: 21dbb08373cf19c7a84580e56a5844f05917abb7
+  timestamp: '2026-04-16T00:18:50.919900+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    name: cotacao:approve
+---
+- seq: 380
+  uid: ac33eece-16fb-4acc-862b-b5d9054aa4c5
+  hash: f9fcc2dbec370e59f47cdf35c61d49ac36498c7f
+  timestamp: '2026-04-16T00:18:50.935952+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 22.4
+---
+- seq: 381
+  uid: f0e63b8f-0c9b-4424-9844-83b25b7609d9
+  hash: a52448537fc0c5c37288a9760fca0ec454a94d87
+  timestamp: '2026-04-16T00:18:52.991130+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  status: success
+  detail:
+    name: vendedor
+---
+- seq: 382
+  uid: 501928d1-18d1-4c76-8c04-65aea88882c6
+  hash: 2bb60cdf0e12ba126352abc81f9debecdeeca09b
+  timestamp: '2026-04-16T00:18:53.003656+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.9
+---
+- seq: 383
+  uid: 648d8c58-6067-4b73-87cc-bcf20308effe
+  hash: 745b4962039c9efac42fe51fd1f8cd5f8ff15f88
+  timestamp: '2026-04-16T00:18:55.059113+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: c111b914-7374-4178-8d1f-75eba14a1004
+  status: success
+  detail:
+    name: aprovador
+---
+- seq: 384
+  uid: 15aef8f3-1b3c-46ca-91b4-c7368f80787a
+  hash: c91a6d9919869aba34ad5206112a9666cd557b23
+  timestamp: '2026-04-16T00:18:55.113784+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 62.8
+---
+- seq: 385
+  uid: 7f26a0b2-1614-44d8-8641-f72d7ac513a0
+  hash: 72fdab46ef9f808335764e6279deb268a4a18b1a
+  timestamp: '2026-04-16T00:18:57.186569+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  status: success
+  detail:
+    name: gerente
+---
+- seq: 386
+  uid: f2d1221d-c8ee-4b81-8cd3-5b7231a6a55f
+  hash: 713a80a8cbb239c7d572d580df44ca0b839c26cb
+  timestamp: '2026-04-16T00:18:57.201120+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.9
+---
+- seq: 387
+  uid: 5514bcb3-9715-4e5a-a666-6b0efe20e83b
+  hash: 24b725e6bc1b8e63bb558ec2d0da0ce677e26efb
+  timestamp: '2026-04-16T00:18:59.251427+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+---
+- seq: 388
+  uid: 0435b7a7-9eb2-4037-8cfd-d8ebd6e4cefc
+  hash: 28bd4838d4fccb50aaf5fb351985217a488631ab
+  timestamp: '2026-04-16T00:18:59.267953+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+    query: ''
+    http_status: 200
+    elapsed_ms: 23.2
+---
+- seq: 389
+  uid: 41434ebf-0691-4ee9-af82-9b9695c50fa8
+  hash: 93790128654182a65ab507bce2becf4da5445ad5
+  timestamp: '2026-04-16T00:19:01.312559+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 390
+  uid: 40ebfde1-face-4678-959a-4092c2943559
+  hash: c92343c95f9aca09c67a3f10c5480b41b2ead6c9
+  timestamp: '2026-04-16T00:19:01.326080+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.3
+---
+- seq: 391
+  uid: 39866323-d8f6-4ad6-83ac-301592aa6dab
+  hash: 9babb59a7ab1b8a4bb0598273b865064d1df98ae
+  timestamp: '2026-04-16T00:19:03.378704+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 392
+  uid: bddf747a-6bea-4454-a193-da9dd3890889
+  hash: 9e36198345e1fa2787d28ded140c51dc0d145dc4
+  timestamp: '2026-04-16T00:19:03.393742+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.3
+---
+- seq: 393
+  uid: e434fd8a-e4f9-4b77-9838-00a00d9b8ce9
+  hash: 2fe0c65bbe6d660524a67db7458aec295a07b383
+  timestamp: '2026-04-16T00:19:05.429735+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 394
+  uid: d2ee21ec-2ba9-4585-8095-6fbd523da4d0
+  hash: ecc90e2a3f2b37acfc1baed7b62504c0a4605ede
+  timestamp: '2026-04-16T00:19:05.441258+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.7
+---
+- seq: 395
+  uid: f70a4b4e-278f-429c-b9bd-9781a63f7b8d
+  hash: 6cc12968bb1560e68d5a4393f90914929f3638eb
+  timestamp: '2026-04-16T00:19:07.491988+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 396
+  uid: 3d94d5d2-4699-473b-b629-805cc18978d7
+  hash: 6eb6c6f9022f04d530580c181e1e259ee5a1422b
+  timestamp: '2026-04-16T00:19:07.508022+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 25.6
+---
+- seq: 397
+  uid: f2a3b340-7106-4714-a4a7-09a2092e4781
+  hash: 7ae2675cf9982ac36e2cae4dceb59af2fa3c43a1
+  timestamp: '2026-04-16T00:19:09.555695+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 398
+  uid: 5cb99ab5-ecae-4b18-8c58-643c0ae4768a
+  hash: 7114d7e13d3cc6ff81dff0ad65c8c42395427228
+  timestamp: '2026-04-16T00:19:09.567207+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.8
+---
+- seq: 399
+  uid: f967146c-0bfe-49f6-88e8-ac23f92f17f4
+  hash: bab62c3808a0ebef700222e3b88f3c5f314d6589
+  timestamp: '2026-04-16T00:19:11.605072+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 400
+  uid: 1256936b-6e48-4fe4-9a46-f2fc2248b633
+  hash: 2c6d36373d62f44a2c03c5c74f0b2556b79ee345
+  timestamp: '2026-04-16T00:19:11.620589+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.1
+---
+- seq: 401
+  uid: 6f72f0d3-9804-429a-8fc9-c92830827d57
+  hash: b907a6818158a0ee7090981094ed9a77e19c3830
+  timestamp: '2026-04-16T00:19:13.674394+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 402
+  uid: de2892ac-e0b5-4f5e-bf35-bb7183100042
+  hash: 955cd287a855d8ef7e398e2c7870e5d3bd71a189
+  timestamp: '2026-04-16T00:19:13.685909+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.6
+---
+- seq: 403
+  uid: 6217e97f-09c7-4eea-b55f-3b3eee7f2472
+  hash: 35b3234a2b25f3f339f7b17d4ae602c74a494101
+  timestamp: '2026-04-16T00:19:15.742865+00:00'
+  event: group.created
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    name: Vendas
+---
+- seq: 404
+  uid: f7654707-bfa9-4f9e-8e6c-1114cd95de49
+  hash: 45b7f57c1d82db34b0cfc8603522899cb407648a
+  timestamp: '2026-04-16T00:19:15.757383+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/
+    query: ''
+    http_status: 201
+    elapsed_ms: 22.6
+---
+- seq: 405
+  uid: d6778344-bfa0-4187-9085-cc01c32f2121
+  hash: 04623985936dc11c6c6d56cc0e9c8e021b0e5e52
+  timestamp: '2026-04-16T00:19:17.808812+00:00'
+  event: rbac.attribute_created
+  actor: admin
+  resource: rbac_attributes
+  resource_id: 29c0a137-413c-4099-ba20-26e65d6e115e
+  status: success
+  detail:
+    key: sistema
+---
+- seq: 406
+  uid: 25557eaa-d307-4a76-a1e9-88b787c23792
+  hash: f2208b70ddb01c4775761b938900205dcc189387
+  timestamp: '2026-04-16T00:19:17.821849+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/
+    query: ''
+    http_status: 201
+    elapsed_ms: 21.1
+---
+- seq: 407
+  uid: 51d914ac-c59c-448a-b6d0-3ec0cad20aae
+  hash: 94fc723081aa8cb7993705014045c46739418932
+  timestamp: '2026-04-16T00:19:20.107096+00:00'
+  event: user.created
+  actor: admin
+  resource: users
+  resource_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  status: success
+  detail:
+    username: usuario1
+---
+- seq: 408
+  uid: 1394f78a-d283-4e9b-813c-9245e2261af0
+  hash: f2b0e44b30da10ecfda2e54ef47178a75692f952
+  timestamp: '2026-04-16T00:19:20.118608+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 201
+    elapsed_ms: 248.5
+---
+- seq: 409
+  uid: dfe4a28f-4ee6-4eb0-aa83-6910f44c06d8
+  hash: 4f79a6aefec87882d37609b2965573c6093145b0
+  timestamp: '2026-04-16T00:19:22.170092+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  status: success
+  detail:
+    user_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+---
+- seq: 410
+  uid: 06d0bae9-10dd-429d-82e1-32da0e3f0496
+  hash: de334b43df396b64b21ec17ba4384ada5738ad8b
+  timestamp: '2026-04-16T00:19:22.181120+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/788eb76d-ef55-48a7-8b1f-91c91cf3e362/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/788eb76d-ef55-48a7-8b1f-91c91cf3e362/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.7
+---
+- seq: 411
+  uid: da97326c-2cce-4cd0-a8a8-767fbc19a878
+  hash: 93d864a5d16cdbbeb3b55a16ac1a86d8dea2a7bc
+  timestamp: '2026-04-16T00:19:24.231571+00:00'
+  event: group.user_assigned
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    user_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+---
+- seq: 412
+  uid: f0139203-1858-4ab5-848d-b3643ef99a50
+  hash: 6e70618ac3a69991f77cf8b6549045b469a97f06
+  timestamp: '2026-04-16T00:19:24.243601+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.1
+---
+- seq: 413
+  uid: a9aa3802-70d0-4994-8bab-6d2cd23a32db
+  hash: 9d81ad69d052b5d1359c0d6e1033af834d89391e
+  timestamp: '2026-04-16T00:19:26.309771+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 414
+  uid: e8703d34-425f-418d-a510-e179e45297d0
+  hash: d46b87a7e7cefe373de7aba1d2f81fe2c082a358
+  timestamp: '2026-04-16T00:19:26.323305+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 28.2
+---
+- seq: 415
+  uid: ce4ee3cc-ab8b-4aed-a121-014251d7eb3c
+  hash: 6c7a12ba3438026374f96809c5d71342527e6737
+  timestamp: '2026-04-16T00:19:30.867236+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 233.6
+---
+- seq: 416
+  uid: e5886558-b15b-48ec-9cf2-37834a87ebeb
+  hash: 4935749655c312305745a2e497795a535994b900
+  timestamp: '2026-04-16T00:19:32.913357+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 8.0
+---
+- seq: 417
+  uid: e4b42e68-3e98-4c9a-9332-7886bd824fb3
+  hash: 258cbcf08fa1f5bc626ced6d1c8e4059748e4a97
+  timestamp: '2026-04-16T00:19:34.972859+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 401
+    elapsed_ms: 1.7
+---
+- seq: 418
+  uid: 78472cd8-58b3-4201-be7f-56c817959bf7
+  hash: dade11b74d208826ce72e408814847cecad915ce
+  timestamp: '2026-04-16T00:19:37.011245+00:00'
+  event: settings.read
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail: {}
+---
+- seq: 419
+  uid: 250084b3-3250-4d44-8ba6-6254a79e773f
+  hash: 799cebedc4e3c7239071bbc57bfdf71d7d92e78d
+  timestamp: '2026-04-16T00:19:37.026772+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.6
+---
+- seq: 420
+  uid: aa83188a-d539-4bbf-ba4b-81012698de2c
+  hash: 33746767d033e273053546d21b7da77560e2256b
+  timestamp: '2026-04-16T00:19:39.092934+00:00'
+  event: settings.updated
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail:
+    fields:
+      access_token_expire_minutes: 90
+      refresh_token_expire_days: 7
+      allow_registration: false
+      max_login_attempts: 5
+      lockout_minutes: 15
+---
+- seq: 421
+  uid: 65c17f6e-5ab9-45f5-b060-cbcb9ae2e73d
+  hash: 08c14e63c968210347a0099be1fb5a27c287e97b
+  timestamp: '2026-04-16T00:19:39.108456+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: PUT
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 34.2
+---
+- seq: 422
+  uid: 0e03621c-f964-4691-801f-24bafb34e50b
+  hash: 42e5e0e9239fe81d237f1789bd7cde0d8c4e26ad
+  timestamp: '2026-04-16T00:19:41.184932+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: ''
+    http_status: 200
+    elapsed_ms: 7.7
+---
+- seq: 423
+  uid: 2c3dcb4b-0fc2-49f1-8e7b-8e6d24d9def4
+  hash: 2c178689873ea5921fad019e78407cc0094aade1
+  timestamp: '2026-04-16T00:19:43.263190+00:00'
+  event: entity.type_created
+  actor: admin
+  resource: custom_entities
+  resource_id: 55daef22-8add-4a8b-81b9-cade646ce1ca
+  status: success
+  detail:
+    slug: cargo
+---
+- seq: 424
+  uid: 3564f0af-733c-4967-bfad-8acb28da5374
+  hash: 716ba99188b1a08b2773871aaa7150055f273f99
+  timestamp: '2026-04-16T00:19:43.274705+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/types
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/types
+    query: ''
+    http_status: 201
+    elapsed_ms: 23.5
+---
+- seq: 425
+  uid: 17def5a4-0e30-4ee7-af26-dd3ef174eb6b
+  hash: 157b7d81780c225f8989c029476de22527f8e1c8
+  timestamp: '2026-04-16T00:19:45.328901+00:00'
+  event: entity.value_created
+  actor: admin
+  resource: custom_entities
+  resource_id: 3991e38f-83da-4e63-befd-b5381d779f5d
+  status: success
+  detail:
+    slug: cargo
+    name: gerente
+---
+- seq: 426
+  uid: cc7731f2-b361-4153-8c5b-d90e7bd9a4f4
+  hash: f7f0300ce988ecaf0e002911bd2cef90d91122e1
+  timestamp: '2026-04-16T00:19:45.340423+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 201
+    elapsed_ms: 25.7
+---
+- seq: 427
+  uid: 186b9baa-817b-4b02-97ee-598e2fb30d66
+  hash: 2ee002e4f64bb1fd70f7c0f4affd133999589d4d
+  timestamp: '2026-04-16T00:19:47.389055+00:00'
+  event: entity.value_created
+  actor: admin
+  resource: custom_entities
+  resource_id: d12216a2-6f31-457c-bfb0-4739320539e1
+  status: success
+  detail:
+    slug: cargo
+    name: vendedor
+---
+- seq: 428
+  uid: 558c778c-1daa-44f7-8855-74dd27c120b9
+  hash: 6ee5eb59e073dbe73687fb3b72f098af9ec3d0b1
+  timestamp: '2026-04-16T00:19:47.400079+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.9
+---
+- seq: 429
+  uid: af17022f-21ac-4734-9f1e-38fcc58c815f
+  hash: d0215384934071fcdf527ce201a63abe6d33a212
+  timestamp: '2026-04-16T00:19:49.676194+00:00'
+  event: user.created
+  actor: admin
+  resource: users
+  resource_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  status: success
+  detail:
+    username: gerente1
+---
+- seq: 430
+  uid: 76eff35f-6238-456f-8179-878270f1efb5
+  hash: f13e9ab456879ee6954c99adc3315bca3bd53bbc
+  timestamp: '2026-04-16T00:19:49.687712+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 201
+    elapsed_ms: 242.7
+---
+- seq: 431
+  uid: a999fff5-75de-4091-afa7-9f7b87875b8b
+  hash: 4adc40abedc06d3539a41247a5e536ef332c905b
+  timestamp: '2026-04-16T00:19:51.745166+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  status: success
+  detail:
+    user_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+---
+- seq: 432
+  uid: 1656f637-d549-4a24-ad4b-b6cb07a42c3d
+  hash: d240c9e7d1775039f3ed624d44a6a87db036e5ef
+  timestamp: '2026-04-16T00:19:51.755678+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/73a8bc4f-adfc-4125-8b11-3bec07209ff0/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/73a8bc4f-adfc-4125-8b11-3bec07209ff0/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 21.3
+---
+- seq: 433
+  uid: 036e7232-08e1-4bde-9654-f6e33cbfdb19
+  hash: 54df7f10e1c344086ab6c3c3ab64970e7b8e7058
+  timestamp: '2026-04-16T00:19:53.807715+00:00'
+  event: group.user_assigned
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    user_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+---
+- seq: 434
+  uid: 3e294f63-4907-4873-a5e2-ba82e84fb2fb
+  hash: b26cd2ec0dd5035fa6056a76a347dc925ceeb515
+  timestamp: '2026-04-16T00:19:53.819739+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.8
+---
+- seq: 435
+  uid: c540db17-8a42-4a63-b4d3-c27159e3e554
+  hash: f9611d67d82511a904ad6af350fc345a18ec581b
+  timestamp: '2026-04-16T00:19:55.877467+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 436
+  uid: 2baffcc9-862b-45d2-9781-2b0199fb26d9
+  hash: 6d57477514277e08c520748ef3c6cf7c776a63ec
+  timestamp: '2026-04-16T00:19:55.888536+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.1
+---
+- seq: 437
+  uid: 8842edc4-70f6-4944-96ba-0219c3ddc71e
+  hash: fdc7eeeb79b01e23f8dd84e2e5339ac28bd90372
+  timestamp: '2026-04-16T00:19:57.948053+00:00'
+  event: entity.assigned_to_user
+  actor: admin
+  resource: custom_entities
+  resource_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  status: success
+  detail:
+    slug: cargo
+    value: gerente
+---
+- seq: 438
+  uid: d8326794-29e7-4a38-9405-79788b7b1f79
+  hash: 4f437716af89ab803ae3526b9e8b79f555bce3da
+  timestamp: '2026-04-16T00:19:57.958566+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 23.4
+---
+- seq: 439
+  uid: 2775cf52-802b-4308-94eb-6197350ceae9
+  hash: 6d3930c8bfc8ab779923a0f4313f3c1d6d6c04ec
+  timestamp: '2026-04-16T00:20:00.234985+00:00'
+  event: user.created
+  actor: admin
+  resource: users
+  resource_id: c00f5e83-68f1-46ce-913f-ea1745ca2476
+  status: success
+  detail:
+    username: aprovador1
+---
+- seq: 440
+  uid: 77752ece-5056-4b1a-811d-9e29b9aeda07
+  hash: 19797cc6f4f72198227ecbd1df529546f75c05b6
+  timestamp: '2026-04-16T00:20:00.247499+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 201
+    elapsed_ms: 244.5
+---
+- seq: 441
+  uid: d2597b08-dc4b-40bd-a30e-f32a8df25ee6
+  hash: 454e5b109570e09f03f9684d1be109fe8646d20c
+  timestamp: '2026-04-16T00:20:02.298376+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: c111b914-7374-4178-8d1f-75eba14a1004
+  status: success
+  detail:
+    user_id: c00f5e83-68f1-46ce-913f-ea1745ca2476
+---
+- seq: 442
+  uid: fdd4303e-a941-4a45-9453-52147d0b2b61
+  hash: 799e566edc37bf0a61cb156e3807fa5558cae25f
+  timestamp: '2026-04-16T00:20:02.311427+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/c111b914-7374-4178-8d1f-75eba14a1004/assign-user/c00f5e83-68f1-46ce-913f-ea1745ca2476
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/c111b914-7374-4178-8d1f-75eba14a1004/assign-user/c00f5e83-68f1-46ce-913f-ea1745ca2476
+    query: ''
+    http_status: 200
+    elapsed_ms: 23.8
+---
+- seq: 443
+  uid: 5c374525-44aa-4dac-ae26-1e65f8e0fe96
+  hash: 86134ce0e4bd0833afaa873b4b56bc5d203456a3
+  timestamp: '2026-04-16T00:20:04.367428+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: c00f5e83-68f1-46ce-913f-ea1745ca2476
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 444
+  uid: e6cdaed1-bfa1-459b-9311-ef43b2af5fea
+  hash: d3a7fa4d31f9107588d316093820950fb2d7f12d
+  timestamp: '2026-04-16T00:20:04.378947+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/c00f5e83-68f1-46ce-913f-ea1745ca2476
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/c00f5e83-68f1-46ce-913f-ea1745ca2476
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.2
+---
+- seq: 445
+  uid: 3d0d369e-0d9d-4b35-a7a7-bb44689ab8ab
+  hash: f8875b96826ea2e8b4e99c1900e1c6bf7805a05a
+  timestamp: '2026-04-16T00:20:06.415445+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.4
+---
+- seq: 446
+  uid: 821fbae0-b3e2-406c-a709-891fc274545d
+  hash: 2627cf8f598c7874cfb21fee5cf50264950a559f
+  timestamp: '2026-04-16T00:20:08.465534+00:00'
+  event: entity.assigned_to_user
+  actor: admin
+  resource: custom_entities
+  resource_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  status: success
+  detail:
+    slug: cargo
+    value: vendedor
+---
+- seq: 447
+  uid: 523cd071-6775-483c-8f6f-7549cf857eff
+  hash: 25446cf1de6e98d6f6f107b0da4e06b94ede5326
+  timestamp: '2026-04-16T00:20:08.477053+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 21.5
+---
+- seq: 448
+  uid: 393beb0d-3b92-4aba-a33c-d17587516644
+  hash: 10f2788c83d496b315658c01509779a3c2c3be9b
+  timestamp: '2026-04-16T00:37:01.097752+00:00'
+  event: system.startup
+  actor: system
+  resource: api
+  resource_id: null
+  status: success
+  detail:
+    version: 1.0.0
+---
+- seq: 449
+  uid: 654230c2-5697-4095-987d-ccb911722fa4
+  hash: 0c91d89f80ffe2b2c4d0984b4ffa6c922e6b06a3
+  timestamp: '2026-04-16T00:37:26.651414+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 1.5
+---
+- seq: 450
+  uid: 37e60dee-211f-484c-bf4c-815e1007a66c
+  hash: c740dde620e31ea5b226f6614033cf52f09cf6bd
+  timestamp: '2026-04-16T00:37:28.692240+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /health
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /health
+    query: ''
+    http_status: 200
+    elapsed_ms: 0.7
+---
+- seq: 451
+  uid: 2319e2db-3a83-4a80-bff4-b98fe2d3a9a6
+  hash: bc877ace55f9ea7eaf171e242bca953f48410929
+  timestamp: '2026-04-16T00:37:35.073783+00:00'
+  event: auth.login_success
+  actor: admin
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 452
+  uid: 6f800679-ff0d-4358-b7ee-33611b1d5520
+  hash: 5fc8cf2b937d2c961f161f671e7ae3f028008df2
+  timestamp: '2026-04-16T00:37:35.084295+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 266.2
+---
+- seq: 453
+  uid: 1cf4d4d2-b889-4f1a-938c-0c669fef72ff
+  hash: e6cf01f27862f454404016c86b4694c001c42509
+  timestamp: '2026-04-16T00:37:37.128919+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.8
+---
+- seq: 454
+  uid: b20bcedc-eeff-4472-a3df-8b020b50b010
+  hash: 0d48b2161d258b9d99a77accb4218add5cc8bf7f
+  timestamp: '2026-04-16T00:37:39.430547+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 259.8
+---
+- seq: 455
+  uid: 07d9c219-0fab-44a7-b127-5130bf5b0d5f
+  hash: 970ded62e962ce416833cb1c2985f2c13472b0c1
+  timestamp: '2026-04-16T00:37:41.484831+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 8.8
+---
+- seq: 456
+  uid: 43dbc39b-9bb6-4ffd-bbd0-86b0d143a3be
+  hash: 382832ce41113b562111d22483646bf980802110
+  timestamp: '2026-04-16T00:37:43.535592+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 10.3
+---
+- seq: 457
+  uid: a08bc452-3d71-4de9-a8a7-19a42ce19a8d
+  hash: 62eca6f259755190d9e059a25ed1c885ffff6ff5
+  timestamp: '2026-04-16T00:37:45.586321+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/roles/
+    query: ''
+    http_status: 200
+    elapsed_ms: 13.6
+---
+- seq: 458
+  uid: ed43f506-b201-4554-8920-0f73ae88b0e5
+  hash: d818be9c97822df4989bf1bb7508be341a79d564
+  timestamp: '2026-04-16T00:37:47.632011+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/permissions/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.3
+---
+- seq: 459
+  uid: 23203b24-b28b-49b5-bb4a-a35e079650e3
+  hash: 2884b09e67b0f98f68bc00b83a62a15343a69568
+  timestamp: '2026-04-16T00:37:49.681515+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/groups/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.3
+---
+- seq: 460
+  uid: 70f05b80-3101-4e67-8d53-4e593a9f45c1
+  hash: 1abcc79cf7f27c285781b8f98274a0844b35bf08
+  timestamp: '2026-04-16T00:37:51.738739+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/rbac/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.2
+---
+- seq: 461
+  uid: 6f585f02-61d4-4dac-b92a-9995dc950eb7
+  hash: f9499cdd3e10dd2b97faa23e657041843498c920
+  timestamp: '2026-04-16T00:37:53.787714+00:00'
+  event: settings.read
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail: {}
+---
+- seq: 462
+  uid: 5911421c-1109-490e-9374-eadac2576e76
+  hash: 4450e7478e92c283be9ed9a499e02bf027281675
+  timestamp: '2026-04-16T00:37:53.802753+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.7
+---
+- seq: 463
+  uid: 6e5b88d3-1bbb-4b31-9699-a7b5273d1ec9
+  hash: 6bdccb313aec17bba37847fc8252d998d4ed7ee0
+  timestamp: '2026-04-16T00:37:55.858053+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.5
+---
+- seq: 464
+  uid: a6709805-7d0f-4839-ba72-2ce620b7553c
+  hash: a91a9a94bb99f44619de8a18f5f2e90d78fd9a9d
+  timestamp: '2026-04-16T00:37:57.904339+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 401
+    elapsed_ms: 1.0
+---
+- seq: 465
+  uid: 861d256f-cd4b-45a5-b4ea-afde272fc01f
+  hash: 7d3ef3fd147e4d0b6c7ffbc6e165075e3e1177d0
+  timestamp: '2026-04-16T00:37:59.962152+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    name: cotacao:create
+---
+- seq: 466
+  uid: 2f5d25d0-bc92-466a-b418-a948e6ac9613
+  hash: baa7fc656b5574b55368c8def175ec2a203ccdb1
+  timestamp: '2026-04-16T00:37:59.973675+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 19.2
+---
+- seq: 467
+  uid: 80e8edff-f8b4-4601-90f3-d479ea678acc
+  hash: 539b7fe75808a862f48c9033944d12c1616396fc
+  timestamp: '2026-04-16T00:38:02.028598+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    name: cotacao:read
+---
+- seq: 468
+  uid: d04a191c-d479-4f2d-a754-0363119ea31e
+  hash: 8f02ff42ee68413c8257cb8a230e3e829eb5ec1f
+  timestamp: '2026-04-16T00:38:02.043153+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 19.7
+---
+- seq: 469
+  uid: db1df2f1-6329-482e-a052-73709f35155d
+  hash: 07a311ec4893925048ab327694022eec6131f0ee
+  timestamp: '2026-04-16T00:38:04.113717+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    name: cotacao:update
+---
+- seq: 470
+  uid: 467180c4-83d8-4d59-87c1-95c83d5ca85e
+  hash: b4361f1534bf4fc05e3364c0f37bce9bfb1fdd77
+  timestamp: '2026-04-16T00:38:04.126230+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.2
+---
+- seq: 471
+  uid: bb7a899a-946d-4164-9a66-134dafeacaf1
+  hash: 44a55c410ec630ddfcde228e383adf8185887e05
+  timestamp: '2026-04-16T00:38:06.183632+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    name: cotacao:delete
+---
+- seq: 472
+  uid: 0e3ab931-54de-4e48-8286-e0a0ecd66dc2
+  hash: c7f9d46f432a04a8efa6464242b16106b271e3bd
+  timestamp: '2026-04-16T00:38:06.196150+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.7
+---
+- seq: 473
+  uid: e4aac86f-e0c1-4226-8078-dd53022c3a91
+  hash: f0a23f4c779672a340db1702e777779eef61018b
+  timestamp: '2026-04-16T00:38:08.251921+00:00'
+  event: permission.created
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    name: cotacao:approve
+---
+- seq: 474
+  uid: 784273c6-f64e-438a-bdb6-b43eea1bf714
+  hash: ef25418d7a81a63cf811a7befe9628594172e111
+  timestamp: '2026-04-16T00:38:08.268964+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/
+    query: ''
+    http_status: 201
+    elapsed_ms: 27.7
+---
+- seq: 475
+  uid: c3a34808-5485-4b1c-8dc9-bf31cd5deffb
+  hash: 42e60d34f368c145fc0399e4272d6ac61c8c77bf
+  timestamp: '2026-04-16T00:38:10.334516+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  status: success
+  detail:
+    name: vendedor
+---
+- seq: 476
+  uid: 1e4884cc-a99d-4f3e-83e7-4dbc7a6d0196
+  hash: cacc2d27e7b8e93984295864b59a624263116273
+  timestamp: '2026-04-16T00:38:10.349031+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 22.3
+---
+- seq: 477
+  uid: 6ae0070e-a999-42f6-8e65-aae0c29e8f13
+  hash: 778183ed8a8b63ffce7fd87ca6b43dbe66424fda
+  timestamp: '2026-04-16T00:38:12.402240+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: c111b914-7374-4178-8d1f-75eba14a1004
+  status: success
+  detail:
+    name: aprovador
+---
+- seq: 478
+  uid: 949468f6-7460-40dc-86c9-0b53fbab6cb9
+  hash: 80091d6fe12ec806e4b76981e3f8bae230d281d5
+  timestamp: '2026-04-16T00:38:12.413762+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 17.4
+---
+- seq: 479
+  uid: 2ca3f5f1-1001-4fee-b5b7-56dcb2cf1b9b
+  hash: 8bd7bda70da8b4c6616eebcc5268bab3ad830fab
+  timestamp: '2026-04-16T00:38:14.453374+00:00'
+  event: role.created
+  actor: admin
+  resource: roles
+  resource_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  status: success
+  detail:
+    name: gerente
+---
+- seq: 480
+  uid: d8bcf1d8-9c20-44e1-b2d9-ff56c795e6c4
+  hash: ee3d6f98cbeced2df1d795ba204ae9f00eb603af
+  timestamp: '2026-04-16T00:38:14.465397+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/
+    query: ''
+    http_status: 201
+    elapsed_ms: 18.6
+---
+- seq: 481
+  uid: 67ae5c7e-c0a0-4978-98fd-1b6462c37f72
+  hash: 6ad79e30251646df92112f0491bac32bd8df17b8
+  timestamp: '2026-04-16T00:38:16.522018+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+---
+- seq: 482
+  uid: 498e379f-6aa8-4be5-88f5-8ba11613b8e5
+  hash: 09a3d6b214e36763e6372790148665cd2e6e5b4d
+  timestamp: '2026-04-16T00:38:16.534546+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/788eb76d-ef55-48a7-8b1f-91c91cf3e362
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.4
+---
+- seq: 483
+  uid: 6e1011fb-d7c6-4265-b1ee-add55b6e2acb
+  hash: df4bd58a2650d69f60fbc2985c1a6b22d5861b21
+  timestamp: '2026-04-16T00:38:18.587896+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 484
+  uid: fa42fdbc-f7ff-4f81-8fa1-7f163209dae1
+  hash: 3f5b6569494f0a86c2a534a160633ed8a00acb6f
+  timestamp: '2026-04-16T00:38:18.600431+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 16.1
+---
+- seq: 485
+  uid: 641fcfc3-84af-4ef6-b1ec-3d0aeb1b5d2c
+  hash: 2a50c474cf89ca55936bb29bcf161d8fc9821db6
+  timestamp: '2026-04-16T00:38:20.640890+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: c111b914-7374-4178-8d1f-75eba14a1004
+---
+- seq: 486
+  uid: a0467956-6f91-4a5a-bf91-2e43064463d9
+  hash: 8462b4b207e3e3f0a3392b4447b03f6229729248
+  timestamp: '2026-04-16T00:38:20.657427+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/c111b914-7374-4178-8d1f-75eba14a1004
+    query: ''
+    http_status: 200
+    elapsed_ms: 21.3
+---
+- seq: 487
+  uid: 19058fe9-c58c-47c4-847f-528379fb21ff
+  hash: d72b265b959b3797b88685079f9db5cafdcd766a
+  timestamp: '2026-04-16T00:38:22.704862+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: b191b68d-8876-475b-ade4-4f346dae0e65
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 488
+  uid: 38d09c69-91c8-49f0-b379-32cf5a92e47d
+  hash: 66c7caedf0b7334f39f4f322058dae5c03b5e0cd
+  timestamp: '2026-04-16T00:38:22.717381+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/b191b68d-8876-475b-ade4-4f346dae0e65/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.0
+---
+- seq: 489
+  uid: 4c86cb5c-3b04-4537-b589-d464aaac4c09
+  hash: a279d85e2cce3607ee92428d9b6c1f8fbf66ca47
+  timestamp: '2026-04-16T00:38:24.770405+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 12b9f2b0-5071-4df8-94b7-5bf6ef4a4788
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 490
+  uid: f2042a79-e2a7-4673-8631-04aa4cb8b1ca
+  hash: bfe91df9bc92d1cce8db0337d66584ebe2b8d38f
+  timestamp: '2026-04-16T00:38:24.782936+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/12b9f2b0-5071-4df8-94b7-5bf6ef4a4788/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.7
+---
+- seq: 491
+  uid: 8f2ebe38-2de9-4f4a-8590-a75d72fff9f4
+  hash: 5ecc5f4c10b009455ff0a761771b25d7fbbcdb9d
+  timestamp: '2026-04-16T00:38:26.837283+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 30fe0ae0-3172-4b6d-8093-ef2004f9ea6c
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 492
+  uid: 56e8b064-70f2-4c87-9135-ab9005dfd2c3
+  hash: 63ffe805664bd43535ecc32fb5a2ccf1f5ff8a18
+  timestamp: '2026-04-16T00:38:26.850306+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/30fe0ae0-3172-4b6d-8093-ef2004f9ea6c/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.4
+---
+- seq: 493
+  uid: 3cb3f515-ac4a-4d3d-8f64-7cc3870d9752
+  hash: c3b06f9f21f86eecf4225dd593e851e1c1859302
+  timestamp: '2026-04-16T00:38:28.902933+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: 360aa789-a54a-48a7-ab71-0c5ceec44222
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 494
+  uid: d963b101-187e-4cf9-b32b-4d1508a92c38
+  hash: 4cd98bcf3352a4b5b33ea3ea3100d3e73c867056
+  timestamp: '2026-04-16T00:38:28.918449+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/360aa789-a54a-48a7-ab71-0c5ceec44222/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.0
+---
+- seq: 495
+  uid: 1fe1d1c6-8258-4ac0-94cb-4535b9ce0d1f
+  hash: 5c66f82a0ef5cd649eb2f5f15e93367961cecdf7
+  timestamp: '2026-04-16T00:38:30.970479+00:00'
+  event: permission.assigned_to_role
+  actor: admin
+  resource: permissions
+  resource_id: d90ab5cc-7bb3-4a43-9050-256e0fb45e9a
+  status: success
+  detail:
+    role_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+---
+- seq: 496
+  uid: a730be9d-87c0-4932-a626-d120701f5f02
+  hash: c87d9d87af46634c18f59ef3db006c8e1dc9c5e9
+  timestamp: '2026-04-16T00:38:30.983523+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/permissions/d90ab5cc-7bb3-4a43-9050-256e0fb45e9a/assign-role/73a8bc4f-adfc-4125-8b11-3bec07209ff0
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.6
+---
+- seq: 497
+  uid: 095eb634-0307-4835-b625-9d16cbcf138d
+  hash: b97aea23436cdc69e63f0e9ca81fa6a38ea29b24
+  timestamp: '2026-04-16T00:38:33.042074+00:00'
+  event: group.created
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    name: Vendas
+---
+- seq: 498
+  uid: a0c4bc55-9f15-427f-a855-965c00384217
+  hash: 8da8b0fb1088389c335a08a98108307f10d85dda
+  timestamp: '2026-04-16T00:38:33.053590+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/
+    query: ''
+    http_status: 201
+    elapsed_ms: 20.0
+---
+- seq: 499
+  uid: 8de78d88-8e2e-453a-9a8c-76a53f0c9ef3
+  hash: cacfd932d489bc470124ac87385f2692e8313e76
+  timestamp: '2026-04-16T00:38:35.123345+00:00'
+  event: rbac.attribute_created
+  actor: admin
+  resource: rbac_attributes
+  resource_id: 29c0a137-413c-4099-ba20-26e65d6e115e
+  status: success
+  detail:
+    key: sistema
+---
+- seq: 500
+  uid: 5e1004f7-ab69-4abd-8faa-b6e88532edb6
+  hash: 7a7a1ff5e44d296d7e528ed956f138d43d9ccf65
+  timestamp: '2026-04-16T00:38:35.137874+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/
+    query: ''
+    http_status: 201
+    elapsed_ms: 22.7
+---
+- seq: 501
+  uid: 99e0bea7-5e21-40d9-847f-5521b30612ad
+  hash: 46762eb09f9d156fe925ed8e9bf17cf39bdc83b0
+  timestamp: '2026-04-16T00:38:37.188111+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 409
+    elapsed_ms: 7.7
+---
+- seq: 502
+  uid: e4b2f259-5eb3-4fdb-b114-cc83d43a4420
+  hash: 0b705e876dcf30f156446c922dcfe7997a5be591
+  timestamp: '2026-04-16T00:38:39.241378+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 7.4
+---
+- seq: 503
+  uid: 8a69d1c4-d168-4fa7-9f11-e1ff0c0e98d4
+  hash: bf1bfdb0d7a8701b5469c752ce6a8dff9a6b1fdc
+  timestamp: '2026-04-16T00:38:41.290907+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: 788eb76d-ef55-48a7-8b1f-91c91cf3e362
+  status: success
+  detail:
+    user_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+---
+- seq: 504
+  uid: 2f343bbd-1bdd-42a2-a707-d6070e0a367e
+  hash: 482e543dc49cf271c03cabe29b87b52a5a75ee34
+  timestamp: '2026-04-16T00:38:41.305436+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/788eb76d-ef55-48a7-8b1f-91c91cf3e362/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/788eb76d-ef55-48a7-8b1f-91c91cf3e362/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.1
+---
+- seq: 505
+  uid: 876c6050-f26a-48be-af44-00e6119fbaeb
+  hash: a86b3266894e259ecb2a6610528d6d9c12fb42b1
+  timestamp: '2026-04-16T00:38:43.352935+00:00'
+  event: group.user_assigned
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    user_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+---
+- seq: 506
+  uid: 7b069988-77f9-46b3-be4c-75a9bd008959
+  hash: d9e07ba8a297e9a75bbe11b3f32e1783fce58370
+  timestamp: '2026-04-16T00:38:43.365456+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 16.2
+---
+- seq: 507
+  uid: ce6c3478-037e-4211-a422-8d0604b32a5b
+  hash: 97d1fc3596ab405bc7e32699a49ef09047c6fa7f
+  timestamp: '2026-04-16T00:38:45.411838+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 508
+  uid: 80725461-c421-498c-a656-b1efabc24ca4
+  hash: 4aeba2da4723e64bc72369ad60e40187ad8dfd26
+  timestamp: '2026-04-16T00:38:45.424864+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.8
+---
+- seq: 509
+  uid: e71864f8-45b7-4e84-8e43-d194df3c13ac
+  hash: f8d5aeec5fac789a378c0b6725deed6336bcb81d
+  timestamp: '2026-04-16T00:38:47.703486+00:00'
+  event: auth.login_success
+  actor: usuario1
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 510
+  uid: 64c6d795-655f-4674-9b3f-0531bb10b6a3
+  hash: c6655313c4a290db4e970233d87d4ac51adf1aa5
+  timestamp: '2026-04-16T00:38:47.714000+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 243.4
+---
+- seq: 511
+  uid: 8ef658c3-6fa7-412b-a8dd-5667b3bbd578
+  hash: 533c2e008a9cfe9305eb8f60fd83c61a1d710f14
+  timestamp: '2026-04-16T00:38:49.762020+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.6
+---
+- seq: 512
+  uid: 6c5cb3a6-4a3d-4adf-8e9c-c019b768c944
+  hash: 0b25d499c68509e945e8c78b5603c0a9515cde66
+  timestamp: '2026-04-16T00:38:51.813251+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 403
+    elapsed_ms: 3.5
+---
+- seq: 513
+  uid: c6368e3d-06a3-48c9-8faf-b9c037013ad8
+  hash: e3107641ecc923b045376e8cc979e3905ce85a24
+  timestamp: '2026-04-16T00:38:53.851203+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/refresh
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/refresh
+    query: ''
+    http_status: 200
+    elapsed_ms: 4.1
+---
+- seq: 514
+  uid: df19f182-29d0-49f8-887e-69804282a66a
+  hash: 9f87e298fe7711865bce2f7550bbcfab592860d6
+  timestamp: '2026-04-16T00:38:55.902137+00:00'
+  event: auth.logout
+  actor: token
+  resource: auth
+  resource_id: null
+  status: success
+  detail:
+    jti: gN44YNdA
+---
+- seq: 515
+  uid: a6995e4e-9da8-47fa-a8d5-3ee6d041fed2
+  hash: b72cf26fb8064ede8532783f069d4d5f4edec174
+  timestamp: '2026-04-16T00:38:55.913666+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/logout
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/logout
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.3
+---
+- seq: 516
+  uid: 9e681697-9606-48f2-b844-6197dd1c36ec
+  hash: 2508a8bb9367ec2869dd35bb3ccc00d0a918991a
+  timestamp: '2026-04-16T00:38:57.965089+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 401
+    elapsed_ms: 3.2
+---
+- seq: 517
+  uid: 7728f2b8-69e8-4e37-8bc4-ef4faa336d6d
+  hash: 466914936a37cb2c6fc96d06cbc9757fbfd739e8
+  timestamp: '2026-04-16T00:39:00.234237+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 234.4
+---
+- seq: 518
+  uid: 8da72457-fd2e-499b-8be0-f4b07c5753e8
+  hash: 6f00899d913d2f1fcd60004458607dffcc0c8819
+  timestamp: '2026-04-16T00:39:02.281710+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 401
+    elapsed_ms: 8.7
+---
+- seq: 519
+  uid: 5e5c3cec-b3e4-40ac-b597-5631fc9cf2d6
+  hash: 46c90b70834ff43eb19016c8e048dd2108e05090
+  timestamp: '2026-04-16T00:39:04.322609+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 401
+    elapsed_ms: 1.7
+---
+- seq: 520
+  uid: 2c019c5b-bd1d-4836-a432-44967e348784
+  hash: b737ab05c006f9d51f48e7c1454c90441fad7b50
+  timestamp: '2026-04-16T00:39:06.360058+00:00'
+  event: settings.read
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail: {}
+---
+- seq: 521
+  uid: bdf5d663-e82e-4eed-9ac5-a996991eb150
+  hash: 061199531ec01082ff9767814e21b5012513b38b
+  timestamp: '2026-04-16T00:39:06.372589+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 16.0
+---
+- seq: 522
+  uid: 562d56ca-908f-4e1c-94fc-8f07b42cacfe
+  hash: b4291e62f8b9810d078e9ae1ceff5805ba5c114f
+  timestamp: '2026-04-16T00:39:08.414939+00:00'
+  event: settings.updated
+  actor: admin
+  resource: settings
+  resource_id: null
+  status: success
+  detail:
+    fields:
+      access_token_expire_minutes: 90
+      refresh_token_expire_days: 7
+      allow_registration: false
+      max_login_attempts: 5
+      lockout_minutes: 15
+---
+- seq: 523
+  uid: a058acc1-b764-4cae-913a-5bd866b28df9
+  hash: 1c30bbf7d678077514d7b551b24da1783fd8baaf
+  timestamp: '2026-04-16T00:39:08.428454+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/settings/
+  resource_id: null
+  status: success
+  detail:
+    method: PUT
+    path: /admin/settings/
+    query: ''
+    http_status: 200
+    elapsed_ms: 21.0
+---
+- seq: 524
+  uid: e8b2f991-a44e-49df-afe5-da93373d0535
+  hash: ba5b432d7e9cc20c6fa3de786ee357cf31558714
+  timestamp: '2026-04-16T00:39:10.478904+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/audit/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/audit/
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.1
+---
+- seq: 525
+  uid: 5d71e25f-0db1-4015-8266-ebdb5807b2b6
+  hash: 3fb3966247b1427e53acff0e5ed6b382950f9330
+  timestamp: '2026-04-16T00:39:12.533822+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/types
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/custom-entities/types
+    query: ''
+    http_status: 409
+    elapsed_ms: 6.7
+---
+- seq: 526
+  uid: bfe1c727-1d58-4b0d-9a97-719fe5fc996d
+  hash: 43b8583980c3c1c940a2e0ea65622c3b90c85b91
+  timestamp: '2026-04-16T00:39:14.585214+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 409
+    elapsed_ms: 6.9
+---
+- seq: 527
+  uid: 8adb4254-cef9-452a-a566-fa65f396cd53
+  hash: 3bfdc4a64a106215b560616c64747e905bd1b41c
+  timestamp: '2026-04-16T00:39:16.633363+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.5
+---
+- seq: 528
+  uid: 765ca2f4-9408-4208-80a1-b8ed0e9dc4b7
+  hash: 8f52e758a8e2cd752272410ae20a304f30cb4c35
+  timestamp: '2026-04-16T00:39:18.688675+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 409
+    elapsed_ms: 5.1
+---
+- seq: 529
+  uid: 7c7fafae-24bc-4aa9-ade6-4bd7223e6a4b
+  hash: 2d0338024a75d9281e537daaccf99deddd29de63
+  timestamp: '2026-04-16T00:39:20.741936+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/cargo/values
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/custom-entities/cargo/values
+    query: ''
+    http_status: 200
+    elapsed_ms: 5.0
+---
+- seq: 530
+  uid: e81b8f1a-aead-41b2-991a-a924dafba17e
+  hash: 630abf850c73e4ff9d912526ad6dacc6d8bcc026
+  timestamp: '2026-04-16T00:39:22.807306+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 409
+    elapsed_ms: 5.6
+---
+- seq: 531
+  uid: ac7f9a5c-8500-4d78-ad9d-4bcac413c617
+  hash: ff5a1f5bbf028924498b0135886e6b6dae32de73
+  timestamp: '2026-04-16T00:39:24.858526+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 6.3
+---
+- seq: 532
+  uid: 169871a4-8236-4502-9573-45acca5b117c
+  hash: 73adc2323196cd6942bfa16517c4bdff8595b063
+  timestamp: '2026-04-16T00:39:26.908344+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: 73a8bc4f-adfc-4125-8b11-3bec07209ff0
+  status: success
+  detail:
+    user_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+---
+- seq: 533
+  uid: f77fea83-6987-4543-bbb1-4741eab42f3b
+  hash: b7c815bdd429fc1ed239ab3b807606bf4bca6460
+  timestamp: '2026-04-16T00:39:26.919870+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/73a8bc4f-adfc-4125-8b11-3bec07209ff0/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/73a8bc4f-adfc-4125-8b11-3bec07209ff0/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.1
+---
+- seq: 534
+  uid: 43cb1edb-6ab1-4b4b-baa5-dc33658c9c57
+  hash: 4bdace87a7a3e365cbe19688296cdcb140112521
+  timestamp: '2026-04-16T00:39:28.962401+00:00'
+  event: group.user_assigned
+  actor: admin
+  resource: groups
+  resource_id: dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8
+  status: success
+  detail:
+    user_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+---
+- seq: 535
+  uid: f1c53a29-305a-40e1-864f-3991d0ec9916
+  hash: d989ef931aa0690d4b265451ab8d993dd70eaa66
+  timestamp: '2026-04-16T00:39:28.977922+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/groups/dbcd13be-9ab9-48c1-91d6-c0aca4e7eac8/assign-user/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 20.0
+---
+- seq: 536
+  uid: 0e7888fd-5e22-4d48-bf2f-cdc610001623
+  hash: a29d07baede4073ef1b52f1042714f38d88b1c1e
+  timestamp: '2026-04-16T00:39:31.034270+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 537
+  uid: a6da249e-996d-454c-ad59-2bf02e928721
+  hash: 2663fcbed10e826264cd813429bbbbc063cf47da
+  timestamp: '2026-04-16T00:39:31.047785+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 22.6
+---
+- seq: 538
+  uid: 35ab2a6f-618c-48f8-8428-220be4ab45fa
+  hash: e61e9b47d83aea74bed03750faee8952c810bb21
+  timestamp: '2026-04-16T00:39:33.101573+00:00'
+  event: entity.assigned_to_user
+  actor: admin
+  resource: custom_entities
+  resource_id: 22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  status: success
+  detail:
+    slug: cargo
+    value: gerente
+---
+- seq: 539
+  uid: 5bcba734-fa8d-4733-9585-832545dc1537
+  hash: 24906257ff0a20b8d1dde96596838256af174819
+  timestamp: '2026-04-16T00:39:33.113094+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/assign/22bf38ad-cf9c-4052-a702-42ab05d3f7c7
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.6
+---
+- seq: 540
+  uid: 208a2116-ed21-43d6-aea1-a5aeb7d4843c
+  hash: 49e046fbca733eead1e5335fd64b8ef477915e12
+  timestamp: '2026-04-16T00:39:35.165806+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: failure
+  detail:
+    method: POST
+    path: /admin/users/
+    query: ''
+    http_status: 409
+    elapsed_ms: 5.7
+---
+- seq: 541
+  uid: 29c48f60-0e81-4297-aca9-7034dad8e324
+  hash: f1a468a1a2dd8ee4d36391892db9d3522dbd14fa
+  timestamp: '2026-04-16T00:39:37.221173+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 8.7
+---
+- seq: 542
+  uid: 55592551-a596-44b8-a451-4c889d69e93d
+  hash: dee14c0b1e804406209f5d7676fa918e2ea4c8d5
+  timestamp: '2026-04-16T00:39:39.271775+00:00'
+  event: role.assigned_to_user
+  actor: admin
+  resource: roles
+  resource_id: c111b914-7374-4178-8d1f-75eba14a1004
+  status: success
+  detail:
+    user_id: c00f5e83-68f1-46ce-913f-ea1745ca2476
+---
+- seq: 543
+  uid: c620eaf6-bff6-465e-a615-58a6f6662e4c
+  hash: 974dcf11231f4cb6ddbcd437737a24c7d8d5406c
+  timestamp: '2026-04-16T00:39:39.283296+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/roles/c111b914-7374-4178-8d1f-75eba14a1004/assign-user/c00f5e83-68f1-46ce-913f-ea1745ca2476
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/roles/c111b914-7374-4178-8d1f-75eba14a1004/assign-user/c00f5e83-68f1-46ce-913f-ea1745ca2476
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.7
+---
+- seq: 544
+  uid: 4ca43976-27e2-4742-bd7c-3e4dfda4264f
+  hash: 58db6a0b5b3713732f7172e2ddb63859766b0fda
+  timestamp: '2026-04-16T00:39:41.326901+00:00'
+  event: rbac.attribute_assigned_to_user
+  actor: admin
+  resource: rbac_attributes
+  resource_id: c00f5e83-68f1-46ce-913f-ea1745ca2476
+  status: success
+  detail:
+    key: sistema
+    value: cotacao
+---
+- seq: 545
+  uid: b970ea9b-3550-4edc-83bb-934a5a0b3ab1
+  hash: 60448a7f2dd48f5a1089fd754e959d131896260e
+  timestamp: '2026-04-16T00:39:41.338425+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/rbac/assign/c00f5e83-68f1-46ce-913f-ea1745ca2476
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/rbac/assign/c00f5e83-68f1-46ce-913f-ea1745ca2476
+    query: ''
+    http_status: 200
+    elapsed_ms: 21.8
+---
+- seq: 546
+  uid: 45a127d4-fd61-4da5-ba41-ebe0a389e505
+  hash: 54e3ce9eab45bf542a89842cc93ad617f937c0e5
+  timestamp: '2026-04-16T00:39:43.394651+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/users/
+  resource_id: null
+  status: success
+  detail:
+    method: GET
+    path: /admin/users/
+    query: ''
+    http_status: 200
+    elapsed_ms: 9.2
+---
+- seq: 547
+  uid: 6bd9d487-e0f8-4cbb-97bd-e648352d14f3
+  hash: 76019757a1db9b3729727864d427a4db162b4eb2
+  timestamp: '2026-04-16T00:39:45.444630+00:00'
+  event: entity.assigned_to_user
+  actor: admin
+  resource: custom_entities
+  resource_id: bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  status: success
+  detail:
+    slug: cargo
+    value: vendedor
+---
+- seq: 548
+  uid: 97bc16a6-b152-43a3-8a96-799c612a533d
+  hash: 556fca8c3392179b64d6372d529c3dc477e980ab
+  timestamp: '2026-04-16T00:39:45.456144+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /admin/custom-entities/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /admin/custom-entities/assign/bfebd61e-8858-4201-bc40-b97a6afbe9eb
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.5
+---
+- seq: 549
+  uid: f9c6aed1-f9ca-4d0f-bf01-a59460441de6
+  hash: eff700104eb306cdcc056cd12e1bb604d6cabd87
+  timestamp: '2026-04-16T00:39:47.748990+00:00'
+  event: auth.login_success
+  actor: usuario1
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 550
+  uid: b6680a88-ef11-4e37-aad3-4e4cabbb2fd6
+  hash: f7747fd62214b726fbfcd805643e038a8d033ff6
+  timestamp: '2026-04-16T00:39:47.762016+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 251.3
+---
+- seq: 551
+  uid: 59b5d1f7-b111-4e4e-963f-673224e4b242
+  hash: 0caad47fd9d6f18d8326dff53d999d909120884c
+  timestamp: '2026-04-16T00:39:50.235756+00:00'
+  event: auth.login_success
+  actor: gerente1
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 552
+  uid: 01215b0c-f0be-4fca-8050-dc65b54b9af4
+  hash: 443a5daee67d004004bbbd3377884116ffcef24a
+  timestamp: '2026-04-16T00:39:50.254827+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 440.8
+---
+- seq: 553
+  uid: 8e1791ea-55ce-4ede-a1e0-b2c170da9715
+  hash: 95a6bf9febca33bd8b542e324f25ae55044a0d46
+  timestamp: '2026-04-16T00:39:52.550452+00:00'
+  event: auth.login_success
+  actor: aprovador1
+  resource: auth
+  resource_id: eyJhbGci
+  status: success
+  detail:
+    ip: 127.0.0.1
+---
+- seq: 554
+  uid: b09193a0-18e6-4c9b-b446-fee39a5dfb7e
+  hash: f09cf4bd36b89930bd6fad23cdf0f09e94f8022f
+  timestamp: '2026-04-16T00:39:52.562989+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/token
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/token
+    query: ''
+    http_status: 200
+    elapsed_ms: 246.4
+---
+- seq: 555
+  uid: ee894a48-8f0c-40c0-aad6-d5924db849c8
+  hash: 1ba81e44efcbd1e2b5fc99d0342184d9cf7047c0
+  timestamp: '2026-04-16T00:39:54.623001+00:00'
+  event: auth.abac_check
+  actor: admin
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: superuser
+---
+- seq: 556
+  uid: 17108d56-b9a2-4979-bd62-229e17ec3212
+  hash: f2b125e4d567b203fbd3057056e31684755916ca
+  timestamp: '2026-04-16T00:39:54.637517+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.9
+---
+- seq: 557
+  uid: 5225508b-60be-4f33-8abe-da1069c8ef74
+  hash: 2d6422afe416c86693e9fb95b567306cb922b9bc
+  timestamp: '2026-04-16T00:39:56.684237+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 558
+  uid: a421db3a-b742-4695-9a80-c3622c5faa2d
+  hash: 7aaa4a8f5bd5da8ea19270db490edcacbeda3295
+  timestamp: '2026-04-16T00:39:56.697750+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 16.0
+---
+- seq: 559
+  uid: 16471310-c687-4e6f-aa79-ff7d84ca265d
+  hash: 10ba3264c32463bde0da5ad79bf9bd8e384db49f
+  timestamp: '2026-04-16T00:39:58.752332+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 560
+  uid: 69620964-3861-42bf-895c-47b5e73d1bbe
+  hash: f02b7ee2a516cbeb8b8f7eb2a136da7ca5047d61
+  timestamp: '2026-04-16T00:40:00.795514+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 561
+  uid: bca3a077-b7a8-4291-92db-92e29b23f3cf
+  hash: 08b167125c30cea469f8c4f48b903631635dc6ef
+  timestamp: '2026-04-16T00:40:00.811556+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 19.0
+---
+- seq: 562
+  uid: 1e8dfd11-55d0-4137-944a-243e910ae640
+  hash: 4f5cdd45b68bdb37da4b520da16f1a6a477fd8b2
+  timestamp: '2026-04-16T00:40:02.859083+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 563
+  uid: c8cab64e-8eb2-4515-b944-140e3da5f8c4
+  hash: 94610c5ba5841b6103206b0551360b2e27904946
+  timestamp: '2026-04-16T00:40:02.872623+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 16.5
+---
+- seq: 564
+  uid: a0543ed6-0a7c-46fb-8595-1c841e7b87a6
+  hash: 85acde59cd581c8f4c5452dfd595201908595fbf
+  timestamp: '2026-04-16T00:40:04.925282+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 565
+  uid: 54793e8e-8633-463e-8e59-94b63a12215c
+  hash: 46a09288b0e57113803009ab981cbc9088b6fc43
+  timestamp: '2026-04-16T00:40:06.977336+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 566
+  uid: bc2dab87-3944-4f55-84ff-1192c3ddb969
+  hash: 2720549a019a366c80b6da499c214f6e31e508a6
+  timestamp: '2026-04-16T00:40:06.988848+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 14.7
+---
+- seq: 567
+  uid: 6237a8a4-2947-40be-a7b0-4b4c2a3cc6a4
+  hash: 866070eb954053c123da353e3fef5dc7e5430868
+  timestamp: '2026-04-16T00:40:09.043546+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.6
+---
+- seq: 568
+  uid: 2b2a5846-99b1-4fc9-a1e4-9994ee394f3b
+  hash: a2404523a7714b941b6cc04d8d25f0262bf2a1c9
+  timestamp: '2026-04-16T00:40:11.094530+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 569
+  uid: 7dece7ae-13c0-4942-8e5e-21ac760c90f6
+  hash: ff5bbc0eb3bcfaa4bc9fb9ee96a2f8266be4d2e9
+  timestamp: '2026-04-16T00:40:11.106047+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.1
+---
+- seq: 570
+  uid: d59d6c5f-9bf5-4f37-ae66-af0e472652e3
+  hash: 4b4d38ff4ab263c213cf9b12b7efa77ad38c20fc
+  timestamp: '2026-04-16T00:40:13.147095+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.3
+---
+- seq: 571
+  uid: 4ca9aa4f-eb8d-4c10-8e43-3783fcb105eb
+  hash: 7b12c95f950e374678f4425be7efe7f876c3de39
+  timestamp: '2026-04-16T00:40:15.209364+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 572
+  uid: b9dd8353-991a-49af-89ee-06076a22cd97
+  hash: 6f776560da102ad99ea48b4c7a6c5e05b25d09bb
+  timestamp: '2026-04-16T00:40:15.221399+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.2
+---
+- seq: 573
+  uid: 3b20ddca-bf14-4cec-a5ae-51a9c0bbf04e
+  hash: 7cbc680bd65286b46cab8015b0517649f0408bf2
+  timestamp: '2026-04-16T00:40:17.255138+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 574
+  uid: ee5b3d94-ea3b-4d16-8613-4c7fb45ff7cf
+  hash: 612aa55334abb49eb3620cc952846f97115e469b
+  timestamp: '2026-04-16T00:40:17.266654+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 14.3
+---
+- seq: 575
+  uid: 98f0ba9d-b841-4ba3-be9b-b2100d7a4f54
+  hash: 6aa1680473452a1a2c788b7854996791efe323ed
+  timestamp: '2026-04-16T00:40:19.307547+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 576
+  uid: ff637ed2-51ea-4cb5-9036-07fce32c8be2
+  hash: 2c29b9216f310ed08796def8d11337d88fca91ba
+  timestamp: '2026-04-16T00:40:21.356759+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 577
+  uid: 3bd42985-955c-459f-8fab-57b8c0983210
+  hash: 1d40b1550a535ec88857e490020c3d62112d419e
+  timestamp: '2026-04-16T00:40:21.370778+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 17.0
+---
+- seq: 578
+  uid: 1fe256a1-c449-4c2d-adaf-63cb2a3231a4
+  hash: ed54a2dca8a0ddcef3c7791c170ca9aed030ae43
+  timestamp: '2026-04-16T00:40:23.409935+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 579
+  uid: 7942f81d-5769-480d-96f9-52bdcd4b3288
+  hash: fe1377a922212c851adc0e60fc01b0f7bb1564df
+  timestamp: '2026-04-16T00:40:23.421467+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 15.1
+---
+- seq: 580
+  uid: e2c0dfe3-0104-468b-83c2-0b7b4505a8e9
+  hash: d8f6f9d15608ffde5bd882d78a1e9f03158a47c5
+  timestamp: '2026-04-16T00:40:25.480536+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 581
+  uid: a3c23174-83a4-4a58-986d-19928cd782bc
+  hash: 8105faf2c8e687c26f7bb46072a8e4706c92f722
+  timestamp: '2026-04-16T00:40:27.549176+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 582
+  uid: 8a686843-7043-42f5-a8af-27da0697aed9
+  hash: ff63883cda38b698a931c9ef607eaad1eade2635
+  timestamp: '2026-04-16T00:40:27.564211+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.0
+---
+- seq: 583
+  uid: cf228f56-7bec-4b14-80fe-5bff4c14b8ed
+  hash: 72839942482ac8e3a789c864167c3fdd780c4c1d
+  timestamp: '2026-04-16T00:40:29.601422+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 584
+  uid: 108dcbaf-f17e-496a-aa81-e942739b77d5
+  hash: d672cf2f227729d27eefd982713ccd89e4c17522
+  timestamp: '2026-04-16T00:40:29.613942+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 14.8
+---
+- seq: 585
+  uid: ecc7547a-8e3b-4959-a440-813522bf96ae
+  hash: b5a672baa77d411f08d3c40d7c55f08b2f6e911c
+  timestamp: '2026-04-16T00:40:31.652660+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 586
+  uid: 2871acff-86a7-45df-8f72-15415e1e4f28
+  hash: 9f6f983d9fc35f2f0c5b98db72928d82f33c582b
+  timestamp: '2026-04-16T00:40:33.706713+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 587
+  uid: fb30ed03-dd7e-4b7c-bb76-cc1f25128f1e
+  hash: 1cafc2d2e3b83beb5df018df9028f7af7b03f46f
+  timestamp: '2026-04-16T00:40:33.717232+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 13.9
+---
+- seq: 588
+  uid: 19eaa6aa-753a-4728-825b-2375bbd68f4f
+  hash: 0454cfea92b6c6035a83156740918acf921bf9ea
+  timestamp: '2026-04-16T00:40:35.760409+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.5
+---
+- seq: 589
+  uid: 177e7ce0-dda2-4382-ae1e-d6f3ae0146c8
+  hash: 07313333705e0920d1c497331af3be5d1e060c48
+  timestamp: '2026-04-16T00:40:37.810516+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 590
+  uid: b2f6ba63-a342-422e-b33e-debe8c9f410c
+  hash: b221ae29f3096b0efa9a70efb7c50d5521ca51e5
+  timestamp: '2026-04-16T00:40:37.822042+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 14.0
+---
+- seq: 591
+  uid: 10f2c77c-2012-4b24-bdb2-1e917b942614
+  hash: 1a048d4fd1f631133cdb870c65c432b422e95f48
+  timestamp: '2026-04-16T00:40:39.859076+00:00'
+  event: auth.abac_check
+  actor: aprovador1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - aprovador
+    abac:
+      sistema: cotacao
+---
+- seq: 592
+  uid: c498199c-bb02-493d-8c72-19a4c4d1649d
+  hash: c439aa1345e428c1382b462e5d4e3d5b0902ed60
+  timestamp: '2026-04-16T00:40:39.870108+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 13.3
+---
+- seq: 593
+  uid: f86c8497-04cc-47d3-95f4-86cf46488727
+  hash: f7f17f9d075f4f8f7b11cfe6a564d4ca279cc4ca
+  timestamp: '2026-04-16T00:40:41.913262+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.5
+---
+- seq: 594
+  uid: 99c6283a-3351-4a4f-80fe-8ef6ea39ea24
+  hash: 49d5a8108e7aae0450c067135cb8eed80d98b145
+  timestamp: '2026-04-16T00:40:43.960359+00:00'
+  event: auth.abac_check
+  actor: anonymous
+  resource: auth/check
+  resource_id: null
+  status: failure
+  detail:
+    allowed: false
+    reason: 'Token invalido: '
+---
+- seq: 595
+  uid: 8638c5be-9b89-42dd-9805-39b6222c0732
+  hash: 8c505f4e95645e97bd3b9da4470860caee425fc5
+  timestamp: '2026-04-16T00:40:43.971384+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 12.2
+---
+- seq: 596
+  uid: 1e117ff1-d108-404b-be23-93efd9d53a2b
+  hash: c32e52b417559fd7dfee4b7a7fdf405ecdde4b01
+  timestamp: '2026-04-16T00:40:46.017960+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.7
+---
+- seq: 597
+  uid: d302e4da-f1c4-48fa-8baf-bbbc045c143d
+  hash: 8d382c36f6958c190ab416fa04829f1a76f49fb6
+  timestamp: '2026-04-16T00:40:48.068915+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/validate
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/validate
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.3
+---
+- seq: 598
+  uid: 26abeab7-82e2-4f6b-89fe-cba137c3dfcc
+  hash: 0aed7f21f68ace364d5a15d510afdbfb2854c63e
+  timestamp: '2026-04-16T00:40:50.106622+00:00'
+  event: auth.abac_check
+  actor: usuario1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - vendedor
+    abac:
+      sistema: cotacao
+      cargo: vendedor
+      group: Vendas
+---
+- seq: 599
+  uid: 49cb36b3-dfd8-40e7-9687-63cda5fdff64
+  hash: 24192ea6b82678c765b67643ebff27416657c935
+  timestamp: '2026-04-16T00:40:50.117140+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 13.7
+---
+- seq: 600
+  uid: 7a2e1b80-c1d2-4ee0-8181-de024350ee5f
+  hash: f509e495790081820b9edcc949a6a43ebf014f9a
+  timestamp: '2026-04-16T00:40:52.156158+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 3.2
+---
+- seq: 601
+  uid: 01716e01-24ef-4c3e-92d8-35474a9be269
+  hash: 0e526fd977eb74aa7ed655881e8a587972c00507
+  timestamp: '2026-04-16T00:40:54.193737+00:00'
+  event: auth.abac_check
+  actor: gerente1
+  resource: auth/check
+  resource_id: null
+  status: success
+  detail:
+    allowed: true
+    reason: ok
+    roles:
+    - gerente
+    abac:
+      sistema: cotacao
+      cargo: gerente
+      group: Vendas
+---
+- seq: 602
+  uid: a3e250fa-3716-4a5b-92f5-648948e09efc
+  hash: 6c19ae6e4a2d7cdf5396fa312a9f799d608b445f
+  timestamp: '2026-04-16T00:40:54.209267+00:00'
+  event: http.request
+  actor: 127.0.0.1
+  resource: /auth/check
+  resource_id: null
+  status: success
+  detail:
+    method: POST
+    path: /auth/check
+    query: ''
+    http_status: 200
+    elapsed_ms: 18.4
+---

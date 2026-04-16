@@ -11,6 +11,7 @@ from src.application.dtos.role_dto import CreateRoleDTO
 from src.interface.api.schemas.role_schema import RoleCreate, RoleResponse, AssignRoleRequest
 from src.interface.api.dependencies import require_superuser
 from src.infrastructure.logging import log_hooks as lh
+from src.infrastructure.cache.memory_cache import invalidate_user, user_enrichment_cache
 
 router = APIRouter(prefix="/admin/roles", tags=["Admin — Roles"])
 
@@ -39,6 +40,7 @@ def assign_role(role_id: str, user_id: str, db: Session = Depends(get_db),
                 actor=Depends(require_superuser)):
     AssignRoleToUserUseCase(db).execute(user_id, role_id)
     lh.log_role_assigned(actor=getattr(actor, "sub", "admin"), user_id=user_id, role_id=role_id)
+    invalidate_user(user_id)  # invalida cache de enriquecimento
     return {"message": "Role atribuída."}
 
 
@@ -47,4 +49,5 @@ def revoke_role(role_id: str, user_id: str, db: Session = Depends(get_db),
                 actor=Depends(require_superuser)):
     RevokeRoleFromUserUseCase(db).execute(user_id, role_id)
     lh.log_role_revoked(actor=getattr(actor, "sub", "admin"), user_id=user_id, role_id=role_id)
+    invalidate_user(user_id)  # invalida cache de enriquecimento
     return {"message": "Role revogada."}

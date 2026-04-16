@@ -7,6 +7,7 @@ from src.application.dtos.settings_dto import UpdateSettingsDTO
 from src.interface.api.schemas.settings_schema import SettingsResponse, SettingsUpdate
 from src.interface.api.dependencies import require_superuser
 from src.infrastructure.logging import log_hooks as lh
+from src.infrastructure.cache.memory_cache import invalidate_settings
 
 router = APIRouter(prefix="/admin/settings", tags=["Admin — Settings"])
 
@@ -22,4 +23,5 @@ def update_settings(body: SettingsUpdate, db: Session = Depends(get_db), actor=D
     dto = UpdateSettingsDTO(**body.model_dump())
     result = UpdateSettingsUseCase(db).execute(dto)
     lh.log_settings_updated(actor=getattr(actor, "sub", "admin"), fields=body.model_dump())
+    invalidate_settings()
     return result.__dict__
