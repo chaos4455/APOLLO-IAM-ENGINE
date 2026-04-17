@@ -122,6 +122,31 @@ async def cache_stats(
     return PolicyService(db).cache_stats()
 
 
+@router.get("/decisions/audit", summary="Consultar audit trail de decisões de policy")
+async def audit_decisions(
+    tenant_id: Optional[str] = None,
+    subject_id: Optional[str] = None,
+    decision: Optional[str] = None,   # allow | deny | no_match
+    action: Optional[str] = None,
+    limit: int = 100,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+    current_user: TokenPayload = Depends(get_current_user),
+):
+    """
+    Retorna o histórico auditável de todas as decisões de policy.
+    Filtrável por tenant_id, subject_id, decision (allow/deny/no_match), action.
+    """
+    return query_decisions(
+        tenant_id=tenant_id,
+        subject_id=subject_id,
+        decision=decision,
+        action=action,
+        limit=min(limit, 500),
+        offset=offset,
+    )
+
+
 @router.get("/{policy_id}", summary="Obter policy por ID")
 async def get_policy(
     policy_id: str,
@@ -202,31 +227,6 @@ async def explain_policy(
         resource=body.resource,
         tenant_id=body.tenant_id,
         subject_id=body.subject_id,
-    )
-
-
-@router.get("/audit", summary="Consultar audit trail de decisões de policy")
-async def audit_decisions(
-    tenant_id: Optional[str] = None,
-    subject_id: Optional[str] = None,
-    decision: Optional[str] = None,   # allow | deny | no_match
-    action: Optional[str] = None,
-    limit: int = 100,
-    offset: int = 0,
-    db: Session = Depends(get_db),
-    current_user: TokenPayload = Depends(get_current_user),
-):
-    """
-    Retorna o histórico auditável de todas as decisões de policy.
-    Filtrável por tenant_id, subject_id, decision (allow/deny/no_match), action.
-    """
-    return query_decisions(
-        tenant_id=tenant_id,
-        subject_id=subject_id,
-        decision=decision,
-        action=action,
-        limit=min(limit, 500),
-        offset=offset,
     )
 
 

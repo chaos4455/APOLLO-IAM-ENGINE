@@ -605,3 +605,758 @@
 | 601 | `01716e01` | 2026-04-16T00:40:54.193737+00:00 | `auth.abac_check` | gerente1 | auth/check | — | success | {"allowed": true, "reason": "ok", "roles": ["gerente"], "abac": {"sistema": "cot |
 | 602 | `a3e250fa` | 2026-04-16T00:40:54.209267+00:00 | `http.request` | 127.0.0.1 | /auth/check | — | success | {"method": "POST", "path": "/auth/check", "query": "", "http_status": 200, "elap |
 | 603 | `e2c49bfb` | 2026-04-16T00:57:09.763397+00:00 | `system.startup` | system | api | — | success | {"version": "1.0.0"} |
+| 604 | `15ad696e` | 2026-04-16T21:10:51.590475+00:00 | `system.startup` | system | api | — | — | success | — | {"version": "1.0.0"} |
+| 605 | `cc44aaf1` | 2026-04-16T21:11:07.311164+00:00 | `auth.login_success` | admin | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 606 | `ab5f04ce` | 2026-04-16T21:11:07.321162+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 270.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 607 | `792dc92b` | 2026-04-16T21:11:07.632683+00:00 | `user.created` | admin | users | 882692bd-c05c-43bb-a5ec-c0adb378e0ef | — | success | — | {"username": "stress_bbf9db"} |
+| 608 | `c8edb775` | 2026-04-16T21:11:07.644688+00:00 | `http.request` | 127.0.0.1 | /admin/users/ | — | — | success | 305.9ms | {"method": "POST", "path": "/admin/users/", "query": null, "http_status": 201, " |
+| 609 | `8dcb7da0` | 2026-04-16T21:11:07.896203+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 610 | `8b00e58c` | 2026-04-16T21:11:07.910715+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 248.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 611 | `a839f0ad` | 2026-04-16T21:11:07.947720+00:00 | `http.request` | 127.0.0.1 | /admin/policies/ | — | — | success | 20.0ms | {"method": "POST", "path": "/admin/policies/", "query": null, "http_status": 201 |
+| 612 | `0c0d6ba8` | 2026-04-16T21:11:07.973717+00:00 | `http.request` | 127.0.0.1 | /admin/policies/reload | — | — | success | 8.3ms | {"method": "POST", "path": "/admin/policies/reload", "query": null, "http_status |
+| 613 | `7032c624` | 2026-04-16T21:11:08.510758+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 614 | `cead4c32` | 2026-04-16T21:11:08.522756+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 261.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 615 | `c81f9338` | 2026-04-16T21:11:09.373299+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 616 | `9f4a6af3` | 2026-04-16T21:11:09.631812+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 617 | `2c0efe72` | 2026-04-16T21:11:09.645822+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 513.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 618 | `8e18b874` | 2026-04-16T21:11:09.656819+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 526.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 619 | `beacedf1` | 2026-04-16T21:11:09.918848+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 620 | `c3b0a6e7` | 2026-04-16T21:11:10.172359+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 621 | `d4c37bcc` | 2026-04-16T21:11:10.418873+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 622 | `b95fefbc` | 2026-04-16T21:11:10.431873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1297.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 623 | `fe4b412f` | 2026-04-16T21:11:10.443876+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1309.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 624 | `a09c0ed6` | 2026-04-16T21:11:10.456874+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1321.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 625 | `3b864283` | 2026-04-16T21:11:11.315408+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 626 | `845c59ad` | 2026-04-16T21:11:11.552926+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 627 | `47ca7424` | 2026-04-16T21:11:11.799438+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 628 | `5857ca61` | 2026-04-16T21:11:12.098960+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 629 | `b0cc20bf` | 2026-04-16T21:11:12.116958+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1042.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 630 | `19d25080` | 2026-04-16T21:11:12.133959+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1059.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 631 | `4cdb7e1b` | 2026-04-16T21:11:12.173485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1098.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 632 | `1fa2bd3b` | 2026-04-16T21:11:12.188485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1113.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 633 | `4ed086b4` | 2026-04-16T21:11:12.466003+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 634 | `c89d71ea` | 2026-04-16T21:11:12.720514+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 635 | `ad85fa0c` | 2026-04-16T21:11:12.991035+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 636 | `b3206bf1` | 2026-04-16T21:11:13.272556+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 637 | `a5edfc46` | 2026-04-16T21:11:13.522069+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 638 | `336d4577` | 2026-04-16T21:11:13.770577+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 639 | `ade2f163` | 2026-04-16T21:11:13.783579+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2703.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 640 | `e43e2cd3` | 2026-04-16T21:11:13.795579+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2714.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 641 | `395b839a` | 2026-04-16T21:11:13.806577+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2724.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 642 | `fbbdade1` | 2026-04-16T21:11:13.817577+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2734.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 643 | `6f3da8f9` | 2026-04-16T21:11:13.830575+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2747.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 644 | `f185c0ce` | 2026-04-16T21:11:13.846578+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 2762.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 645 | `d2dd069e` | 2026-04-16T21:11:14.682621+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 646 | `6be517cb` | 2026-04-16T21:11:14.724623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 275.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 647 | `5e092848` | 2026-04-16T21:11:14.974130+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 648 | `b25d8421` | 2026-04-16T21:11:14.998131+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 545.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 649 | `f1fc7917` | 2026-04-16T21:11:15.259640+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 650 | `eeb3ada7` | 2026-04-16T21:11:15.499148+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 651 | `6e5025e2` | 2026-04-16T21:11:15.735660+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 652 | `76a18bf8` | 2026-04-16T21:11:15.979177+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 653 | `8ac8018a` | 2026-04-16T21:11:16.257695+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 654 | `fb9e0d07` | 2026-04-16T21:11:16.499205+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 655 | `2ff4042d` | 2026-04-16T21:11:16.737715+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 656 | `e825490e` | 2026-04-16T21:11:16.977223+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 657 | `0c957caf` | 2026-04-16T21:11:17.216734+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 658 | `42a88d76` | 2026-04-16T21:11:17.459243+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 659 | `d17c4b6f` | 2026-04-16T21:11:17.696752+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 660 | `dfc6291d` | 2026-04-16T21:11:17.933755+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 661 | `d32e1a32` | 2026-04-16T21:11:18.171264+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 662 | `345d5fdf` | 2026-04-16T21:11:18.413786+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 663 | `980b978b` | 2026-04-16T21:11:18.660295+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 664 | `d39ae92f` | 2026-04-16T21:11:18.905814+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 665 | `e0838071` | 2026-04-16T21:11:19.168331+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 666 | `994c13df` | 2026-04-16T21:11:19.421846+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 667 | `413877b4` | 2026-04-16T21:11:19.667357+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 668 | `2e8bb0fd` | 2026-04-16T21:11:19.908874+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 669 | `1b718cd9` | 2026-04-16T21:11:20.149387+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 670 | `e5388170` | 2026-04-16T21:11:20.388894+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 671 | `48015682` | 2026-04-16T21:11:20.631402+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 672 | `876b0032` | 2026-04-16T21:11:20.642403+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5902.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 673 | `cb7fc561` | 2026-04-16T21:11:20.655404+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5915.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 674 | `70321f34` | 2026-04-16T21:11:20.665403+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5925.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 675 | `67808b48` | 2026-04-16T21:11:20.676402+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5935.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 676 | `f152eacb` | 2026-04-16T21:11:20.689407+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5949.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 677 | `96ef4e61` | 2026-04-16T21:11:20.701920+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5958.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 678 | `5a8ceb33` | 2026-04-16T21:11:20.711919+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5968.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 679 | `fe437e54` | 2026-04-16T21:11:20.721919+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5978.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 680 | `812becec` | 2026-04-16T21:11:20.730918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5987.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 681 | `20fb2a23` | 2026-04-16T21:11:20.740918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5997.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 682 | `85507a58` | 2026-04-16T21:11:20.752918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6009.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 683 | `ef7e09c4` | 2026-04-16T21:11:20.763921+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6019.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 684 | `8e3abf9f` | 2026-04-16T21:11:20.772918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6028.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 685 | `e3350771` | 2026-04-16T21:11:20.782921+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6039.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 686 | `1a3c63fe` | 2026-04-16T21:11:20.795922+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5807.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 687 | `7cb74664` | 2026-04-16T21:11:20.808918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5820.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 688 | `0e56a7eb` | 2026-04-16T21:11:20.819919+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5831.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 689 | `b70ffe28` | 2026-04-16T21:11:20.832918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5842.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 690 | `85c63bac` | 2026-04-16T21:11:20.843918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5853.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 691 | `9391ab34` | 2026-04-16T21:11:20.855919+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5863.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 692 | `da82cfd1` | 2026-04-16T21:11:20.868923+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5874.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 693 | `c9a4d420` | 2026-04-16T21:11:20.880921+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5886.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 694 | `61405b08` | 2026-04-16T21:11:20.892918+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5898.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 695 | `b4d97395` | 2026-04-16T21:11:21.927998+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 696 | `7d940e38` | 2026-04-16T21:11:22.190521+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 697 | `f69fb638` | 2026-04-16T21:11:22.464553+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 698 | `ff02f230` | 2026-04-16T21:11:22.713071+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 699 | `97d3cb80` | 2026-04-16T21:11:22.952582+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 700 | `bf6e7a06` | 2026-04-16T21:11:23.191584+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 701 | `ee3b92e0` | 2026-04-16T21:11:23.431096+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 702 | `3013c1e9` | 2026-04-16T21:11:23.666611+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 703 | `d677c527` | 2026-04-16T21:11:23.905120+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 704 | `250ffc75` | 2026-04-16T21:11:24.143634+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 705 | `a30d9297` | 2026-04-16T21:11:24.445154+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 706 | `2a32ea61` | 2026-04-16T21:11:24.682663+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 707 | `80613462` | 2026-04-16T21:11:24.920173+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 708 | `90f1512e` | 2026-04-16T21:11:25.199687+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 709 | `95d23d89` | 2026-04-16T21:11:25.440202+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 710 | `4787cc35` | 2026-04-16T21:11:25.679713+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 711 | `244f42d4` | 2026-04-16T21:11:25.918223+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 712 | `5479a48c` | 2026-04-16T21:11:26.162750+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 713 | `0dc78fe0` | 2026-04-16T21:11:26.401260+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 714 | `7ff74f6e` | 2026-04-16T21:11:26.638769+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 715 | `3e42274e` | 2026-04-16T21:11:26.877276+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 716 | `726bd449` | 2026-04-16T21:11:27.116790+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 717 | `4a008063` | 2026-04-16T21:11:27.137790+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5506.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 718 | `0778c70f` | 2026-04-16T21:11:27.148789+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5517.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 719 | `8f058d7d` | 2026-04-16T21:11:27.160796+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5529.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 720 | `d87b4ff1` | 2026-04-16T21:11:27.175790+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5541.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 721 | `e0687e77` | 2026-04-16T21:11:27.187791+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5553.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 722 | `22c4ee1b` | 2026-04-16T21:11:27.198797+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5564.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 723 | `89dbf53e` | 2026-04-16T21:11:27.212309+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5577.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 724 | `d4f650df` | 2026-04-16T21:11:27.223307+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5588.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 725 | `6a7a4d28` | 2026-04-16T21:11:27.234307+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5599.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 726 | `513e2d02` | 2026-04-16T21:11:27.245307+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5610.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 727 | `e8999d90` | 2026-04-16T21:11:27.256306+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5621.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 728 | `24dfc6d8` | 2026-04-16T21:11:27.267304+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5632.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 729 | `f2da6b3f` | 2026-04-16T21:11:27.280305+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5645.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 730 | `ea9bc750` | 2026-04-16T21:11:27.291304+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5656.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 731 | `62b22671` | 2026-04-16T21:11:27.301308+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5666.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 732 | `d7585322` | 2026-04-16T21:11:27.313305+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5677.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 733 | `c7d968e1` | 2026-04-16T21:11:27.324305+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5689.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 734 | `f8b322b8` | 2026-04-16T21:11:27.337305+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5696.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 735 | `ac02b9f6` | 2026-04-16T21:11:27.348306+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5707.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 736 | `94a4de22` | 2026-04-16T21:11:27.359305+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5718.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 737 | `448e3b25` | 2026-04-16T21:11:27.370304+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5729.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 738 | `7b2211a8` | 2026-04-16T21:11:27.383304+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 5742.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 739 | `f2eeea1b` | 2026-04-16T21:11:27.623812+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 740 | `1c82e0bd` | 2026-04-16T21:11:27.880329+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 741 | `31c0fb5a` | 2026-04-16T21:11:28.120839+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 742 | `35abe027` | 2026-04-16T21:11:28.362359+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 743 | `2be6723a` | 2026-04-16T21:11:28.605873+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 744 | `effe5273` | 2026-04-16T21:11:28.867388+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 745 | `24858eb1` | 2026-04-16T21:11:29.109897+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 746 | `45eccb80` | 2026-04-16T21:11:29.352407+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 747 | `824ac0e3` | 2026-04-16T21:11:29.594917+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 748 | `ec97cf6e` | 2026-04-16T21:11:29.837426+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 749 | `40f13df7` | 2026-04-16T21:11:30.082941+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 750 | `74b5feea` | 2026-04-16T21:11:30.329455+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 751 | `e4621467` | 2026-04-16T21:11:30.568966+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 752 | `0681c395` | 2026-04-16T21:11:30.810483+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 753 | `8f021493` | 2026-04-16T21:11:31.050998+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 754 | `1103a719` | 2026-04-16T21:11:31.292509+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 755 | `13cab8a4` | 2026-04-16T21:11:31.535019+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 756 | `fe78e667` | 2026-04-16T21:11:31.774528+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 757 | `e7329d1a` | 2026-04-16T21:11:32.017040+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 758 | `9eb54c39` | 2026-04-16T21:11:32.258546+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 759 | `2d017063` | 2026-04-16T21:11:32.513057+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 760 | `e4bb2a57` | 2026-04-16T21:11:32.753565+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 761 | `1a4d27cf` | 2026-04-16T21:11:32.993075+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 762 | `14df74d9` | 2026-04-16T21:11:33.230588+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 763 | `05368bb9` | 2026-04-16T21:11:33.470100+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 764 | `a650e0ea` | 2026-04-16T21:11:33.718103+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 765 | `71c6f6f1` | 2026-04-16T21:11:33.959616+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 766 | `8ee22910` | 2026-04-16T21:11:34.196127+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 767 | `74953400` | 2026-04-16T21:11:34.225656+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12562.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 768 | `9af4ade5` | 2026-04-16T21:11:34.241653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12577.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 769 | `07a8d4a8` | 2026-04-16T21:11:34.252653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12588.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 770 | `63e55a91` | 2026-04-16T21:11:34.264653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12600.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 771 | `f7911dcb` | 2026-04-16T21:11:34.274653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12610.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 772 | `45ebf72d` | 2026-04-16T21:11:34.285655+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12615.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 773 | `79297c89` | 2026-04-16T21:11:34.295655+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12625.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 774 | `25ed8b79` | 2026-04-16T21:11:34.307653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12643.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 775 | `2365b3d1` | 2026-04-16T21:11:34.323655+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12652.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 776 | `6faf47c8` | 2026-04-16T21:11:34.333653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12663.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 777 | `b2ef73f1` | 2026-04-16T21:11:34.343653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12672.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 778 | `86fddbe9` | 2026-04-16T21:11:34.353653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12683.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 779 | `352aef33` | 2026-04-16T21:11:34.365653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12695.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 780 | `3d5dd48f` | 2026-04-16T21:11:34.376655+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12706.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 781 | `4e6c3de7` | 2026-04-16T21:11:34.386653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12707.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 782 | `0e3be412` | 2026-04-16T21:11:34.397653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12717.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 783 | `9330bae4` | 2026-04-16T21:11:34.407653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12727.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 784 | `6ce0f091` | 2026-04-16T21:11:34.417653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12737.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 785 | `801923f7` | 2026-04-16T21:11:34.428656+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12747.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 786 | `e3a19e39` | 2026-04-16T21:11:34.438653+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12758.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 787 | `37613e26` | 2026-04-16T21:11:34.449654+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12768.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 788 | `52bd237e` | 2026-04-16T21:11:34.464656+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12794.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 789 | `0161c032` | 2026-04-16T21:11:34.475164+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12804.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 790 | `f5092762` | 2026-04-16T21:11:34.487166+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12816.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 791 | `5d1d0b41` | 2026-04-16T21:11:34.497164+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12826.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 792 | `43cda68f` | 2026-04-16T21:11:34.508165+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12837.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 793 | `29163df9` | 2026-04-16T21:11:34.518164+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12848.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 794 | `20e884dd` | 2026-04-16T21:11:34.528164+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12858.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 795 | `47697556` | 2026-04-16T21:11:35.730742+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 796 | `14b330dd` | 2026-04-16T21:11:35.974249+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 797 | `73abb0b6` | 2026-04-16T21:11:36.271777+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 798 | `bf1f73fc` | 2026-04-16T21:11:36.523288+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 799 | `2065eff1` | 2026-04-16T21:11:36.764798+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 800 | `3fdb52f8` | 2026-04-16T21:11:37.001306+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 801 | `22463d77` | 2026-04-16T21:11:37.240815+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 802 | `0546ff88` | 2026-04-16T21:11:37.482326+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 803 | `f428da12` | 2026-04-16T21:11:37.721333+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 804 | `b1f6ec00` | 2026-04-16T21:11:37.960837+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 805 | `fa0ae7bd` | 2026-04-16T21:11:38.201356+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 806 | `d9c4c6dd` | 2026-04-16T21:11:38.439873+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 807 | `df076233` | 2026-04-16T21:11:38.678384+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 808 | `3f955aa5` | 2026-04-16T21:11:38.917897+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 809 | `5715471b` | 2026-04-16T21:11:39.158417+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 810 | `1096af4f` | 2026-04-16T21:11:39.399925+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 811 | `daf763b9` | 2026-04-16T21:11:39.638438+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 812 | `338bc704` | 2026-04-16T21:11:39.874947+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 813 | `b08143b8` | 2026-04-16T21:11:40.113457+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 814 | `5023f7ed` | 2026-04-16T21:11:40.353967+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 815 | `6d4a7fd7` | 2026-04-16T21:11:40.591477+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 816 | `fb946db2` | 2026-04-16T21:11:40.830990+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 817 | `8607a961` | 2026-04-16T21:11:41.070502+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 818 | `5e6448b6` | 2026-04-16T21:11:41.310011+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 819 | `5e022c46` | 2026-04-16T21:11:41.547519+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 820 | `6fccefff` | 2026-04-16T21:11:41.791031+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 821 | `ab58343d` | 2026-04-16T21:11:42.040543+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 822 | `79fdc922` | 2026-04-16T21:11:42.280053+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 823 | `b586921f` | 2026-04-16T21:11:42.517558+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 824 | `65aa7b87` | 2026-04-16T21:11:42.756071+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 825 | `3affc911` | 2026-04-16T21:11:42.992584+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 826 | `a5fd9320` | 2026-04-16T21:11:43.234588+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 827 | `9fbeb030` | 2026-04-16T21:11:43.474094+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 828 | `a066f635` | 2026-04-16T21:11:43.712613+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 829 | `94cc357e` | 2026-04-16T21:11:43.949122+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 830 | `91f93a4a` | 2026-04-16T21:11:44.189632+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 831 | `aa806271` | 2026-04-16T21:11:44.433141+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 832 | `b50bdf1f` | 2026-04-16T21:11:44.669654+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 833 | `b5677e00` | 2026-04-16T21:11:44.909165+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 834 | `dca40456` | 2026-04-16T21:11:45.146675+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 835 | `af28b963` | 2026-04-16T21:11:45.391186+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 836 | `b7820e9a` | 2026-04-16T21:11:45.632698+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 837 | `fe4f65d1` | 2026-04-16T21:11:45.871211+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 838 | `0509fab3` | 2026-04-16T21:11:46.110725+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 839 | `b42e5fc4` | 2026-04-16T21:11:46.351237+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 840 | `a0cd5522` | 2026-04-16T21:11:46.593746+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 841 | `79b44cf5` | 2026-04-16T21:11:46.830257+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 842 | `41628be8` | 2026-04-16T21:11:47.069771+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 843 | `0c417ba6` | 2026-04-16T21:11:47.308284+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 844 | `6af1f296` | 2026-04-16T21:11:47.549795+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 845 | `fdf74b43` | 2026-04-16T21:11:47.562796+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12126.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 846 | `9155bfaf` | 2026-04-16T21:11:47.573795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12136.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 847 | `4429612f` | 2026-04-16T21:11:47.588796+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12151.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 848 | `5ed83a2b` | 2026-04-16T21:11:47.599795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12162.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 849 | `ff870495` | 2026-04-16T21:11:47.613796+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12177.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 850 | `440814a2` | 2026-04-16T21:11:47.629797+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12193.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 851 | `d3f9034c` | 2026-04-16T21:11:47.641796+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12200.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 852 | `32876b90` | 2026-04-16T21:11:47.651794+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12210.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 853 | `f01d750d` | 2026-04-16T21:11:47.663794+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12222.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 854 | `c1c5974a` | 2026-04-16T21:11:47.674795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12233.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 855 | `4b16e9b1` | 2026-04-16T21:11:47.689795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12247.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 856 | `7d1723d1` | 2026-04-16T21:11:47.700795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12259.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 857 | `8911ea41` | 2026-04-16T21:11:47.717795+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12275.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 858 | `a66f65c5` | 2026-04-16T21:11:47.733799+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12291.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 859 | `0e1192fe` | 2026-04-16T21:11:47.750314+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12308.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 860 | `efc60a3e` | 2026-04-16T21:11:47.762316+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12320.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 861 | `06dbe7ff` | 2026-04-16T21:11:47.773314+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12331.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 862 | `025e39ab` | 2026-04-16T21:11:47.784315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12342.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 863 | `cccb433a` | 2026-04-16T21:11:47.796315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12353.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 864 | `62ba8de5` | 2026-04-16T21:11:47.808314+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12365.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 865 | `04a3a8ab` | 2026-04-16T21:11:47.823315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12379.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 866 | `856468e5` | 2026-04-16T21:11:47.836315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12392.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 867 | `80c34e15` | 2026-04-16T21:11:47.848315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12404.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 868 | `43f66183` | 2026-04-16T21:11:47.860314+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12417.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 869 | `f2cfe020` | 2026-04-16T21:11:47.873314+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12430.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 870 | `df1b5d59` | 2026-04-16T21:11:47.885319+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12441.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 871 | `2997c56b` | 2026-04-16T21:11:47.903316+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12451.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 872 | `a8993f28` | 2026-04-16T21:11:47.916315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12464.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 873 | `f8905963` | 2026-04-16T21:11:47.932315+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12480.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 874 | `358c4903` | 2026-04-16T21:11:47.943313+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12490.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 875 | `ae7a72d8` | 2026-04-16T21:11:47.955313+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12503.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 876 | `cd1e19bb` | 2026-04-16T21:11:47.970313+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12517.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 877 | `e4869883` | 2026-04-16T21:11:47.984320+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12531.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 878 | `d419b335` | 2026-04-16T21:11:47.998828+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12547.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 879 | `92e12193` | 2026-04-16T21:11:48.009833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12557.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 880 | `617938f9` | 2026-04-16T21:11:48.023832+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12571.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 881 | `b1f053f0` | 2026-04-16T21:11:48.035833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12583.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 882 | `2611952b` | 2026-04-16T21:11:48.047833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12595.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 883 | `c2c41e11` | 2026-04-16T21:11:48.062834+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12604.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 884 | `4656c4be` | 2026-04-16T21:11:48.073833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12615.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 885 | `caa1bbd9` | 2026-04-16T21:11:48.090836+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12632.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 886 | `e1f2e1e7` | 2026-04-16T21:11:48.103836+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12644.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 887 | `edf1a349` | 2026-04-16T21:11:48.170836+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12712.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 888 | `b056fe42` | 2026-04-16T21:11:48.203833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12744.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 889 | `7483c66a` | 2026-04-16T21:11:48.215834+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12756.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 890 | `7268bfd2` | 2026-04-16T21:11:48.230833+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12771.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 891 | `18ba7306` | 2026-04-16T21:11:48.243840+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12783.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 892 | `c2b66b57` | 2026-04-16T21:11:48.255346+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12795.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 893 | `73dea92b` | 2026-04-16T21:11:48.280349+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12821.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 894 | `e3f4da3e` | 2026-04-16T21:11:48.292347+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 12833.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 895 | `e374cc15` | 2026-04-16T21:11:48.680856+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 896 | `d9e77224` | 2026-04-16T21:11:48.922370+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 897 | `77a8bcc4` | 2026-04-16T21:11:49.178885+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 898 | `c217f2e8` | 2026-04-16T21:11:49.432388+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 899 | `6f2b7122` | 2026-04-16T21:11:49.673900+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 900 | `a3992f44` | 2026-04-16T21:11:49.922414+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 901 | `069b63da` | 2026-04-16T21:11:50.175929+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 902 | `2f31aba1` | 2026-04-16T21:11:50.422440+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 903 | `ddf7bba3` | 2026-04-16T21:11:50.664954+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 904 | `579682dc` | 2026-04-16T21:11:50.902465+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 905 | `b7d62d9f` | 2026-04-16T21:11:51.142975+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 906 | `c03ee12b` | 2026-04-16T21:11:51.389487+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 907 | `75eda017` | 2026-04-16T21:11:51.642003+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 908 | `74ca5e39` | 2026-04-16T21:11:51.892517+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 909 | `f1f358ba` | 2026-04-16T21:11:52.139034+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 910 | `24bbb682` | 2026-04-16T21:11:52.389543+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 911 | `5ac0df03` | 2026-04-16T21:11:52.638062+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 912 | `dc0b3416` | 2026-04-16T21:11:52.879577+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 913 | `348374a7` | 2026-04-16T21:11:53.122090+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 914 | `bf3fe161` | 2026-04-16T21:11:53.370603+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 915 | `897487b9` | 2026-04-16T21:11:53.609114+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 916 | `24bf2baf` | 2026-04-16T21:11:53.851630+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 917 | `7c583664` | 2026-04-16T21:11:54.091145+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 918 | `b366b174` | 2026-04-16T21:11:54.334655+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 919 | `a5c47169` | 2026-04-16T21:11:54.575166+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 920 | `4d56cc82` | 2026-04-16T21:11:54.815677+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 921 | `09180e9a` | 2026-04-16T21:11:55.069193+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 922 | `95bcf6d9` | 2026-04-16T21:11:55.310704+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 923 | `62dbd97c` | 2026-04-16T21:11:55.555216+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 924 | `5dfa0e5f` | 2026-04-16T21:11:55.794723+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 925 | `4eed9c66` | 2026-04-16T21:11:56.035233+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 926 | `c53320ec` | 2026-04-16T21:11:56.275746+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 927 | `50991f22` | 2026-04-16T21:11:56.517261+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 928 | `9d9bf600` | 2026-04-16T21:11:56.760263+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 929 | `32e86ca0` | 2026-04-16T21:11:57.001773+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 930 | `da6aae78` | 2026-04-16T21:11:57.255298+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 931 | `4f976744` | 2026-04-16T21:11:57.515813+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 932 | `3d63942d` | 2026-04-16T21:11:57.777835+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 933 | `19ec4b28` | 2026-04-16T21:11:58.047361+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 934 | `296bebd2` | 2026-04-16T21:11:58.317872+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 935 | `44127b8e` | 2026-04-16T21:11:58.577380+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 936 | `42308640` | 2026-04-16T21:11:58.833890+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 937 | `fa7c7e16` | 2026-04-16T21:11:59.074399+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 938 | `4db1bbbb` | 2026-04-16T21:11:59.451923+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 939 | `d2e055f7` | 2026-04-16T21:11:59.700435+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 940 | `47238809` | 2026-04-16T21:11:59.945948+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 941 | `732a56eb` | 2026-04-16T21:11:59.958946+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11599.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 942 | `a212f075` | 2026-04-16T21:11:59.970945+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11620.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 943 | `e8e112dc` | 2026-04-16T21:11:59.984947+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11633.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 944 | `bccbbf75` | 2026-04-16T21:11:59.997947+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11646.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 945 | `cdf0a899` | 2026-04-16T21:12:00.009945+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11658.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 946 | `0c791798` | 2026-04-16T21:12:00.029949+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11678.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 947 | `629a42f0` | 2026-04-16T21:12:00.046957+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11687.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 948 | `b61f927b` | 2026-04-16T21:12:00.063472+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11704.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 949 | `8303ef7c` | 2026-04-16T21:12:00.083468+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11722.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 950 | `dd56eeff` | 2026-04-16T21:12:00.099469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11738.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 951 | `a9e87c91` | 2026-04-16T21:12:00.111469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11749.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 952 | `a68fd94c` | 2026-04-16T21:12:00.123470+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11761.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 953 | `9007a009` | 2026-04-16T21:12:00.135469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11772.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 954 | `bd43b905` | 2026-04-16T21:12:00.148469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11785.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 955 | `6d7e4e5c` | 2026-04-16T21:12:00.167472+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11805.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 956 | `54922f42` | 2026-04-16T21:12:00.183468+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11821.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 957 | `1821a94b` | 2026-04-16T21:12:00.197470+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11834.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 958 | `49d7ec69` | 2026-04-16T21:12:00.209468+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11847.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 959 | `13617e7b` | 2026-04-16T21:12:00.223469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11871.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 960 | `39a2fbdb` | 2026-04-16T21:12:00.235469+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11872.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 961 | `fd8e1624` | 2026-04-16T21:12:00.248474+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11885.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 962 | `dd042dc2` | 2026-04-16T21:12:00.260467+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11897.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 963 | `71633568` | 2026-04-16T21:12:00.273468+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11910.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 964 | `305629c8` | 2026-04-16T21:12:00.285468+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11921.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 965 | `75655425` | 2026-04-16T21:12:00.301473+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11937.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 966 | `7a74b821` | 2026-04-16T21:12:00.315983+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11956.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 967 | `3a3a2a83` | 2026-04-16T21:12:00.583499+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 968 | `9f317c34` | 2026-04-16T21:12:00.842012+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 969 | `0b33dbb5` | 2026-04-16T21:12:01.185533+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 970 | `b9301452` | 2026-04-16T21:12:01.452052+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 971 | `fe6de59a` | 2026-04-16T21:12:01.469053+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13081.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 972 | `51a7d28e` | 2026-04-16T21:12:01.481052+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13093.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 973 | `573ff82c` | 2026-04-16T21:12:01.493056+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13104.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 974 | `60a8998d` | 2026-04-16T21:12:01.505052+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13116.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 975 | `97b80ebe` | 2026-04-16T21:12:01.519053+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13130.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 976 | `a6e7e9a1` | 2026-04-16T21:12:01.534057+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13145.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 977 | `8919db13` | 2026-04-16T21:12:01.551058+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13162.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 978 | `949d310b` | 2026-04-16T21:12:01.562569+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13172.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 979 | `8ecec44d` | 2026-04-16T21:12:01.579570+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13188.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 980 | `e139f52f` | 2026-04-16T21:12:01.590566+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13200.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 981 | `223ccdcf` | 2026-04-16T21:12:01.603566+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13212.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 982 | `15bf94ed` | 2026-04-16T21:12:01.615569+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13225.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 983 | `6b87523d` | 2026-04-16T21:12:01.629566+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13227.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 984 | `5f6035d1` | 2026-04-16T21:12:01.645567+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13243.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 985 | `08b73683` | 2026-04-16T21:12:01.657567+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13250.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 986 | `dfa61a3e` | 2026-04-16T21:12:01.670568+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13263.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 987 | `6815cfab` | 2026-04-16T21:12:01.681565+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13274.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 988 | `a79c4a2d` | 2026-04-16T21:12:01.692566+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13286.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 989 | `d86700ec` | 2026-04-16T21:12:01.704566+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13297.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 990 | `692079ea` | 2026-04-16T21:12:01.715570+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13309.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 991 | `2d506f74` | 2026-04-16T21:12:01.746569+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13339.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 992 | `4c4f551f` | 2026-04-16T21:12:01.761568+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13352.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 993 | `e414db5b` | 2026-04-16T21:12:01.778570+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13371.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 994 | `eebc88a0` | 2026-04-16T21:12:01.793571+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 13384.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 995 | `f1533030` | 2026-04-16T21:12:03.453184+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 996 | `f330ad82` | 2026-04-16T21:12:03.713693+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 997 | `bdaddb30` | 2026-04-16T21:12:03.967210+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 998 | `97c80615` | 2026-04-16T21:12:04.216723+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 999 | `377b44a3` | 2026-04-16T21:12:04.462234+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1000 | `ea33880d` | 2026-04-16T21:12:04.706743+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1001 | `6431dd7c` | 2026-04-16T21:12:04.721744+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 1582.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1002 | `225b0a93` | 2026-04-16T21:12:04.964252+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1003 | `5ba10068` | 2026-04-16T21:12:05.205764+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1004 | `74fb3f26` | 2026-04-16T21:12:05.445275+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1005 | `15d276b2` | 2026-04-16T21:12:05.689784+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1006 | `cd27de81` | 2026-04-16T21:12:05.931299+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1007 | `e4e88b16` | 2026-04-16T21:12:06.176809+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1008 | `3333fe00` | 2026-04-16T21:12:06.198813+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 3054.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1009 | `1a2d65be` | 2026-04-16T21:12:06.440319+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1010 | `835db494` | 2026-04-16T21:12:06.683833+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1011 | `00e883c8` | 2026-04-16T21:12:06.923342+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1012 | `246fdf70` | 2026-04-16T21:12:07.168852+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1013 | `b0623cb9` | 2026-04-16T21:12:07.411367+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1014 | `d8f3dd9b` | 2026-04-16T21:12:07.422370+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4275.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1015 | `a07901eb` | 2026-04-16T21:12:07.442372+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4282.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1016 | `934d410b` | 2026-04-16T21:12:07.456367+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4309.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1017 | `745ffa27` | 2026-04-16T21:12:07.470370+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4310.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1018 | `6cd84bd2` | 2026-04-16T21:12:07.487371+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4327.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1019 | `6a0f3750` | 2026-04-16T21:12:07.500369+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4322.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1020 | `59814d3b` | 2026-04-16T21:12:07.515368+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4337.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1021 | `f5931224` | 2026-04-16T21:12:07.527368+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4349.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1022 | `1a25becc` | 2026-04-16T21:12:07.541367+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4362.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1023 | `bab5daed` | 2026-04-16T21:12:07.553367+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4375.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1024 | `05ec7e90` | 2026-04-16T21:12:07.569377+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4387.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1025 | `3563bc35` | 2026-04-16T21:12:07.581888+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4400.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1026 | `d61a3442` | 2026-04-16T21:12:07.593883+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4413.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1027 | `20eda2d0` | 2026-04-16T21:12:07.607882+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4426.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1028 | `37d3ebb1` | 2026-04-16T21:12:07.623886+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 4442.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1029 | `5191d382` | 2026-04-16T21:12:07.877397+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1030 | `eac39794` | 2026-04-16T21:12:08.124922+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1031 | `ce9e7eaa` | 2026-04-16T21:12:08.374435+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1032 | `8d32842b` | 2026-04-16T21:12:08.617945+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1033 | `90db6a41` | 2026-04-16T21:12:08.857452+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1034 | `3497b1a8` | 2026-04-16T21:12:09.100966+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1035 | `b4d9a43a` | 2026-04-16T21:12:09.359482+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1036 | `44556dd4` | 2026-04-16T21:12:09.604994+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1037 | `f82e8823` | 2026-04-16T21:12:09.847504+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1038 | `b7beb4ad` | 2026-04-16T21:12:09.965507+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6747.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1039 | `768c6a0c` | 2026-04-16T21:12:09.980504+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6762.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1040 | `c69309aa` | 2026-04-16T21:12:09.995507+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6777.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1041 | `06fe5546` | 2026-04-16T21:12:10.012506+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6793.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1042 | `039c6434` | 2026-04-16T21:12:10.022504+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6804.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1043 | `ae8c76c2` | 2026-04-16T21:12:10.040509+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6822.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1044 | `41dc22ee` | 2026-04-16T21:12:10.058510+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6591.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1045 | `21cc08ee` | 2026-04-16T21:12:10.069508+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6602.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1046 | `07dab5e8` | 2026-04-16T21:12:10.079508+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 6613.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1047 | `2e6a40d9` | 2026-04-16T21:12:10.326021+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1048 | `b10f156c` | 2026-04-16T21:12:10.568533+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1049 | `3668824a` | 2026-04-16T21:12:10.920577+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1050 | `caeb0e34` | 2026-04-16T21:12:11.182098+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1051 | `5e4ec335` | 2026-04-16T21:12:11.432614+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1052 | `1c3be843` | 2026-04-16T21:12:11.677124+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1053 | `f7420b3d` | 2026-04-16T21:12:11.925640+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1054 | `c96e18ac` | 2026-04-16T21:12:12.176147+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1055 | `17ba8c3e` | 2026-04-16T21:12:12.490668+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1056 | `b889fc39` | 2026-04-16T21:12:12.829187+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1057 | `eda93878` | 2026-04-16T21:12:13.073699+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1058 | `245db089` | 2026-04-16T21:12:13.321214+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1059 | `cec4e24c` | 2026-04-16T21:12:13.572728+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1060 | `48b25818` | 2026-04-16T21:12:13.822240+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1061 | `28d7b81d` | 2026-04-16T21:12:14.068758+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1062 | `4fe9c376` | 2026-04-16T21:12:14.314272+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1063 | `74476b95` | 2026-04-16T21:12:14.558786+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1064 | `86e1df8c` | 2026-04-16T21:12:14.801299+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1065 | `05ecfde0` | 2026-04-16T21:12:15.039809+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1066 | `363b63f6` | 2026-04-16T21:12:15.295322+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1067 | `0dad89d7` | 2026-04-16T21:12:15.533827+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1068 | `fe0c5887` | 2026-04-16T21:12:15.772338+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1069 | `28c86f55` | 2026-04-16T21:12:16.021847+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1070 | `2ecb531f` | 2026-04-16T21:12:16.264359+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1071 | `db05c28e` | 2026-04-16T21:12:16.323361+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10133.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1072 | `e8de77e3` | 2026-04-16T21:12:16.334363+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10144.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1073 | `80483fe3` | 2026-04-16T21:12:16.346366+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10156.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1074 | `cb70d53b` | 2026-04-16T21:12:16.357873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10167.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1075 | `ae9c55ee` | 2026-04-16T21:12:16.369875+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10179.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1076 | `9a03cf9a` | 2026-04-16T21:12:16.380875+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10190.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1077 | `8ab1bb3e` | 2026-04-16T21:12:16.391873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10200.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1078 | `29bd4d30` | 2026-04-16T21:12:16.402873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10212.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1079 | `cafcd5d9` | 2026-04-16T21:12:16.413873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10223.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1080 | `99aa58d8` | 2026-04-16T21:12:16.424873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10234.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1081 | `95d7d0c0` | 2026-04-16T21:12:16.435873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10246.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1082 | `8f9c586e` | 2026-04-16T21:12:16.452874+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10255.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1083 | `aad229b0` | 2026-04-16T21:12:16.463875+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10267.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1084 | `5ccbd383` | 2026-04-16T21:12:16.476876+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10279.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1085 | `182546c8` | 2026-04-16T21:12:16.488874+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10291.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1086 | `9940122f` | 2026-04-16T21:12:16.500873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10303.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1087 | `4e0f3e91` | 2026-04-16T21:12:16.512876+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10315.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1088 | `a99a8241` | 2026-04-16T21:12:16.523873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10326.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1089 | `509381a5` | 2026-04-16T21:12:16.536875+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10339.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1090 | `2fbdcfbf` | 2026-04-16T21:12:16.548874+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10350.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1091 | `9940bb79` | 2026-04-16T21:12:16.562876+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10364.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1092 | `33739920` | 2026-04-16T21:12:16.575873+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10377.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1093 | `fdc093ec` | 2026-04-16T21:12:16.589878+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10391.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1094 | `d60d68b7` | 2026-04-16T21:12:16.603389+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10405.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1095 | `21db8157` | 2026-04-16T21:12:16.867896+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1096 | `6da045b4` | 2026-04-16T21:12:17.135405+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1097 | `337c7c9f` | 2026-04-16T21:12:17.399914+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1098 | `51944533` | 2026-04-16T21:12:17.653426+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1099 | `4fe56053` | 2026-04-16T21:12:17.892934+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1100 | `77216565` | 2026-04-16T21:12:18.140446+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1101 | `51286b59` | 2026-04-16T21:12:18.386955+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1102 | `c990ad59` | 2026-04-16T21:12:18.398956+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 9283.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1103 | `6efe8e4f` | 2026-04-16T21:12:18.647473+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1104 | `617c0520` | 2026-04-16T21:12:18.886980+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1105 | `b0909240` | 2026-04-16T21:12:19.134494+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1106 | `340d9c2e` | 2026-04-16T21:12:19.428004+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1107 | `95c0a040` | 2026-04-16T21:12:19.671520+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1108 | `42baec6c` | 2026-04-16T21:12:19.692521+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 9826.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1109 | `e9fd32ad` | 2026-04-16T21:12:19.938026+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1110 | `b145831c` | 2026-04-16T21:12:20.199542+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1111 | `83f8ea1a` | 2026-04-16T21:12:20.537060+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1112 | `52ac0a97` | 2026-04-16T21:12:20.779582+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1113 | `45d42e23` | 2026-04-16T21:12:21.046098+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1114 | `0e446bb3` | 2026-04-16T21:12:21.081099+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11208.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1115 | `dc73784a` | 2026-04-16T21:12:21.115107+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11160.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1116 | `2a831e07` | 2026-04-16T21:12:21.127106+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11171.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1117 | `1f07cb94` | 2026-04-16T21:12:21.149623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11190.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1118 | `e770183c` | 2026-04-16T21:12:21.166623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11126.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1119 | `cea15404` | 2026-04-16T21:12:21.183623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11128.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1120 | `f3b450be` | 2026-04-16T21:12:21.202625+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11147.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1121 | `3fe3aae5` | 2026-04-16T21:12:21.218629+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11160.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1122 | `aa8be82e` | 2026-04-16T21:12:21.231622+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11173.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1123 | `19bc57c0` | 2026-04-16T21:12:21.248623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11190.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1124 | `e3091fe1` | 2026-04-16T21:12:21.272625+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11176.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1125 | `f9202bcb` | 2026-04-16T21:12:21.286622+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11189.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1126 | `9d038e7e` | 2026-04-16T21:12:21.299628+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11202.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1127 | `b436810e` | 2026-04-16T21:12:21.318626+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11221.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1128 | `e9145081` | 2026-04-16T21:12:21.343625+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11246.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1129 | `521424eb` | 2026-04-16T21:12:21.644664+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1130 | `fe599177` | 2026-04-16T21:12:21.896181+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1131 | `b4efdf1a` | 2026-04-16T21:12:22.157695+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1132 | `f5a61fe3` | 2026-04-16T21:12:22.409202+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1133 | `8ae4a988` | 2026-04-16T21:12:22.658709+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1134 | `d975a63b` | 2026-04-16T21:12:22.913231+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1135 | `93f54df5` | 2026-04-16T21:12:23.176738+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1136 | `74265cbb` | 2026-04-16T21:12:23.439248+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1137 | `1ee628cd` | 2026-04-16T21:12:23.738766+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1138 | `fce1102b` | 2026-04-16T21:12:23.780771+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7156.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1139 | `26489614` | 2026-04-16T21:12:23.796772+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7172.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1140 | `b1d7e521` | 2026-04-16T21:12:23.817774+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7192.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1141 | `5c0fb6fc` | 2026-04-16T21:12:23.841766+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7216.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1142 | `05eb5ec9` | 2026-04-16T21:12:23.865773+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7240.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1143 | `87e9190e` | 2026-04-16T21:12:23.886280+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7258.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1144 | `f8161836` | 2026-04-16T21:12:23.907289+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7276.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1145 | `7c2a1607` | 2026-04-16T21:12:23.921287+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7290.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1146 | `0a3b4de7` | 2026-04-16T21:12:23.938291+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7306.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1147 | `0763cae2` | 2026-04-16T21:12:24.353804+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1148 | `da1aa575` | 2026-04-16T21:12:24.597315+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1149 | `6d944b9b` | 2026-04-16T21:12:24.847823+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1150 | `beca1228` | 2026-04-16T21:12:25.097333+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1151 | `d592bfa5` | 2026-04-16T21:12:25.348852+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1152 | `26e8dded` | 2026-04-16T21:12:25.610360+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1153 | `294f30b9` | 2026-04-16T21:12:25.859880+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1154 | `caa2c577` | 2026-04-16T21:12:26.105387+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1155 | `e72e8ce9` | 2026-04-16T21:12:26.352898+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1156 | `38ac2020` | 2026-04-16T21:12:26.600413+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1157 | `3907c0ae` | 2026-04-16T21:12:26.846920+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1158 | `358e2fa5` | 2026-04-16T21:12:27.090429+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1159 | `79bd03d9` | 2026-04-16T21:12:27.371953+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1160 | `eabcb95a` | 2026-04-16T21:12:27.613464+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1161 | `785c0881` | 2026-04-16T21:12:27.856975+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1162 | `7f281ae5` | 2026-04-16T21:12:28.097485+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1163 | `cc94a0ab` | 2026-04-16T21:12:28.343995+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1164 | `2c1946f0` | 2026-04-16T21:12:28.588508+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1165 | `d85b0ae0` | 2026-04-16T21:12:28.835017+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1166 | `f550ceba` | 2026-04-16T21:12:29.083534+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1167 | `1b091f3d` | 2026-04-16T21:12:29.340040+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1168 | `31178d97` | 2026-04-16T21:12:29.590552+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1169 | `a46a9686` | 2026-04-16T21:12:29.844063+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1170 | `f62e461c` | 2026-04-16T21:12:30.087573+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1171 | `668d8f33` | 2026-04-16T21:12:30.154583+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10467.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1172 | `6dab31d6` | 2026-04-16T21:12:30.172098+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10484.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1173 | `06e77764` | 2026-04-16T21:12:30.185096+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10497.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1174 | `ac5d1711` | 2026-04-16T21:12:30.197097+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10508.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1175 | `be75280a` | 2026-04-16T21:12:30.208097+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10519.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1176 | `a556d3af` | 2026-04-16T21:12:30.219096+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10530.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1177 | `0725217d` | 2026-04-16T21:12:30.230097+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10541.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1178 | `cdf75749` | 2026-04-16T21:12:30.242096+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10553.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1179 | `519495d3` | 2026-04-16T21:12:30.255096+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10566.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1180 | `9d6406d2` | 2026-04-16T21:12:30.267097+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10578.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1181 | `52463769` | 2026-04-16T21:12:30.279100+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10590.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1182 | `cd0f7f67` | 2026-04-16T21:12:30.297104+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10605.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1183 | `83ea8f3e` | 2026-04-16T21:12:30.311097+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10619.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1184 | `73917b3b` | 2026-04-16T21:12:30.333098+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10641.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1185 | `c9b9d151` | 2026-04-16T21:12:30.353100+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10661.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1186 | `5670b2ff` | 2026-04-16T21:12:30.376099+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10684.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1187 | `e74a575d` | 2026-04-16T21:12:30.395101+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10702.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1188 | `75fd28e3` | 2026-04-16T21:12:30.412623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10720.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1189 | `a2e7ef2a` | 2026-04-16T21:12:30.431623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10739.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1190 | `17035c83` | 2026-04-16T21:12:30.507623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10814.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1191 | `311075ec` | 2026-04-16T21:12:30.535621+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10842.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1192 | `665cced8` | 2026-04-16T21:12:30.546621+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10854.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1193 | `27299d28` | 2026-04-16T21:12:30.558621+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10866.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1194 | `0e315c53` | 2026-04-16T21:12:30.572623+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10881.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1195 | `2156f54b` | 2026-04-16T21:12:30.841137+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1196 | `92bcca35` | 2026-04-16T21:12:31.130657+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1197 | `5b57cc27` | 2026-04-16T21:12:31.389182+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1198 | `a4aa3a94` | 2026-04-16T21:12:31.637700+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1199 | `58d56c86` | 2026-04-16T21:12:31.876213+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1200 | `b311e56c` | 2026-04-16T21:12:32.118722+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1201 | `ccef73b7` | 2026-04-16T21:12:32.362236+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1202 | `94dda083` | 2026-04-16T21:12:32.613745+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1203 | `ac9f4012` | 2026-04-16T21:12:32.627745+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 9698.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1204 | `c46b0bd8` | 2026-04-16T21:12:32.903257+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1205 | `7ded11a8` | 2026-04-16T21:12:33.157780+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1206 | `49f3cc40` | 2026-04-16T21:12:33.406292+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1207 | `87c98705` | 2026-04-16T21:12:33.649808+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1208 | `69fd6bda` | 2026-04-16T21:12:33.671322+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 9913.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1209 | `7dcd02ce` | 2026-04-16T21:12:33.925839+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1210 | `da7ac89a` | 2026-04-16T21:12:34.249357+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1211 | `7670b877` | 2026-04-16T21:12:34.501866+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1212 | `7a848b8c` | 2026-04-16T21:12:34.754381+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1213 | `43c69efb` | 2026-04-16T21:12:35.002898+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1214 | `e9171ac2` | 2026-04-16T21:12:35.018898+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11255.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1215 | `8c77cf41` | 2026-04-16T21:12:35.037897+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11265.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1216 | `2fe8a203` | 2026-04-16T21:12:35.049897+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11275.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1217 | `296617aa` | 2026-04-16T21:12:35.065899+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11289.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1218 | `9c80108c` | 2026-04-16T21:12:35.084898+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11222.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1219 | `114991a8` | 2026-04-16T21:12:35.102897+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11237.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1220 | `a97138fc` | 2026-04-16T21:12:35.115898+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11214.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1221 | `b5ce7926` | 2026-04-16T21:12:35.128904+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11221.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1222 | `e4faaccf` | 2026-04-16T21:12:35.141896+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11235.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1223 | `e20b8a4d` | 2026-04-16T21:12:35.178423+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11271.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1224 | `700df390` | 2026-04-16T21:12:35.193422+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 8335.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1225 | `bfd38c16` | 2026-04-16T21:12:35.205420+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 8346.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1226 | `341ffcf7` | 2026-04-16T21:12:35.218419+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 8361.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1227 | `47d2f58e` | 2026-04-16T21:12:35.230422+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 8372.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1228 | `7a588f60` | 2026-04-16T21:12:35.240419+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 8383.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1229 | `b7a1f74c` | 2026-04-16T21:12:35.503933+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1230 | `8afc2ae0` | 2026-04-16T21:12:35.743442+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1231 | `482bb788` | 2026-04-16T21:12:36.036957+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1232 | `cfb9cfa2` | 2026-04-16T21:12:36.280467+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1233 | `6cb3f208` | 2026-04-16T21:12:36.546980+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1234 | `c16cea6c` | 2026-04-16T21:12:37.003031+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1235 | `4be74a24` | 2026-04-16T21:12:37.260542+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1236 | `e463fa77` | 2026-04-16T21:12:37.508058+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1237 | `a8962fd6` | 2026-04-16T21:12:37.755580+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1238 | `f92b0b51` | 2026-04-16T21:12:37.811583+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7214.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1239 | `88b31690` | 2026-04-16T21:12:37.832581+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7234.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1240 | `b46a725e` | 2026-04-16T21:12:37.845581+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7247.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1241 | `7ced05ee` | 2026-04-16T21:12:37.863582+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7265.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1242 | `ce17968e` | 2026-04-16T21:12:37.889582+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7288.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1243 | `bbdb50a2` | 2026-04-16T21:12:37.905580+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7303.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1244 | `757dd170` | 2026-04-16T21:12:37.919589+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7311.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1245 | `8c5a4366` | 2026-04-16T21:12:37.931101+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7323.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1246 | `15467437` | 2026-04-16T21:12:37.942100+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 7334.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1247 | `9286b662` | 2026-04-16T21:12:38.320631+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1248 | `9e2bb1b5` | 2026-04-16T21:12:38.580154+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1249 | `fd858d97` | 2026-04-16T21:12:38.829661+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1250 | `6d9a7233` | 2026-04-16T21:12:39.074169+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1251 | `0384cc52` | 2026-04-16T21:12:39.327694+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1252 | `b489dc26` | 2026-04-16T21:12:39.750736+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1253 | `91fb81c5` | 2026-04-16T21:12:40.006251+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1254 | `547c4453` | 2026-04-16T21:12:40.272764+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1255 | `ff4c6d4b` | 2026-04-16T21:12:40.534281+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1256 | `0f90dbfb` | 2026-04-16T21:12:40.793791+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1257 | `1b22552f` | 2026-04-16T21:12:41.045306+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1258 | `0b36d6ba` | 2026-04-16T21:12:41.308817+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1259 | `36790948` | 2026-04-16T21:12:41.649334+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1260 | `8ddfaa75` | 2026-04-16T21:12:41.903845+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1261 | `0b46a426` | 2026-04-16T21:12:42.162368+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1262 | `0b14cd9d` | 2026-04-16T21:12:42.418881+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1263 | `36fd3b16` | 2026-04-16T21:12:42.671394+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1264 | `ac9b9f90` | 2026-04-16T21:12:42.915905+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1265 | `f1b879e1` | 2026-04-16T21:12:43.170415+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1266 | `586e6b5f` | 2026-04-16T21:12:43.414926+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1267 | `ff3e2652` | 2026-04-16T21:12:43.662439+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1268 | `002395cd` | 2026-04-16T21:12:43.901947+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1269 | `8bf08ab2` | 2026-04-16T21:12:44.146460+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1270 | `e6d3204d` | 2026-04-16T21:12:44.390968+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1271 | `091ea14d` | 2026-04-16T21:12:44.423969+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10757.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1272 | `9c812942` | 2026-04-16T21:12:44.438975+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10772.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1273 | `efc49364` | 2026-04-16T21:12:44.452491+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10785.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1274 | `08b8b01d` | 2026-04-16T21:12:44.465485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10798.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1275 | `ce3d0f69` | 2026-04-16T21:12:44.482485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10815.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1276 | `9fada409` | 2026-04-16T21:12:44.497484+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10830.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1277 | `51ce7149` | 2026-04-16T21:12:44.512485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10844.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1278 | `bafc1e5e` | 2026-04-16T21:12:44.524483+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10856.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1279 | `4d4a9636` | 2026-04-16T21:12:44.535483+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10866.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1280 | `e1ed74a9` | 2026-04-16T21:12:44.549483+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10882.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1281 | `7ca3daaf` | 2026-04-16T21:12:44.561489+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10894.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1282 | `7c270b84` | 2026-04-16T21:12:44.573484+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10904.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1283 | `e16d6d44` | 2026-04-16T21:12:44.585485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10915.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1284 | `d152345f` | 2026-04-16T21:12:44.596483+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10926.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1285 | `0d9a10d3` | 2026-04-16T21:12:44.613485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10943.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1286 | `f6ba196c` | 2026-04-16T21:12:44.628485+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10958.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1287 | `97d13584` | 2026-04-16T21:12:44.640484+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10970.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1288 | `1f558fd6` | 2026-04-16T21:12:44.658483+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10988.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1289 | `0cd1b594` | 2026-04-16T21:12:44.672487+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11002.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1290 | `5db9684b` | 2026-04-16T21:12:44.684491+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11014.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1291 | `9795387c` | 2026-04-16T21:12:44.697005+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11026.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1292 | `ea521c50` | 2026-04-16T21:12:44.715005+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11044.0ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1293 | `31972f6f` | 2026-04-16T21:12:44.732006+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11060.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1294 | `23b2fae3` | 2026-04-16T21:12:44.743003+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11071.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1295 | `de479a7e` | 2026-04-16T21:12:45.032531+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1296 | `c62acdb1` | 2026-04-16T21:12:45.298058+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1297 | `833f185d` | 2026-04-16T21:12:45.644578+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1298 | `d9d0617b` | 2026-04-16T21:12:45.938093+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1299 | `f864e7de` | 2026-04-16T21:12:46.215124+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1300 | `94894fe7` | 2026-04-16T21:12:46.465633+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1301 | `1bfa22d8` | 2026-04-16T21:12:46.478635+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 9460.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1302 | `f56c6e8f` | 2026-04-16T21:12:46.729151+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1303 | `1bf97f37` | 2026-04-16T21:12:46.997663+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1304 | `495c17c2` | 2026-04-16T21:12:47.263172+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1305 | `19c3d64b` | 2026-04-16T21:12:47.614679+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1306 | `03bed6d3` | 2026-04-16T21:12:47.886198+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1307 | `bbd7bb57` | 2026-04-16T21:12:48.135706+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1308 | `4b4cda2e` | 2026-04-16T21:12:48.147706+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10373.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1309 | `f40f76e9` | 2026-04-16T21:12:48.402219+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1310 | `ab548cf0` | 2026-04-16T21:12:48.653727+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1311 | `59e582de` | 2026-04-16T21:12:48.666730+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 10875.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1312 | `c64c6228` | 2026-04-16T21:12:48.910236+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1313 | `63853ae0` | 2026-04-16T21:12:49.153749+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1314 | `9c82d0fb` | 2026-04-16T21:12:49.410259+00:00 | `auth.login_success` | stress_bbf9db | auth | eyJhbGci | — | success | — | {"ip": "127.0.0.1"} |
+| 1315 | `406283b0` | 2026-04-16T21:12:49.425262+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11624.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1316 | `cd52b1d4` | 2026-04-16T21:12:49.436262+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11633.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1317 | `82016876` | 2026-04-16T21:12:49.456265+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4686.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1318 | `0b6cec19` | 2026-04-16T21:12:49.468777+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4698.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1319 | `7b377139` | 2026-04-16T21:12:49.479776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4709.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1320 | `e0c84996` | 2026-04-16T21:12:49.496774+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4725.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1321 | `e21e0e1f` | 2026-04-16T21:12:49.507774+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11700.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1322 | `b91e4cd0` | 2026-04-16T21:12:49.521775+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4749.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1323 | `f88e7b20` | 2026-04-16T21:12:49.533776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4761.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1324 | `e0bb62b5` | 2026-04-16T21:12:49.552772+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11665.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1325 | `b4f40b2f` | 2026-04-16T21:12:49.573776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11686.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1326 | `ddb5e1d2` | 2026-04-16T21:12:49.587775+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11697.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1327 | `16b878af` | 2026-04-16T21:12:49.599777+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4824.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1328 | `bac83776` | 2026-04-16T21:12:49.611776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4836.6ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1329 | `cdb8e0aa` | 2026-04-16T21:12:49.621775+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 4846.5ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1330 | `230b8a1d` | 2026-04-16T21:12:49.637776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11718.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1331 | `d9b4eab0` | 2026-04-16T21:12:49.651773+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11732.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1332 | `29288d9e` | 2026-04-16T21:12:49.662775+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11743.8ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1333 | `e672fda8` | 2026-04-16T21:12:49.679776+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11710.9ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1334 | `bced00fa` | 2026-04-16T21:12:49.696782+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11727.4ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1335 | `6f17958c` | 2026-04-16T21:12:49.708782+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11739.3ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1336 | `361d814a` | 2026-04-16T21:12:49.720298+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11750.7ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1337 | `fb3a6ce2` | 2026-04-16T21:12:49.731295+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | success | 11762.1ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 200, "us |
+| 1338 | `d8344d82` | 2026-04-16T21:12:49.752297+00:00 | `http.request` | 127.0.0.1 | /auth/token | — | — | failure | 2380.2ms | {"method": "POST", "path": "/auth/token", "query": null, "http_status": 400, "us |
+| 1339 | `df9baa52` | 2026-04-16T21:12:55.804206+00:00 | `http.request` | 127.0.0.1 | /admin/users/ | — | — | failure | 2.4ms | {"method": "GET", "path": "/admin/users/", "query": null, "http_status": 401, "u |
+| 1340 | `c581b3cb` | 2026-04-16T21:12:55.834210+00:00 | `http.request` | 127.0.0.1 | /admin/roles/ | — | — | failure | 1.6ms | {"method": "GET", "path": "/admin/roles/", "query": null, "http_status": 401, "u |
+| 1341 | `77f6ef96` | 2026-04-16T21:12:55.853719+00:00 | `http.request` | 127.0.0.1 | /admin/groups/ | — | — | failure | 1.9ms | {"method": "GET", "path": "/admin/groups/", "query": null, "http_status": 401, " |
+| 1342 | `a5e45a40` | 2026-04-16T21:12:55.876717+00:00 | `http.request` | 127.0.0.1 | /admin/permissions/ | — | — | failure | 1.7ms | {"method": "GET", "path": "/admin/permissions/", "query": null, "http_status": 4 |
+| 1343 | `15737296` | 2026-04-16T21:12:55.900718+00:00 | `http.request` | 127.0.0.1 | /admin/rbac/ | — | — | failure | 2.7ms | {"method": "GET", "path": "/admin/rbac/", "query": null, "http_status": 401, "us |
+| 1344 | `5676ccf7` | 2026-04-16T21:12:55.919719+00:00 | `http.request` | 127.0.0.1 | /admin/audit/ | — | — | failure | 2.2ms | {"method": "GET", "path": "/admin/audit/", "query": "limit=5", "http_status": 40 |
+| 1345 | `6b37ac56` | 2026-04-16T21:12:55.939716+00:00 | `http.request` | 127.0.0.1 | /admin/user-types/ | — | — | failure | 1.7ms | {"method": "GET", "path": "/admin/user-types/", "query": null, "http_status": 40 |
+| 1346 | `e0b6e7c2` | 2026-04-16T21:12:55.968720+00:00 | `http.request` | 127.0.0.1 | /admin/user-levels/ | — | — | failure | 2.0ms | {"method": "GET", "path": "/admin/user-levels/", "query": null, "http_status": 4 |
+| 1347 | `5c7b3ac8` | 2026-04-16T21:12:55.987717+00:00 | `http.request` | 127.0.0.1 | /admin/custom-entities/types | — | — | failure | 2.1ms | {"method": "GET", "path": "/admin/custom-entities/types", "query": null, "http_s |
+| 1348 | `d1796397` | 2026-04-16T21:13:04.138706+00:00 | `http.request` | 127.0.0.1 | /admin/users/ | — | — | failure | 2.0ms | {"method": "GET", "path": "/admin/users/", "query": null, "http_status": 401, "u |
+| 1349 | `7f7cdf18` | 2026-04-16T21:13:04.297707+00:00 | `http.request` | 127.0.0.1 | /admin/users/ | — | — | failure | 2.0ms | {"method": "GET", "path": "/admin/users/", "query": null, "http_status": 401, "u |
+| 1350 | `83cdf3d2` | 2026-04-16T21:13:04.318704+00:00 | `http.request` | 127.0.0.1 | /admin/roles/ | — | — | failure | 1.7ms | {"method": "GET", "path": "/admin/roles/", "query": null, "http_status": 401, "u |
+| 1351 | `a86ec191` | 2026-04-16T21:13:04.336705+00:00 | `http.request` | 127.0.0.1 | /admin/groups/ | — | — | failure | 1.7ms | {"method": "GET", "path": "/admin/groups/", "query": null, "http_status": 401, " |
+| 1352 | `7e842dab` | 2026-04-16T21:13:04.358237+00:00 | `http.request` | 127.0.0.1 | /admin/permissions/ | — | — | failure | 1.9ms | {"method": "GET", "path": "/admin/permissions/", "query": null, "http_status": 4 |
+| 1353 | `0d9f936d` | 2026-04-16T21:13:04.384238+00:00 | `http.request` | 127.0.0.1 | /admin/rbac/ | — | — | failure | 4.2ms | {"method": "GET", "path": "/admin/rbac/", "query": null, "http_status": 401, "us |
+| 1354 | `898234cb` | 2026-04-16T21:13:04.406235+00:00 | `http.request` | 127.0.0.1 | /admin/audit/ | — | — | failure | 1.8ms | {"method": "GET", "path": "/admin/audit/", "query": "limit=5", "http_status": 40 |
+| 1355 | `f63966d4` | 2026-04-16T21:13:04.424237+00:00 | `http.request` | 127.0.0.1 | /admin/user-types/ | — | — | failure | 1.6ms | {"method": "GET", "path": "/admin/user-types/", "query": null, "http_status": 40 |
+| 1356 | `3b4a31bd` | 2026-04-16T21:13:04.445238+00:00 | `http.request` | 127.0.0.1 | /admin/user-levels/ | — | — | failure | 2.6ms | {"method": "GET", "path": "/admin/user-levels/", "query": null, "http_status": 4 |
+| 1357 | `de94a7f2` | 2026-04-16T21:13:04.467235+00:00 | `http.request` | 127.0.0.1 | /admin/custom-entities/types | — | — | failure | 1.9ms | {"method": "GET", "path": "/admin/custom-entities/types", "query": null, "http_s |
+| 1358 | `28f3ff0a` | 2026-04-17T22:34:43.305537+00:00 | `system.startup` | system | api | — | — | success | — | {"version": "1.0.0"} |

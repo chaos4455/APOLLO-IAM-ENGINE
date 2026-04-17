@@ -1,18 +1,43 @@
-// fecha modal ao clicar no backdrop
+// ── Modal: fecha ao clicar no backdrop ──
 document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-backdrop')) {
     e.target.classList.remove('open');
   }
 });
-// fecha modal com Escape
+
+// ── Modal: fecha com Escape ──
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-backdrop.open')
       .forEach(m => m.classList.remove('open'));
   }
 });
-// auto-dismiss alerts após 4s
+
+// ── Modal: abre via data-modal="id" ──
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-modal]');
+  if (btn) {
+    const target = document.getElementById(btn.dataset.modal);
+    if (target) target.classList.add('open');
+  }
+});
+
+// ── Auto-dismiss alerts após 4s ──
 document.querySelectorAll('.alert').forEach(a => {
-  setTimeout(() => { a.style.opacity = '0'; a.style.transition = 'opacity .4s';
-    setTimeout(() => a.remove(), 400); }, 4000);
+  setTimeout(() => {
+    a.style.transition = 'opacity .4s';
+    a.style.opacity = '0';
+    setTimeout(() => a.remove(), 400);
+  }, 4000);
+});
+
+// ── Loading state em forms ──
+document.querySelectorAll('form').forEach(form => {
+  form.addEventListener('submit', () => {
+    const btn = form.querySelector('button[type=submit]');
+    if (btn && !btn.dataset.noload) {
+      btn.disabled = true;
+      btn.style.opacity = '.6';
+    }
+  });
 });

@@ -12,7 +12,19 @@
 <div class="card">
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Ação</th><th>Actor</th><th>Recurso</th><th>ID Recurso</th><th>Status</th><th>IP</th><th>Data</th></tr></thead>
+      <thead>
+        <tr>
+          <th>Ação / Evento</th>
+          <th>Actor</th>
+          <th>Recurso</th>
+          <th>ID Recurso</th>
+          <th>Status</th>
+          <th>Tenant</th>
+          <th>Duração</th>
+          <th>IP / Session</th>
+          <th>Data</th>
+        </tr>
+      </thead>
       <tbody>
       {% for log in logs %}
       <tr>
@@ -22,11 +34,16 @@
         <td class="text-muted">{{ (log.resource_id or '—')[:12] }}</td>
         <td>{% if log.status == 'success' %}<span class="badge badge-success">✓</span>
             {% else %}<span class="badge badge-danger">✗</span>{% endif %}</td>
-        <td class="text-muted">{{ log.ip_address or '—' }}</td>
+        <td class="text-muted mono">{{ log.tenant_id or '—' }}</td>
+        <td class="text-muted">{{ log.duration_ms ~ 'ms' if log.duration_ms else '—' }}</td>
+        <td class="text-muted mono" style="font-size:.72rem">
+          {{ log.ip_address or '' }}
+          {% if log.session_id %}<br><span style="opacity:.5">{{ log.session_id[:8] }}…</span>{% endif %}
+        </td>
         <td class="text-muted" style="white-space:nowrap">{{ (log.created_at or '')[:19] }}</td>
       </tr>
       {% else %}
-      <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum log.</p></div></td></tr>
+      <tr><td colspan="9"><div class="empty-state"><div class="empty-icon">📋</div><p>Nenhum log.</p></div></td></tr>
       {% endfor %}
       </tbody>
     </table>

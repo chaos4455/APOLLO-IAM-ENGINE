@@ -1,11 +1,12 @@
 """
 project-production-test.py
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  🌟 APOLLO IAM ENGINE — Production Test Suite v4 🌟                        ║
+║  🌟 APOLLO IAM ENGINE — Production Test Suite v5 🌟                        ║
 ║  Cobertura 100%: Health, Auth, RBAC, ABAC, APL DSL, Cache, Multi-tenant,   ║
-║  User Types/Levels, Custom Entities, Settings, Audit, Groups, Metrics,     ║
-║  Policies (CRUD + Evaluate + Explain + Toggle + Raw + Scope + Inherit),    ║
-║  Stress, Cleanup, Relatório JSON/YAML/MD incremental em tempo real.        ║
+║  User Types/Levels (CRUD completo), Custom Entities (CRUD + assign/unassign)║
+║  Settings, Audit, Groups (assign user), Metrics + /logs + /cache,          ║
+║  Policies (CRUD + Evaluate + Explain + Toggle + Raw + /decisions/audit),   ║
+║  User toggle-status, reset-password, revogar role, Cleanup 100%.           ║
 ║  O2 Data Solutions                                                          ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 """
@@ -83,6 +84,11 @@ _TIMEOUT = httpx.Timeout(30.0, connect=10.0)
 # ── log incremental em tempo real ─────────────────────────────────────────────
 _LOG_BASE = os.path.join(LOGS_DIR, f"run_{RUN_ID}")
 
+
+def _ts() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+
 def _flush_incremental():
     """Salva JSON/YAML/MD parcial a cada step — tempo real."""
     lats = kpis["latencies_ms"]
@@ -134,21 +140,74 @@ def _flush_incremental():
         lat  = f"{r['latency_ms']:.0f}ms" if r.get("latency_ms") else "—"
         det  = str(r.get("detail", ""))[:80].replace("|", "\\|")
         lines.append(f"| {r['step']} | {icon} | {r['status_code']} | {lat} | {det} |")
-    lines += ["", "---", "", "*Gerado pelo Apollo IAM Engine Production Test Suite v4 — O2 Data Solutions*"]
+    lines += ["", "---", "", "*Gerado pelo Apollo IAM Engine Production Test Suite v5 — O2 Data Solutions*"]
     with open(f"{_LOG_BASE}.md", "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
     return summary
 
+
+# ── helpers HTTP ──────────────────────────────────────────────────────────────
+
+def _build_client() -> httpx.Client:
+    return httpx.Client(verify=_SSL, timeout=_TIMEOUT)
+
+
+def _req(method: str, path: str, token: str | None = None,
+         json_body=None, form=None, params=None) -> tuple:
+    headers = {}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    t0 = time.perf_counter()
+    with _build_client() as c:
+        r = c.request(method.upper(), API_BASE + path, headers=headers,
+                      json=json_body, data=form, params=params)
+    ms = round((time.perf_counter() - t0) * 1000, 1)
+    kpis["latencies_ms"].append(ms)
+    return r, ms
+
+
+def get(path, token=None, params=None):
+    r, _ = _req("get", path, token=token, params=params); return r
+
+def post(path, json_body=None, form=None, token=None, params=None):
+    r, _ = _req("post", path, token=token, json_body=json_body, form=form, params=params); return r
+
+def put(path, json_body=None, token=None):
+    r, _ = _req("put", path, token=token, json_body=json_body); return r
+
+def patch(path, token=None, params=None, json_body=None):
+    r, _ = _req("patch", path, token=token, params=params, json_body=json_body); return r
+
+def delete(path, token=None):
     r, _ = _req("delete", path, token=token); return r
+
 def _timed_post(path, json_body=None, form=None, token=None):
     return _req("post", path, token=token, json_body=json_body, form=form)
+
 def _fresh_token(username, password):
     r = post("/auth/token", form={"username": username, "password": password})
     return r.json().get("access_token") if r.status_code == 200 else None
+
 def _check(token, **kwargs):
     body = {"token": token, **kwargs}
     r = post("/auth/check", json_body=body)
     return r.json() if r.status_code == 200 else {"allowed": False, "reason": f"HTTP {r.status_code}: {r.text[:80]}"}
+
+
+def step(name: str, ok: bool, status_code: int = 0, detail: str = "", latency_ms: float = 0.0):
+    kpis["total"] += 1
+    if ok:
+        kpis["passed"] += 1
+    else:
+        kpis["failed"] += 1
+    icon = "✅" if ok else "❌"
+    lat  = f"[dim]{latency_ms:.0f}ms[/dim]" if latency_ms else ""
+    det  = f"[dim]{detail[:80]}[/dim]" if detail else ""
+    console.print(f"  {icon} {name} [dim]({status_code})[/dim] {lat} {det}")
+    results.append({"step": name, "ok": ok, "status_code": status_code,
+                    "detail": detail, "latency_ms": latency_ms})
+    _flush_incremental()
+
 
 def _hdr(title: str):
     console.print()
@@ -309,23 +368,37 @@ def test_rbac():
     # assign role vendedor ao usuario1
     u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
     if u1 and "vendedor" in roles_by_name:
-        r2 = post(f"/admin/roles/{roles_by_name['vendedor']}/assign/{u1['id']}", token=tok)
+        r2 = post(f"/admin/roles/{roles_by_name['vendedor']}/assign-user/{u1['id']}", token=tok)
         step("Assign role 'vendedor' → usuario1", r2.status_code in (200, 201, 204),
              r2.status_code)
 
     # assign role gerente ao gerente
     ger = next((u for u in kpis["created_users"] if "gerente" in u["username"]), None)
     if ger and "gerente" in roles_by_name:
-        r3 = post(f"/admin/roles/{roles_by_name['gerente']}/assign/{ger['id']}", token=tok)
+        r3 = post(f"/admin/roles/{roles_by_name['gerente']}/assign-user/{ger['id']}", token=tok)
         step("Assign role 'gerente' → gerente", r3.status_code in (200, 201, 204),
              r3.status_code)
 
-    # assign permissão cotacao:create à role vendedor
+    # assign role aprovador ao aprovador
+    apr = next((u for u in kpis["created_users"] if "aprovador" in u["username"]), None)
+    if apr and "aprovador" in roles_by_name:
+        r3b = post(f"/admin/roles/{roles_by_name['aprovador']}/assign-user/{apr['id']}", token=tok)
+        step("Assign role 'aprovador' → aprovador", r3b.status_code in (200, 201, 204),
+             r3b.status_code)
+
+    # assign permissão cotacao:create à role vendedor via /admin/permissions/{id}/assign-role/{role_id}
     if "vendedor" in roles_by_name and "cotacao:create" in perms_by_name:
-        r4 = post(f"/admin/permissions/{perms_by_name['cotacao:create']}/assign/{roles_by_name['vendedor']}",
+        r4 = post(f"/admin/permissions/{perms_by_name['cotacao:create']}/assign-role/{roles_by_name['vendedor']}",
                   token=tok)
         step("Assign perm 'cotacao:create' → role vendedor",
              r4.status_code in (200, 201, 204), r4.status_code)
+
+    # assign permissão relatorio:read à role gerente
+    if "gerente" in roles_by_name and "relatorio:read" in perms_by_name:
+        r4b = post(f"/admin/permissions/{perms_by_name['relatorio:read']}/assign-role/{roles_by_name['gerente']}",
+                   token=tok)
+        step("Assign perm 'relatorio:read' → role gerente",
+             r4b.status_code in (200, 201, 204), r4b.status_code)
 
     # verifica token atualizado do usuario1
     if u1:
@@ -336,43 +409,69 @@ def test_rbac():
             step("Check usuario1 tem role 'vendedor'", chk.get("allowed") is True,
                  detail=chk.get("reason", ""))
 
+    # revogar role vendedor do usuario1 e reassign
+    if u1 and "vendedor" in roles_by_name:
+        r5 = delete(f"/admin/roles/{roles_by_name['vendedor']}/revoke-user/{u1['id']}", token=tok)
+        step("Revogar role 'vendedor' de usuario1", r5.status_code in (200, 204), r5.status_code)
+        # reassign para manter o estado
+        post(f"/admin/roles/{roles_by_name['vendedor']}/assign-user/{u1['id']}", token=tok)
+        kpis["token_usuario1"] = _fresh_token(u1["username"], u1["password"])
+
 # ══════════════════════════════════════════════════════════════════════════════
 # 7. ABAC — "Marceline verifica os atributos mágicos"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_abac():
-    _hdr("🧛 7. ABAC — Atributos e check combinado")
+    _hdr("🧛 7. ABAC — Atributos RBAC e check combinado")
     tok = kpis["token_admin"]
     if not tok: return
 
-    # cria atributo RBAC
-    r = post("/admin/rbac-attributes/",
+    # cria atributo RBAC — path correto: /admin/rbac/
+    r = post("/admin/rbac/",
              json_body={"key": "department", "label": "Departamento",
-                        "description": "Departamento do usuário"},
+                        "value_type": "string", "description": "Departamento do usuário"},
              token=tok)
     step("Criar atributo RBAC 'department'", r.status_code in (200, 201, 409), r.status_code)
-    attr_id = r.json().get("id") if r.status_code in (200, 201) else None
+    if r.status_code in (200, 201):
+        kpis["created_rbac_attrs"].append(r.json().get("id", ""))
 
-    # assign atributo ao usuario1
+    # listar atributos
+    rl = get("/admin/rbac/", token=tok)
+    step("Listar atributos RBAC", rl.status_code == 200, rl.status_code,
+         f"{len(rl.json())} attrs" if rl.status_code == 200 else "")
+
+    # assign atributo ao usuario1 — path: /admin/rbac/assign/{user_id}
     u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
-    if u1 and attr_id:
-        r2 = post(f"/admin/rbac-attributes/{attr_id}/assign/{u1['id']}",
-                  json_body={"value": "sales"}, token=tok)
+    if u1:
+        r2 = post(f"/admin/rbac/assign/{u1['id']}",
+                  json_body={"attribute_key": "department", "value": "sales"},
+                  token=tok)
         step("Assign department=sales → usuario1", r2.status_code in (200, 201, 204),
              r2.status_code)
 
-    # check ABAC
-    if kpis["token_usuario1"]:
-        tok_u1 = _fresh_token(
-            next((u["username"] for u in kpis["created_users"] if "usuario1" in u["username"]), ""),
-            "Senha123!"
-        ) or kpis["token_usuario1"]
-        chk = _check(tok_u1, require_abac={"department": "sales"})
-        step("Check ABAC department=sales", chk.get("allowed") is True,
-             detail=chk.get("reason", ""))
+        # assign outro atributo de nível
+        r2b = post(f"/admin/rbac/assign/{u1['id']}",
+                   json_body={"attribute_key": "user_level", "value": "3"},
+                   token=tok)
+        step("Assign user_level=3 → usuario1", r2b.status_code in (200, 201, 204),
+             r2b.status_code)
 
-        chk2 = _check(tok_u1, require_abac={"department": "finance"})
-        step("Check ABAC department=finance → denied", chk2.get("allowed") is False,
-             detail=chk2.get("reason", ""))
+    # check ABAC com token fresco
+    if u1:
+        tok_u1 = _fresh_token(u1["username"], u1["password"]) or kpis["token_usuario1"]
+        kpis["token_usuario1"] = tok_u1
+        if tok_u1:
+            chk = _check(tok_u1, require_abac={"department": "sales"})
+            step("Check ABAC department=sales → allowed", chk.get("allowed") is True,
+                 detail=chk.get("reason", ""))
+
+            chk2 = _check(tok_u1, require_abac={"department": "finance"})
+            step("Check ABAC department=finance → denied", chk2.get("allowed") is False,
+                 detail=chk2.get("reason", ""))
+
+            # check combinado: role + ABAC
+            chk3 = _check(tok_u1, require_roles=["vendedor"], require_abac={"department": "sales"})
+            step("Check combinado role+ABAC → allowed", chk3.get("allowed") is True,
+                 detail=chk3.get("reason", ""))
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 8. APL — "O Grimório de Jake: Apollo Policy Language"
@@ -580,6 +679,29 @@ enabled: true
         step("Get policy por ID", r14.status_code == 200, r14.status_code,
              r14.json().get("name", "") if r14.status_code == 200 else "")
 
+    # ── 8.13 Explain policy (trace completo) ─────────────────────────────────
+    explain_body = {
+        "subject": {"department": "sales", "user_level": 3, "roles": ["vendedor"]},
+        "action": "cotacao:create",
+        "resource": "cotacao/123",
+        "tenant_id": "tenant-teste",
+        "subject_id": f"explain-{RUN_ID}",
+    }
+    r15, ms15 = _timed_post("/admin/policies/explain", json_body=explain_body, token=tok)
+    step("Explain policy (trace completo)", r15.status_code == 200, r15.status_code,
+         str(r15.json())[:80] if r15.status_code == 200 else r15.text[:80], latency_ms=ms15)
+
+    # ── 8.14 Decision audit trail ─────────────────────────────────────────────
+    r16 = get("/admin/policies/decisions/audit", token=tok,
+              params={"tenant_id": "tenant-teste", "limit": 10})
+    step("Policy decisions/audit", r16.status_code == 200, r16.status_code,
+         f"{len(r16.json())} decisões" if r16.status_code == 200 else r16.text[:80])
+
+    # ── 8.15 Cache stats via policies ────────────────────────────────────────
+    r17 = get("/admin/policies/cache/stats", token=tok)
+    step("Policy cache/stats", r17.status_code == 200, r17.status_code,
+         str(r17.json())[:80] if r17.status_code == 200 else "")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 9. DECISION CACHE — "BMO guarda as decisões na memória turbo"
@@ -693,56 +815,137 @@ def test_multitenant():
 # 11. USER TYPES & LEVELS — "Os níveis de poder do reino"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_user_types_levels():
-    _hdr("⭐ 11. USER TYPES & LEVELS")
+    _hdr("⭐ 11. USER TYPES & LEVELS — CRUD completo")
     tok = kpis["token_admin"]
     if not tok: return
 
-    # user types
-    r = post("/admin/user-types/", json_body={"name": "funcionario", "description": "Funcionário"},
+    uid = uuid.uuid4().hex[:6]
+
+    # ── user types ────────────────────────────────────────────────────────────
+    r = post("/admin/user-types/",
+             json_body={"name": f"funcionario_{uid}", "description": "Funcionário"},
              token=tok)
     step("Criar user type 'funcionario'", r.status_code in (200, 201, 409), r.status_code)
+    type_id = r.json().get("id") if r.status_code in (200, 201) else None
+    if type_id:
+        kpis["created_user_types"].append(type_id)
 
     r2 = get("/admin/user-types/", token=tok)
     step("Listar user types", r2.status_code == 200, r2.status_code,
          f"{len(r2.json())} tipos" if r2.status_code == 200 else "")
 
-    # user levels
-    for name, rank in [("junior", 1), ("pleno", 2), ("senior", 3), ("lead", 4)]:
-        r3 = post("/admin/user-levels/",
+    if type_id:
+        r3 = get(f"/admin/user-types/{type_id}", token=tok)
+        step("GET user type por ID", r3.status_code == 200, r3.status_code)
+
+        r4 = put(f"/admin/user-types/{type_id}",
+                 json_body={"name": f"funcionario_{uid}", "description": "Atualizado"},
+                 token=tok)
+        step("PUT user type (update)", r4.status_code == 200, r4.status_code)
+
+    # ── user levels ────────────────────────────────────────────────────────────
+    level_ids = []
+    for name, rank in [(f"junior_{uid}", 1), (f"pleno_{uid}", 2),
+                       (f"senior_{uid}", 3), (f"lead_{uid}", 4)]:
+        r5 = post("/admin/user-levels/",
                   json_body={"name": name, "rank": rank, "description": f"Nível {name}"},
                   token=tok)
         step(f"Criar user level '{name}' (rank={rank})",
-             r3.status_code in (200, 201, 409), r3.status_code)
+             r5.status_code in (200, 201, 409), r5.status_code)
+        if r5.status_code in (200, 201):
+            lid = r5.json().get("id", "")
+            level_ids.append(lid)
+            kpis["created_user_levels"].append(lid)
 
-    r4 = get("/admin/user-levels/", token=tok)
-    step("Listar user levels", r4.status_code == 200, r4.status_code,
-         f"{len(r4.json())} níveis" if r4.status_code == 200 else "")
+    r6 = get("/admin/user-levels/", token=tok)
+    step("Listar user levels", r6.status_code == 200, r6.status_code,
+         f"{len(r6.json())} níveis" if r6.status_code == 200 else "")
+
+    if level_ids:
+        lid = level_ids[0]
+        r7 = get(f"/admin/user-levels/{lid}", token=tok)
+        step("GET user level por ID", r7.status_code == 200, r7.status_code)
+
+        r8 = put(f"/admin/user-levels/{lid}",
+                 json_body={"rank": 10, "description": "Rank atualizado"},
+                 token=tok)
+        step("PUT user level (update rank)", r8.status_code == 200, r8.status_code)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 12. CUSTOM ENTITIES — "As entidades mágicas do ABAC"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_custom_entities():
-    _hdr("🔮 12. CUSTOM ENTITIES (ABAC)")
+    _hdr("🔮 12. CUSTOM ENTITIES (ABAC) — CRUD + assign/unassign")
     tok = kpis["token_admin"]
     if not tok: return
 
-    # criar tipo de entidade
-    r = post("/admin/custom-entities/types/",
-             json_body={"slug": "regiao", "name": "Região", "description": "Região geográfica"},
+    uid = uuid.uuid4().hex[:6]
+    slug = f"regiao_{uid}"
+
+    # criar tipo — path: POST /admin/custom-entities/types
+    r = post("/admin/custom-entities/types",
+             json_body={"slug": slug, "label": "Região", "description": "Região geográfica"},
              token=tok)
     step("Criar entity type 'regiao'", r.status_code in (200, 201, 409), r.status_code)
+    kpis["created_entity_types"].append(slug)
 
-    # criar valores
+    # GET tipo por slug
+    r1b = get(f"/admin/custom-entities/types/{slug}", token=tok)
+    step("GET entity type por slug", r1b.status_code == 200, r1b.status_code)
+
+    # PUT tipo (update)
+    r1c = put(f"/admin/custom-entities/types/{slug}",
+              json_body={"label": "Região Atualizada", "description": "Desc atualizada"},
+              token=tok)
+    step("PUT entity type (update)", r1c.status_code == 200, r1c.status_code)
+
+    # criar valores — path: POST /admin/custom-entities/{slug}/values
+    value_ids = []
     for val in ["sul", "sudeste", "nordeste"]:
-        r2 = post("/admin/custom-entities/types/regiao/values/",
-                  json_body={"name": val, "description": f"Região {val}"},
+        r2 = post(f"/admin/custom-entities/{slug}/values",
+                  json_body={"name": val, "description": f"Região {val}", "metadata": {"code": val[:2]}},
                   token=tok)
         step(f"Criar entity value '{val}'", r2.status_code in (200, 201, 409), r2.status_code)
+        if r2.status_code in (200, 201):
+            value_ids.append(r2.json().get("id", ""))
+
+    # GET value por ID
+    if value_ids:
+        r3 = get(f"/admin/custom-entities/{slug}/values/{value_ids[0]}", token=tok)
+        step("GET entity value por ID", r3.status_code == 200, r3.status_code)
+
+        # PUT value (update)
+        r3b = put(f"/admin/custom-entities/{slug}/values/{value_ids[0]}",
+                  json_body={"description": "Atualizado", "metadata": {"code": "SU"}},
+                  token=tok)
+        step("PUT entity value (update)", r3b.status_code == 200, r3b.status_code)
 
     # listar tipos
-    r3 = get("/admin/custom-entities/types/", token=tok)
-    step("Listar entity types", r3.status_code == 200, r3.status_code,
-         f"{len(r3.json())} tipos" if r3.status_code == 200 else "")
+    r4 = get("/admin/custom-entities/types", token=tok)
+    step("Listar entity types", r4.status_code == 200, r4.status_code,
+         f"{len(r4.json())} tipos" if r4.status_code == 200 else "")
+
+    # listar valores
+    r5 = get(f"/admin/custom-entities/{slug}/values", token=tok)
+    step("Listar entity values", r5.status_code == 200, r5.status_code,
+         f"{len(r5.json())} valores" if r5.status_code == 200 else "")
+
+    # assign entidade ao usuario1
+    u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
+    if u1 and value_ids:
+        r6 = post(f"/admin/custom-entities/assign/{u1['id']}",
+                  json_body={"entity_type_slug": slug, "entity_value_id": value_ids[0]},
+                  token=tok)
+        step(f"Assign entity '{slug}' → usuario1", r6.status_code == 200, r6.status_code)
+
+        # GET entidades do usuario1
+        r7 = get(f"/admin/custom-entities/user/{u1['id']}", token=tok)
+        step("GET user entities", r7.status_code == 200, r7.status_code,
+             f"{len(r7.json())} entidades" if r7.status_code == 200 else "")
+
+        # unassign entidade
+        r8 = delete(f"/admin/custom-entities/assign/{u1['id']}/{slug}", token=tok)
+        step("Unassign entity de usuario1", r8.status_code in (200, 204), r8.status_code)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 13. SETTINGS — "As configurações do castelo"
@@ -753,11 +956,20 @@ def test_settings():
     if not tok: return
 
     r = get("/admin/settings/", token=tok)
-    step("GET settings", r.status_code == 200, r.status_code)
+    step("GET settings", r.status_code == 200, r.status_code,
+         str(r.json())[:80] if r.status_code == 200 else "")
 
-    r2 = put("/admin/settings/", json_body={"max_login_attempts": 5, "session_timeout": 3600},
+    # PUT com campos do SettingsUpdate schema
+    r2 = put("/admin/settings/",
+             json_body={
+                 "access_token_expire_minutes": 60,
+                 "refresh_token_expire_days": 7,
+                 "allow_registration": False,
+                 "max_login_attempts": 5,
+                 "lockout_minutes": 15,
+             },
              token=tok)
-    step("PUT settings", r2.status_code in (200, 201, 204), r2.status_code)
+    step("PUT settings (update)", r2.status_code in (200, 201, 204), r2.status_code)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 14. AUDIT LOGS — "O livro de registros do reino"
@@ -767,15 +979,26 @@ def test_audit():
     tok = kpis["token_admin"]
     if not tok: return
 
-    r = get("/admin/audit-logs/", token=tok, params={"limit": 20})
+    # path correto: /admin/audit/
+    r = get("/admin/audit/", token=tok, params={"limit": 20})
     step("Listar audit logs", r.status_code == 200, r.status_code,
-         f"{len(r.json())} entradas" if r.status_code == 200 else "")
+         f"{len(r.json())} entradas" if r.status_code == 200 else r.text[:80])
+
+    # filtro por status
+    r2 = get("/admin/audit/", token=tok, params={"limit": 10, "status": "success"})
+    step("Audit logs filtrado por status=success", r2.status_code == 200, r2.status_code,
+         f"{len(r2.json())} entradas" if r2.status_code == 200 else "")
+
+    # filtro por actor
+    r3 = get("/admin/audit/", token=tok, params={"limit": 10, "actor": ADMIN_USER})
+    step("Audit logs filtrado por actor=admin", r3.status_code == 200, r3.status_code,
+         f"{len(r3.json())} entradas" if r3.status_code == 200 else "")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 15. GROUPS — "Os grupos de heróis do reino"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_groups():
-    _hdr("👥 15. GROUPS")
+    _hdr("👥 15. GROUPS — CRUD + assign user")
     tok = kpis["token_admin"]
     if not tok: return
 
@@ -784,29 +1007,56 @@ def test_groups():
              token=tok)
     ok = r.status_code in (200, 201, 409)
     step("Criar grupo 'grupo-vendas'", ok, r.status_code)
+    group_id = None
     if r.status_code in (200, 201):
-        kpis["created_groups"].append(r.json().get("id", ""))
+        group_id = r.json().get("id", "")
+        kpis["created_groups"].append(group_id)
 
     r2 = get("/admin/groups/", token=tok)
     step("Listar grupos", r2.status_code == 200, r2.status_code,
          f"{len(r2.json())} grupos" if r2.status_code == 200 else "")
 
+    # assign usuario1 ao grupo
+    u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
+    if u1 and group_id:
+        r3 = post(f"/admin/groups/{group_id}/assign-user/{u1['id']}", token=tok)
+        step("Assign usuario1 → grupo-vendas", r3.status_code in (200, 201, 204), r3.status_code)
+
 # ══════════════════════════════════════════════════════════════════════════════
 # 16. METRICS — "O painel de controle do BMO"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_metrics():
-    _hdr("📊 16. METRICS")
+    _hdr("📊 16. METRICS — KPIs, /logs, /cache")
     tok = kpis["token_admin"]
     if not tok: return
 
+    # GET /admin/metrics/
     r = get("/admin/metrics/", token=tok)
-    step("GET metrics", r.status_code == 200, r.status_code)
+    step("GET metrics (KPIs + sistema)", r.status_code == 200, r.status_code,
+         f"uptime={r.json().get('uptime_fmt','?')}" if r.status_code == 200 else r.text[:80])
+
+    if r.status_code == 200:
+        m = r.json()
+        step("Metrics tem cpu", "cpu" in m, detail=str(m.get("cpu", {}))[:60])
+        step("Metrics tem memory", "memory" in m, detail=str(m.get("memory", {}))[:60])
+        step("Metrics tem db KPIs", "db" in m, detail=str(m.get("db", {}))[:60])
+        step("Metrics tem logs stats", "logs" in m, detail=str(m.get("logs", {}))[:60])
+
+    # GET /admin/metrics/logs
+    r2 = get("/admin/metrics/logs", token=tok, params={"skip": 0, "limit": 20})
+    step("GET metrics/logs (event_log)", r2.status_code == 200, r2.status_code,
+         f"total={r2.json().get('total','?')}" if r2.status_code == 200 else r2.text[:80])
+
+    # GET /admin/metrics/cache
+    r3 = get("/admin/metrics/cache", token=tok)
+    step("GET metrics/cache stats", r3.status_code == 200, r3.status_code,
+         str(r3.json())[:80] if r3.status_code == 200 else r3.text[:80])
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 17. APL — OPERADORES AVANÇADOS — "O grimório completo"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_apl_operators():
-    _hdr("🧪 17. APL — Todos os 14 operadores")
+    _hdr("🧪 17. APL — Operadores avançados + neq")
     tok = kpis["token_admin"]
     if not tok: return
 
@@ -827,9 +1077,8 @@ def test_apl_operators():
 
     post("/admin/policies/reload", token=tok)
 
-    # testar cada operador via evaluate
     test_cases = [
-        ("neq",          {"status": "active"},  "op:neq",  "op/test", True),
+        ("neq-active",   {"status": "active"},  "op:neq",  "op/test", True),
         ("neq-blocked",  {"status": "blocked"}, "op:neq",  "op/test", False),
     ]
     for label, subject, action, resource, expected in test_cases:
@@ -845,24 +1094,112 @@ def test_apl_operators():
             step(f"Op neq [{label}] → {'allow' if expected else 'deny'}",
                  got is expected, r2.status_code,
                  r2.json().get("reason", "")[:60], latency_ms=ms2)
+        else:
+            step(f"Op neq [{label}]", False, r2.status_code, r2.text[:60])
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# 18. CLEANUP — "Finn limpa o campo de batalha"
+# 18. USERS — OPERAÇÕES EXTRAS (toggle, reset-password, GET por ID)
+# ══════════════════════════════════════════════════════════════════════════════
+def test_users_extra():
+    _hdr("👤 18. USERS — toggle-status, reset-password, GET por ID")
+    tok = kpis["token_admin"]
+    if not tok or not kpis["created_users"]: return
+
+    u1 = next((u for u in kpis["created_users"] if "usuario1" in u["username"]), None)
+    if not u1 or not u1.get("id"): return
+    uid = u1["id"]
+
+    # GET user por ID
+    r = get(f"/admin/users/{uid}", token=tok)
+    step("GET user por ID", r.status_code == 200, r.status_code,
+         r.json().get("username", "") if r.status_code == 200 else r.text[:80])
+
+    # PUT user (update)
+    r2 = put(f"/admin/users/{uid}",
+             json_body={"email": f"updated_{uid[:6]}@test.com", "full_name": "Usuário Atualizado",
+                        "is_active": True, "is_superuser": False},
+             token=tok)
+    step("PUT user (update)", r2.status_code == 200, r2.status_code)
+
+    # POST toggle-status
+    r3 = post(f"/admin/users/{uid}/toggle-status", token=tok)
+    step("POST toggle-status (desativar)", r3.status_code == 200, r3.status_code,
+         str(r3.json()) if r3.status_code == 200 else r3.text[:80])
+
+    # reativar
+    r4 = post(f"/admin/users/{uid}/toggle-status", token=tok)
+    step("POST toggle-status (reativar)", r4.status_code == 200, r4.status_code)
+
+    # POST reset-password
+    r5 = post(f"/admin/users/{uid}/reset-password",
+              json_body={"new_password": "NovaSenha123!"},
+              token=tok)
+    step("POST reset-password", r5.status_code == 200, r5.status_code,
+         r5.json().get("message", "") if r5.status_code == 200 else r5.text[:80])
+
+    # confirmar login com nova senha
+    tok_new = _fresh_token(u1["username"], "NovaSenha123!")
+    step("Login com nova senha após reset", tok_new is not None)
+    if tok_new:
+        kpis["token_usuario1"] = tok_new
+        # restaurar senha original
+        post(f"/admin/users/{uid}/reset-password",
+             json_body={"new_password": u1["password"]}, token=tok)
+        kpis["token_usuario1"] = _fresh_token(u1["username"], u1["password"])
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 19. CLEANUP — "Finn limpa o campo de batalha"
 # ══════════════════════════════════════════════════════════════════════════════
 def test_cleanup():
-    _hdr("🧹 18. CLEANUP — Removendo recursos de teste")
+    _hdr("🧹 19. CLEANUP — Removendo todos os recursos de teste")
     tok = kpis["token_admin"]
     if not tok: return
 
+    # políticas
     for pol_id in kpis["created_policies"]:
         r = delete(f"/admin/policies/{pol_id}", token=tok)
-        step(f"Delete policy {pol_id[:8]}...", r.status_code in (200, 204), r.status_code)
+        step(f"Delete policy {pol_id[:8]}…", r.status_code in (200, 204), r.status_code)
 
+    # usuários
     for u in kpis["created_users"]:
         if u.get("id"):
             r = delete(f"/admin/users/{u['id']}", token=tok)
             step(f"Delete user '{u['username']}'", r.status_code in (200, 204), r.status_code)
+
+    # grupos
+    for gid in kpis["created_groups"]:
+        r = delete(f"/admin/groups/{gid}", token=tok)
+        step(f"Delete group {gid[:8]}…", r.status_code in (200, 204), r.status_code)
+
+    # roles criadas pelo teste
+    r_roles = get("/admin/roles/", token=tok)
+    if r_roles.status_code == 200:
+        for ro in r_roles.json():
+            if ro["name"] in ("vendedor", "gerente", "aprovador"):
+                r = delete(f"/admin/roles/{ro['id']}", token=tok)
+                step(f"Delete role '{ro['name']}'", r.status_code in (200, 204), r.status_code)
+
+    # entity types
+    for slug in kpis["created_entity_types"]:
+        r = delete(f"/admin/custom-entities/types/{slug}", token=tok)
+        step(f"Delete entity type '{slug}'", r.status_code in (200, 204), r.status_code)
+
+    # user types
+    for tid in kpis["created_user_types"]:
+        r = delete(f"/admin/user-types/{tid}", token=tok)
+        step(f"Delete user type {tid[:8]}…", r.status_code in (200, 204), r.status_code)
+
+    # user levels
+    for lid in kpis["created_user_levels"]:
+        r = delete(f"/admin/user-levels/{lid}", token=tok)
+        step(f"Delete user level {lid[:8]}…", r.status_code in (200, 204), r.status_code)
+
+    # atributos RBAC
+    for aid in kpis["created_rbac_attrs"]:
+        r = delete(f"/admin/rbac/{aid}", token=tok)
+        step(f"Delete rbac attr {aid[:8]}…", r.status_code in (200, 204), r.status_code)
 
 # ══════════════════════════════════════════════════════════════════════════════
 # RELATÓRIO FINAL
@@ -983,7 +1320,7 @@ def _print_final(summary: dict):
 def main():
     console.print()
     console.print(Panel(
-        "[bold cyan]🌟 Apollo IAM Engine — Production Test Suite v3[/bold cyan]\n"
+        "[bold cyan]🌟 Apollo IAM Engine — Production Test Suite v5[/bold cyan]\n"
         "[dim]\"Hora de Aventura no Reino de Ooo IAM\"[/dim]\n\n"
         f"Servidor: [yellow]{API_BASE}[/yellow]\n"
         f"Run ID:   [yellow]{RUN_ID}[/yellow]",
@@ -1008,6 +1345,7 @@ def main():
     test_groups()
     test_metrics()
     test_apl_operators()
+    test_users_extra()
     test_cleanup()
 
     summary = _save_report()

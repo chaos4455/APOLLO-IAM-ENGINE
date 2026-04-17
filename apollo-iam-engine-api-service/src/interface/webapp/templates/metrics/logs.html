@@ -40,6 +40,7 @@
     <input id="f-actor"    placeholder="Filtrar actor..."   oninput="filterLogs()" style="width:140px"/>
     <input id="f-action"   placeholder="Filtrar ação..."    oninput="filterLogs()" style="width:160px"/>
     <input id="f-resource" placeholder="Filtrar recurso..." oninput="filterLogs()" style="width:130px"/>
+    <input id="f-tenant"   placeholder="Filtrar tenant..."  oninput="filterLogs()" style="width:130px"/>
     <select id="f-status" onchange="filterLogs()">
       <option value="">Todos status</option>
       <option value="success">✓ success</option>
@@ -54,11 +55,12 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Ação</th>
+          <th>Ação / Evento</th>
           <th>Actor</th>
           <th>Recurso</th>
-          <th>IP</th>
+          <th>Tenant</th>
           <th>Status</th>
+          <th>Duração</th>
           <th>Data/Hora</th>
           <th>Detalhe</th>
         </tr>
@@ -68,12 +70,13 @@
         <tr data-actor="{{ log.actor or '' }}"
             data-action="{{ log.action or '' }}"
             data-resource="{{ log.resource or '' }}"
+            data-tenant="{{ log.tenant_id or '' }}"
             data-status="{{ log.status or '' }}">
           <td class="text-muted mono">{{ loop.index + skip }}</td>
           <td><span class="mono">{{ log.action }}</span></td>
           <td>{{ log.actor or '—' }}</td>
           <td><span class="badge badge-muted">{{ log.resource or '—' }}</span></td>
-          <td class="mono text-muted">{{ log.ip_address or '—' }}</td>
+          <td class="mono text-muted" style="font-size:.72rem">{{ log.tenant_id or '—' }}</td>
           <td>
             {% if log.status == 'success' %}
               <span class="badge-ok">✓ ok</span>
@@ -81,6 +84,7 @@
               <span class="badge-fail">✗ falha</span>
             {% endif %}
           </td>
+          <td class="text-muted mono">{{ log.duration_ms ~ 'ms' if log.duration_ms else '—' }}</td>
           <td class="text-muted mono" style="white-space:nowrap">
             {{ log.created_at[:19] if log.created_at else '—' }}
           </td>
@@ -90,7 +94,7 @@
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text-muted)">
+        <tr><td colspan="9" style="text-align:center;padding:32px;color:var(--text-muted)">
           Nenhum log encontrado.
         </td></tr>
         {% endfor %}
@@ -127,6 +131,7 @@ function filterLogs() {
   const actor    = document.getElementById('f-actor').value.toLowerCase();
   const action   = document.getElementById('f-action').value.toLowerCase();
   const resource = document.getElementById('f-resource').value.toLowerCase();
+  const tenant   = document.getElementById('f-tenant').value.toLowerCase();
   const status   = document.getElementById('f-status').value.toLowerCase();
   const rows = document.querySelectorAll('#log-body tr[data-actor]');
   let visible = 0;
@@ -135,6 +140,7 @@ function filterLogs() {
       (!actor    || r.dataset.actor.toLowerCase().includes(actor)) &&
       (!action   || r.dataset.action.toLowerCase().includes(action)) &&
       (!resource || r.dataset.resource.toLowerCase().includes(resource)) &&
+      (!tenant   || (r.dataset.tenant || '').toLowerCase().includes(tenant)) &&
       (!status   || r.dataset.status === status);
     r.style.display = match ? '' : 'none';
     if (match) visible++;
@@ -144,7 +150,7 @@ function filterLogs() {
 }
 
 function clearFilters() {
-  ['f-actor','f-action','f-resource'].forEach(id => document.getElementById(id).value = '');
+  ['f-actor','f-action','f-resource','f-tenant'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('f-status').value = '';
   filterLogs();
   const badge = document.getElementById('count-badge');

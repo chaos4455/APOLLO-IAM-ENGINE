@@ -166,21 +166,24 @@ def _db_kpis(db: Session) -> dict:
 
 
 def _log_kpis(db: Session) -> dict:
-    """Estatísticas de logs com cache de 10s."""
+    """Estatísticas de logs com cache de 10s — lê do event_log (apollo_log.db)."""
     cached = db_kpis_cache.get("log_kpis")
     if cached is not None:
         return cached
 
     from sqlalchemy import text
+    from src.infrastructure.logging.event_logger import _log_engine
+
     try:
-        total   = db.execute(text("SELECT COUNT(*) FROM audit_logs")).scalar() or 0
-        success = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE status='success'")).scalar() or 0
-        failure = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE status='failure'")).scalar() or 0
-        logins  = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE action='login_success'")).scalar() or 0
-        recent  = db.execute(text(
-            "SELECT actor, action, resource, status, created_at FROM audit_logs "
-            "ORDER BY created_at DESC LIMIT 10"
-        )).fetchall()
+        with _log_engine.connect() as conn:
+            total   = conn.execute(text("SELECT COUNT(*) FROM event_log")).scalar() or 0
+            success = conn.execute(text("SELECT COUNT(*) FROM event_log WHERE status='success'")).scalar() or 0
+            failure = conn.execute(text("SELECT COUNT(*) FROM event_log WHERE status='failure'")).scalar() or 0
+            logins  = conn.execute(text("SELECT COUNT(*) FROM event_log WHERE event='auth.login_success'")).scalar() or 0
+            recent  = conn.execute(text(
+                "SELECT actor, event, resource, status, timestamp "
+                "FROM event_log ORDER BY seq DESC LIMIT 10"
+            )).fetchall()
         data = {
             "total": total, "success": success, "failure": failure, "logins": logins,
             "recent": [
@@ -190,7 +193,26 @@ def _log_kpis(db: Session) -> dict:
             ],
         }
     except Exception:
-        data = {"total": 0, "success": 0, "failure": 0, "logins": 0, "recent": []}
+        # fallback para audit_logs do banco principal
+        try:
+            total   = db.execute(text("SELECT COUNT(*) FROM audit_logs")).scalar() or 0
+            success = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE status='success'")).scalar() or 0
+            failure = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE status='failure'")).scalar() or 0
+            logins  = db.execute(text("SELECT COUNT(*) FROM audit_logs WHERE action='login_success'")).scalar() or 0
+            recent  = db.execute(text(
+                "SELECT actor, action, resource, status, created_at FROM audit_logs "
+                "ORDER BY created_at DESC LIMIT 10"
+            )).fetchall()
+            data = {
+                "total": total, "success": success, "failure": failure, "logins": logins,
+                "recent": [
+                    {"actor": r[0], "action": r[1], "resource": r[2],
+                     "status": r[3], "created_at": str(r[4])}
+                    for r in recent
+                ],
+            }
+        except Exception:
+            data = {"total": 0, "success": 0, "failure": 0, "logins": 0, "recent": []}
 
     db_kpis_cache.set("log_kpis", data, ttl=10.0)
     return data
@@ -226,24 +248,56 @@ def get_logs(
     _=Depends(require_superuser),
 ):
     from sqlalchemy import text
+    from src.infrastructure.logging.event_logger import _log_engine
     try:
-        rows = db.execute(text(
-            "SELECT id, actor, action, resource, resource_id, detail, "
-            "ip_address, status, created_at FROM audit_logs "
-            "ORDER BY created_at DESC LIMIT :limit OFFSET :skip"
-        ), {"limit": limit, "skip": skip}).fetchall()
-        total = db.execute(text("SELECT COUNT(*) FROM audit_logs")).scalar() or 0
-        return {
-            "total": total, "skip": skip, "limit": limit,
-            "logs": [
-                {"id": r[0], "actor": r[1], "action": r[2], "resource": r[3],
-                 "resource_id": r[4], "detail": r[5], "ip_address": r[6],
-                 "status": r[7], "created_at": str(r[8])}
-                for r in rows
-            ],
-        }
+        with _log_engine.connect() as conn:
+            total = conn.execute(text("SELECT COUNT(*) FROM event_log")).scalar() or 0
+            rows = conn.execute(text(
+                "SELECT seq, uid, timestamp, event, actor, resource, resource_id, "
+                "tenant_id, session_id, status, duration_ms, tags, detail "
+                "FROM event_log ORDER BY seq DESC LIMIT :limit OFFSET :skip"
+            ), {"limit": limit, "skip": skip}).fetchall()
+        logs = [
+            {
+                "id":          str(r[0]),
+                "actor":       r[4],
+                "action":      r[3],   # event → action
+                "resource":    r[5],
+                "resource_id": r[6],
+                "ip_address":  None,
+                "status":      r[9],
+                "created_at":  r[2],
+                "detail":      r[12],
+                # campos extras do event_log
+                "uid":         r[1],
+                "tenant_id":   r[7],
+                "session_id":  r[8],
+                "duration_ms": r[10],
+                "tags":        r[11],
+            }
+            for r in rows
+        ]
+        return {"total": total, "skip": skip, "limit": limit, "logs": logs}
     except Exception as e:
-        return {"total": 0, "skip": skip, "limit": limit, "logs": [], "error": str(e)}
+        # fallback para audit_logs do banco principal
+        try:
+            rows = db.execute(text(
+                "SELECT id, actor, action, resource, resource_id, detail, "
+                "ip_address, status, created_at FROM audit_logs "
+                "ORDER BY created_at DESC LIMIT :limit OFFSET :skip"
+            ), {"limit": limit, "skip": skip}).fetchall()
+            total = db.execute(text("SELECT COUNT(*) FROM audit_logs")).scalar() or 0
+            return {
+                "total": total, "skip": skip, "limit": limit,
+                "logs": [
+                    {"id": r[0], "actor": r[1], "action": r[2], "resource": r[3],
+                     "resource_id": r[4], "detail": r[5], "ip_address": r[6],
+                     "status": r[7], "created_at": str(r[8])}
+                    for r in rows
+                ],
+            }
+        except Exception as e2:
+            return {"total": 0, "skip": skip, "limit": limit, "logs": [], "error": str(e2)}
 
 
 @router.get("/cache")

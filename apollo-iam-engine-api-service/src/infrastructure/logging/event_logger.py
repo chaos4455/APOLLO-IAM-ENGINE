@@ -113,12 +113,11 @@ def _migrate_event_log():
         "duration_ms": "VARCHAR(20)",
         "tags":        "TEXT",
     }
-    with _log_engine.connect() as conn:
+    with _log_engine.begin() as conn:
         existing = {row[1] for row in conn.execute(text("PRAGMA table_info(event_log)"))}
         for col, col_type in expected.items():
             if col not in existing:
                 conn.execute(text(f"ALTER TABLE event_log ADD COLUMN {col} {col_type}"))
-        conn.commit()
 
 
 _migrate_event_log()
