@@ -1,0 +1,949 @@
+{
+  "run_id": "20260417_195127",
+  "timestamp": "2026-04-17T22:56:19.142539+00:00",
+  "server": "https://localhost:8443",
+  "total": 132,
+  "passed": 132,
+  "failed": 0,
+  "pass_rate": 100.0,
+  "latency": {
+    "avg_ms": 2090.8,
+    "p50_ms": 2057.6,
+    "p90_ms": 2284.5,
+    "p95_ms": 2309.8,
+    "p99_ms": 2474.9
+  },
+  "created": {
+    "policies": 7,
+    "users": 3,
+    "roles": 3,
+    "permissions": 4,
+    "groups": 1
+  },
+  "results": [
+    {
+      "step": "GET /health",
+      "ok": true,
+      "status_code": 200,
+      "detail": "ok",
+      "latency_ms": 2053.0
+    },
+    {
+      "step": "Login admin",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 2309.8
+    },
+    {
+      "step": "Validate token admin",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 2053.6
+    },
+    {
+      "step": "Refresh token",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 2048.1
+    },
+    {
+      "step": "Check superuser bypass",
+      "ok": true,
+      "status_code": 0,
+      "detail": "superuser",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Validate token inválido → 401/422",
+      "ok": true,
+      "status_code": 401,
+      "detail": "",
+      "latency_ms": 2043.8
+    },
+    {
+      "step": "Criar role 'vendedor'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar role 'gerente'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar role 'aprovador'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar roles",
+      "ok": true,
+      "status_code": 200,
+      "detail": "7 roles",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar permissão 'cotacao:create'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar permissão 'cotacao:read'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar permissão 'cotacao:update'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar permissão 'relatorio:read'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar permissões",
+      "ok": true,
+      "status_code": 200,
+      "detail": "20 permissões",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar usuário 'usuario1_f90400'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar usuário 'gerente_f90400'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar usuário 'aprovador_f90400'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Login 'usuario1_f90400'",
+      "ok": true,
+      "status_code": 0,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Login 'gerente_f90400'",
+      "ok": true,
+      "status_code": 0,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Login 'aprovador_f90400'",
+      "ok": true,
+      "status_code": 0,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar usuários",
+      "ok": true,
+      "status_code": 200,
+      "detail": "9 usuários",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign role 'vendedor' → usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign role 'gerente' → gerente",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign role 'aprovador' → aprovador",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign perm 'cotacao:create' → role vendedor",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign perm 'relatorio:read' → role gerente",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Check usuario1 tem role 'vendedor'",
+      "ok": true,
+      "status_code": 0,
+      "detail": "ok",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Revogar role 'vendedor' de usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar atributo RBAC 'department'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar atributos RBAC",
+      "ok": true,
+      "status_code": 200,
+      "detail": "2 attrs",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign department=sales → usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign user_level=3 → usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Check ABAC department=sales → allowed",
+      "ok": true,
+      "status_code": 0,
+      "detail": "ok",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Check ABAC department=finance → denied",
+      "ok": true,
+      "status_code": 0,
+      "detail": "ABAC falhou: 'department' esperado='finance' atual='sales'",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Check combinado role+ABAC → allowed",
+      "ok": true,
+      "status_code": 0,
+      "detail": "ok",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy Allow (JSON estruturado)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy Deny (raw YAML)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy OR logic (gerente OU aprovador)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy glob resource (admin/*)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy com 6 operadores distintos",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Reload engine APL",
+      "ok": true,
+      "status_code": 200,
+      "detail": "loaded=6",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar policies (tenant-teste)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "5 policies",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Evaluate → Allow esperado",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Permitido pela policy 'test-allow-vendedor-20260417_195127' (id=5f917fd8-8654-4336-bf15-71de89169780, scope=tenant).",
+      "latency_ms": 2064.9
+    },
+    {
+      "step": "Evaluate → Deny explícito vence Allow",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Negado pela policy 'Negar usuários bloqueados' (id=test-deny-blocked-20260417_195127, scope=tenant).",
+      "latency_ms": 2049.2
+    },
+    {
+      "step": "Evaluate → No match → default deny",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Nenhuma policy aplicável encontrada (default deny).",
+      "latency_ms": 2049.9
+    },
+    {
+      "step": "Toggle policy → disabled",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Evaluate após disable → denied",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Nenhuma policy aplicável encontrada (default deny).",
+      "latency_ms": 2046.6
+    },
+    {
+      "step": "Toggle policy → re-enabled",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Get policy por ID",
+      "ok": true,
+      "status_code": 200,
+      "detail": "test-allow-vendedor-20260417_195127",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Explain policy (trace completo)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "{'decision': {'decision': 'allow', 'allowed': True, 'effect': 'allow', 'matched_",
+      "latency_ms": 2055.4
+    },
+    {
+      "step": "Policy decisions/audit",
+      "ok": true,
+      "status_code": 200,
+      "detail": "10 decisões",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Policy cache/stats",
+      "ok": true,
+      "status_code": 200,
+      "detail": "{'size': 0, 'max_size': 8192, 'hits': 0, 'misses': 0, 'hit_rate': 0.0, 'default_",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Evaluate #1 (cache miss)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "allowed=True",
+      "latency_ms": 2057.9
+    },
+    {
+      "step": "Evaluate #2 (cache hit)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "allowed=True | 2044ms vs 2058ms",
+      "latency_ms": 2044.4
+    },
+    {
+      "step": "Evaluate #3 (cache hit confirmado)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "reason=[cache] Permitido pela policy 'test-allow-vendedor-20260417_",
+      "latency_ms": 2048.7
+    },
+    {
+      "step": "Cache hit mais rápido que miss",
+      "ok": true,
+      "status_code": 0,
+      "detail": "miss=2058ms hit=2044ms",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Cache stats disponíveis",
+      "ok": true,
+      "status_code": 200,
+      "detail": "hits=2 misses=1 hit_rate=0.6667 size=1",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Cache isolado por tenant_id",
+      "ok": true,
+      "status_code": 200,
+      "detail": "tenant-outro: allowed=False",
+      "latency_ms": 2059.9
+    },
+    {
+      "step": "Criar policy exclusiva tenant-A",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Evaluate tenant-A → allowed",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Permitido pela policy 'tenant-a-only-20260417_195127' (id=28ca24da-9626-400b-bd88-8c422d0a1b42, scope=tenant).",
+      "latency_ms": 2054.3
+    },
+    {
+      "step": "Evaluate tenant-B → denied (isolamento)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Nenhuma policy aplicável encontrada (default deny).",
+      "latency_ms": 2043.9
+    },
+    {
+      "step": "Listar policies tenant-A",
+      "ok": true,
+      "status_code": 200,
+      "detail": "2 policies",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar user type 'funcionario'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar user types",
+      "ok": true,
+      "status_code": 200,
+      "detail": "1 tipos",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET user type por ID",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT user type (update)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar user level 'junior_1b50f6' (rank=1)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar user level 'pleno_1b50f6' (rank=2)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar user level 'senior_1b50f6' (rank=3)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar user level 'lead_1b50f6' (rank=4)",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar user levels",
+      "ok": true,
+      "status_code": 200,
+      "detail": "4 níveis",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET user level por ID",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT user level (update rank)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar entity type 'regiao'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET entity type por slug",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT entity type (update)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar entity value 'sul'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar entity value 'sudeste'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar entity value 'nordeste'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET entity value por ID",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT entity value (update)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar entity types",
+      "ok": true,
+      "status_code": 200,
+      "detail": "2 tipos",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar entity values",
+      "ok": true,
+      "status_code": 200,
+      "detail": "3 valores",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign entity 'regiao_075940' → usuario1",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET user entities",
+      "ok": true,
+      "status_code": 200,
+      "detail": "1 entidades",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Unassign entity de usuario1",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET settings",
+      "ok": true,
+      "status_code": 200,
+      "detail": "{'access_token_expire_minutes': 60, 'refresh_token_expire_days': 7, 'allow_regis",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT settings (update)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar audit logs",
+      "ok": true,
+      "status_code": 200,
+      "detail": "20 entradas",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Audit logs filtrado por status=success",
+      "ok": true,
+      "status_code": 200,
+      "detail": "10 entradas",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Audit logs filtrado por actor=admin",
+      "ok": true,
+      "status_code": 200,
+      "detail": "10 entradas",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar grupo 'grupo-vendas'",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Listar grupos",
+      "ok": true,
+      "status_code": 200,
+      "detail": "2 grupos",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Assign usuario1 → grupo-vendas",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET metrics (KPIs + sistema)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "uptime=0h 3m 47s",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Metrics tem cpu",
+      "ok": true,
+      "status_code": 0,
+      "detail": "{'percent': 0.0, 'count_logical': 4, 'count_physical': 4, 'f",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Metrics tem memory",
+      "ok": true,
+      "status_code": 0,
+      "detail": "{'total_mb': 16324.3, 'used_mb': 10634.1, 'available_mb': 56",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Metrics tem db KPIs",
+      "ok": true,
+      "status_code": 0,
+      "detail": "{'users': 9, 'roles': 7, 'permissions': 20, 'groups': 2, 'rb",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Metrics tem logs stats",
+      "ok": true,
+      "status_code": 0,
+      "detail": "{'total': 1835, 'success': 1746, 'failure': 89, 'logins': 38",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET metrics/logs (event_log)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "total=1836",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "GET metrics/cache stats",
+      "ok": true,
+      "status_code": 200,
+      "detail": "{'token': {'size': 5, 'max_size': 4096, 'hits': 110, 'misses': 13, 'hit_rate': 0",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Criar policy op=neq",
+      "ok": true,
+      "status_code": 201,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Op neq [neq-active] → allow",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Permitido pela policy 'test-neq-20260417_195127' (id=4b8903d",
+      "latency_ms": 2052.7
+    },
+    {
+      "step": "Op neq [neq-blocked] → deny",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Nenhuma policy aplicável encontrada (default deny).",
+      "latency_ms": 2053.9
+    },
+    {
+      "step": "GET user por ID",
+      "ok": true,
+      "status_code": 200,
+      "detail": "usuario1_f90400",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "PUT user (update)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "POST toggle-status (desativar)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "{'is_active': False}",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "POST toggle-status (reativar)",
+      "ok": true,
+      "status_code": 200,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "POST reset-password",
+      "ok": true,
+      "status_code": 200,
+      "detail": "Senha redefinida.",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Login com nova senha após reset",
+      "ok": true,
+      "status_code": 0,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy 5f917fd8…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy test-den…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy cc561638…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy 86e6819a…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy a8659e35…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy 28ca24da…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete policy 4b8903d0…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user 'usuario1_f90400'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user 'gerente_f90400'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user 'aprovador_f90400'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete group 055e66f3…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete role 'vendedor'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete role 'gerente'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete role 'aprovador'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete entity type 'regiao_075940'",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user type 87f4b52b…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user level 61711083…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user level 1964c3f5…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user level 4aeba020…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete user level c4326d5b…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    },
+    {
+      "step": "Delete rbac attr 7955f8d9…",
+      "ok": true,
+      "status_code": 204,
+      "detail": "",
+      "latency_ms": 0.0
+    }
+  ]
+}

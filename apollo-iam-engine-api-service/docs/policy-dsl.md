@@ -1,36 +1,36 @@
-# 📜 Apollo Policy Language (APL) v2 — Referência Completa
+# Apollo Policy Language (APL) v2 — Referencia Completa
 
-> *"O Grimório de Jake — versão hardcore do Reino de Ooo!"*
-> *"Agora com feitiços dinâmicos, mapas hierárquicos e herança de magias!"*
-
-**Versão:** 2.0  
-**Formatos:** JSON, YAML  
+**Versao:** 2.0  
 **Engine:** `src/domain/policy/policy_dsl.py`  
 **Cache:** `src/infrastructure/cache/decision_cache.py`  
-**Service:** `src/application/services/policy_service.py`
+**Service:** `src/application/services/policy_service.py`  
+**Autor:** Elias Andrade — O2 Data Solutions
 
 ---
 
-## O que há de novo na v2
+## Visao Geral
 
-| Feature | Descrição |
-|---|---|
-| ① Variáveis dinâmicas | `{{subject_id}}`, `{{tenant_id}}`, `{{subject.X}}` em `value` |
-| ② Hierarquia de recursos | `empresa/*/cotacao/*` bate em `empresa/123/depto/5/cotacao/9` |
-| ③ Policy composition | `scope` global → tenant → user com `inherits` e override |
-| `/explain` | Rastreamento completo da avaliação (debug/audit) |
-| `composition_chain` | Lista de IDs das policies que participaram da decisão |
+APL e uma linguagem declarativa de policies para controle de acesso.  
+Cada policy define: quem pode fazer o que, em qual recurso, sob quais condicoes.
+
+```
+Policy = {effect} + {actions} + {resources} + {conditions} + {priority}
+```
+
+O engine avalia policies em ordem de prioridade (menor numero = maior prioridade).  
+**Deny explicito sempre vence Allow**, independente de prioridade.  
+**Default deny**: sem policy aplicavel = acesso negado.
 
 ---
 
-## Estrutura completa de uma Policy v2
+## Estrutura Completa
 
 ### JSON
 ```json
 {
   "id": "pol-vendedor-cotacao",
-  "name": "Vendedores podem criar cotações próprias",
-  "description": "Acesso ao módulo de cotação — apenas recursos do próprio usuário",
+  "name": "Vendedores — acesso a cotacoes",
+  "description": "Permite criar e ler cotacoes para vendedores senior",
   "version": "2.0",
   "tenant_id": "tenant-empresa-abc",
   "scope": "tenant",
@@ -39,11 +39,11 @@
   "effect": "allow",
   "priority": 10,
   "actions": ["cotacao:create", "cotacao:read"],
-  "resources": ["empresa/*/cotacao/*"],
+  "resources": ["cotacao/*", "empresa/*/cotacao/*"],
   "conditions": [
-    {"field": "resource.owner_id", "op": "eq",      "value": "{{subject_id}}"},
-    {"field": "user_level",        "op": "gte",      "value": 3},
-    {"field": "roles",             "op": "contains", "value": "vendedor"}
+    {"field": "roles",      "op": "contains", "value": "vendedor"},
+    {"field": "user_level", "op": "gte",      "value": 3},
+    {"field": "department", "op": "eq",       "value": "{{subject.department}}"}
   ],
   "condition_logic": "AND",
   "enabled": true
@@ -53,7 +53,7 @@
 ### YAML
 ```yaml
 id: pol-vendedor-cotacao
-name: Vendedores podem criar cotações próprias
+name: "Vendedores — acesso a cotacoes"
 version: "2.0"
 tenant_id: tenant-empresa-abc
 scope: tenant
@@ -65,159 +65,191 @@ actions:
   - cotacao:create
   - cotacao:read
 resources:
+  - cotacao/*
   - empresa/*/cotacao/*
 conditions:
-  - field: resource.owner_id
-    op: eq
-    value: "{{subject_id}}"
+  - field: roles
+    op: contains
+    value: vendedor
   - field: user_level
     op: gte
     value: 3
+  - field: department
+    op: eq
+    value: "{{subject.department}}"
 condition_logic: AND
 enabled: true
 ```
 
 ---
 
-## ① Variáveis Dinâmicas (Templating)
+## Campos
 
-Qualquer `value` em uma condição pode conter `{{variável}}`.  
-A variável é resolvida em **tempo de avaliação** a partir do contexto.
+| Campo | Tipo | Default | Descricao |
+|---|---|---|---|
+| `id` | string | UUID gerado | Identificador unico da policy |
+| `name` | string | obrigatorio | Nome descritivo |
+| `description` | string | `""` | Descricao detalhada |
+| `version` | string | `"2.0"` | Versao do schema |
+| `tenant_id` | string\|null | `null` | Tenant; `null` = global (todos os tenants) |
+| `scope` | enum | `"tenant"` | `global` \| `tenant` \| `user` |
+| `subject_id` | string\|null | `null` | Para `scope=user`: ID do sujeito especifico |
+| `inherits` | list[string] | `[]` | IDs de policies pai (heranca de condicoes) |
+| `effect` | enum | `"allow"` | `allow` \| `deny` |
+| `priority` | int | `100` | Menor numero = maior prioridade |
+| `actions` | list[string] | `["*"]` | Acoes (suportam glob: `cotacao:*`, `*`) |
+| `resources` | list[string] | `["*"]` | Recursos (hierarquico + glob) |
+| `conditions` | list[Condition] | `[]` | Condicoes de acesso |
+| `condition_logic` | enum | `"AND"` | `AND` (todas) \| `OR` (qualquer uma) |
+| `enabled` | bool | `true` | Ativa/desativa sem remover |
 
-### Variáveis disponíveis
+---
+
+## Os 14 Operadores
+
+| Operador | Tipo | Descricao | Exemplo |
+|---|---|---|---|
+| `eq` | qualquer | Igual (com coercao de tipo) | `{"field": "status", "op": "eq", "value": "active"}` |
+| `neq` | qualquer | Diferente | `{"field": "status", "op": "neq", "value": "blocked"}` |
+| `gt` | numerico | Maior que | `{"field": "user_level", "op": "gt", "value": 2}` |
+| `gte` | numerico | Maior ou igual | `{"field": "user_level", "op": "gte", "value": 3}` |
+| `lt` | numerico | Menor que | `{"field": "risk_score", "op": "lt", "value": 50}` |
+| `lte` | numerico | Menor ou igual | `{"field": "risk_score", "op": "lte", "value": 100}` |
+| `in` | lista | Valor esta na lista | `{"field": "region", "op": "in", "value": ["sul", "sudeste"]}` |
+| `not_in` | lista | Valor nao esta na lista | `{"field": "status", "op": "not_in", "value": ["blocked", "suspended"]}` |
+| `contains` | lista/string | Lista contem o valor | `{"field": "roles", "op": "contains", "value": "vendedor"}` |
+| `not_contains` | lista/string | Lista nao contem | `{"field": "roles", "op": "not_contains", "value": "blocked"}` |
+| `starts_with` | string | Comeca com | `{"field": "email", "op": "starts_with", "value": "admin"}` |
+| `ends_with` | string | Termina com | `{"field": "email", "op": "ends_with", "value": "@empresa.com"}` |
+| `regex` | string | Expressao regular (re.match) | `{"field": "username", "op": "regex", "value": "^[a-z]+\\.[a-z]+$"}` |
+| `exists` | qualquer | Campo nao e nulo | `{"field": "department", "op": "exists"}` |
+| `not_exists` | qualquer | Campo e nulo | `{"field": "blocked_at", "op": "not_exists"}` |
+
+---
+
+## Templating Dinamico
+
+Qualquer `value` em uma condicao pode conter `{{variavel}}`.  
+A variavel e resolvida em tempo de avaliacao a partir do contexto.
+
+### Variaveis disponiveis
 
 | Template | Resolve para |
 |---|---|
-| `{{subject_id}}` | ID do sujeito (`ctx.subject_id`) |
-| `{{tenant_id}}` | Tenant do contexto (`ctx.tenant_id`) |
-| `{{action}}` | Ação solicitada (`ctx.action`) |
-| `{{resource}}` | Recurso alvo (`ctx.resource`) |
-| `{{subject.X}}` | Campo `X` do dict `subject` |
-| `{{extra.X}}` | Campo `X` do dict `extra` |
+| `{{subject_id}}` | `ctx.subject_id` |
+| `{{tenant_id}}` | `ctx.tenant_id` |
+| `{{action}}` | `ctx.action` |
+| `{{resource}}` | `ctx.resource` |
+| `{{subject.X}}` | `ctx.subject["X"]` |
+| `{{extra.X}}` | `ctx.extra["X"]` |
 
 ### Exemplos
 
 ```json
-// Usuário só acessa seus próprios recursos
-{"field": "resource.owner_id", "op": "eq", "value": "{{subject_id}}"}
+// Usuario so acessa seus proprios recursos
+{"field": "owner_id", "op": "eq", "value": "{{subject_id}}"}
 
 // Recurso deve pertencer ao tenant do contexto
-{"field": "resource.tenant", "op": "eq", "value": "{{tenant_id}}"}
+{"field": "resource_tenant", "op": "eq", "value": "{{tenant_id}}"}
 
-// Email do subject deve terminar com domínio do tenant
-{"field": "email", "op": "ends_with", "value": "{{subject.domain}}"}
+// Email deve terminar com dominio do subject
+{"field": "email", "op": "ends_with", "value": "@{{subject.company_domain}}"}
 
-// Interpolação parcial em string
+// Interpolacao parcial em string
 {"field": "resource", "op": "starts_with", "value": "empresa/{{subject.company_id}}/"}
-```
-
-### Como funciona
-
-```
-Condição: {"field": "owner_id", "op": "eq", "value": "{{subject_id}}"}
-Contexto: subject_id = "user-abc-123"
-
-→ value resolvido: "user-abc-123"
-→ avalia: ctx.get("owner_id") == "user-abc-123"
 ```
 
 ---
 
-## ② Hierarquia de Recursos
+## Match de Recursos (Hierarquico + Glob)
 
-Recursos podem ser caminhos hierárquicos com múltiplos níveis.  
-O match é feito em **qualquer segmento ancestral** do caminho.
+Recursos sao caminhos hierarquicos. O match e feito em qualquer segmento ancestral.
 
-### Formato
-```
-empresa/{id}/departamento/{id}/cotacao/{id}
-```
-
-### Como o match funciona
+### Como funciona
 
 ```
-Pattern: "empresa/*/cotacao/*"
-Recurso: "empresa/123/departamento/5/cotacao/9"
+Pattern:  "empresa/*/cotacao/*"
+Recurso:  "empresa/123/departamento/5/cotacao/9"
 
-Segmentos testados:
-  "empresa/123"                          → não bate
-  "empresa/123/departamento"             → não bate
-  "empresa/123/departamento/5"           → não bate
-  "empresa/123/departamento/5/cotacao"   → não bate
-  "empresa/123/departamento/5/cotacao/9" → não bate (direto)
-  tail "empresa/123/cotacao/9"           → BATE ✓ (sufixo)
+O engine testa o recurso completo e todos os seus sufixos:
+  "empresa/123/departamento/5/cotacao/9"  → fnmatch("empresa/*/cotacao/*") → MATCH
+  "empresa/123/cotacao/9"                 → fnmatch("empresa/*/cotacao/*") → MATCH
+  "cotacao/9"                             → fnmatch("empresa/*/cotacao/*") → nao bate
 ```
 
 ### Exemplos de patterns
 
 | Pattern | Bate em |
 |---|---|
+| `*` | Qualquer recurso |
 | `cotacao/*` | `cotacao/123`, `empresa/abc/cotacao/123` |
 | `empresa/*/cotacao/*` | `empresa/123/cotacao/9`, `empresa/abc/cotacao/xyz` |
 | `empresa/123/*` | Qualquer recurso dentro de `empresa/123` |
 | `*/relatorio/*` | Qualquer relatorio em qualquer empresa |
-| `*` | Tudo |
+| `admin/*` | Qualquer recurso admin |
 
 ---
 
-## ③ Policy Composition (Herança e Override)
+## Policy Composition (Heranca e Scope)
 
 ### Scopes
 
-| Scope | Descrição | Prioridade |
+| Scope | Descricao | Prioridade de override |
 |---|---|---|
-| `global` | Aplica a todos os tenants | Menor (base) |
-| `tenant` | Aplica a um tenant específico | Média |
-| `user` | Aplica a um `subject_id` específico | Maior (override) |
+| `global` | Aplica a todos os tenants | Base (menor) |
+| `tenant` | Aplica a um tenant especifico | Media |
+| `user` | Aplica a um `subject_id` especifico | Maxima (override) |
 
-### Cascata de avaliação
+### Cascata de avaliacao
 
 ```
-╔══════════════════════════════════════════════════════╗
-║  scope=global  (base — vale para todos)              ║
-║       ↓ tenant pode sobrescrever                     ║
-║  scope=tenant  (regras do tenant)                    ║
-║       ↓ user pode sobrescrever                       ║
-║  scope=user    (regras individuais — override máximo)║
-╚══════════════════════════════════════════════════════╝
+scope=global  (base — vale para todos os tenants)
+      |
+      v  tenant pode sobrescrever
+scope=tenant  (regras especificas do tenant)
+      |
+      v  user pode sobrescrever
+scope=user    (regras individuais — override maximo)
 
-Deny explícito em QUALQUER scope → nega imediatamente.
-Allow mais específico (user > tenant > global) vence.
+Deny explicito em QUALQUER scope -> nega imediatamente.
+Allow mais especifico (user > tenant > global) vence.
 ```
 
-### Herança de condições (`inherits`)
+### Heranca de condicoes (`inherits`)
 
 ```json
-// Policy base global
+// Policy base global — condicoes minimas para qualquer acesso
 {
   "id": "pol-base-global",
   "scope": "global",
   "effect": "allow",
+  "priority": 1000,
   "actions": ["*"],
   "resources": ["*"],
   "conditions": [
-    {"field": "is_active", "op": "eq", "value": true},
-    {"field": "blocked",   "op": "not_exists"}
+    {"field": "is_active",  "op": "eq",        "value": true},
+    {"field": "blocked_at", "op": "not_exists"}
   ]
 }
 
-// Policy de tenant herda a base e adiciona condição própria
+// Policy de tenant herda a base e adiciona condicao propria
 {
   "id": "pol-tenant-vendedor",
   "scope": "tenant",
   "tenant_id": "tenant-abc",
   "inherits": ["pol-base-global"],
   "effect": "allow",
+  "priority": 100,
   "actions": ["cotacao:*"],
   "resources": ["cotacao/*"],
   "conditions": [
     {"field": "roles", "op": "contains", "value": "vendedor"}
-    // is_active e blocked herdados do pai
+    // is_active e blocked_at herdados do pai
     // se redefinir "is_active" aqui, sobrescreve o pai
   ]
 }
 
-// Policy de usuário específico — override máximo
+// Policy de usuario especifico — override maximo
 {
   "id": "pol-user-joao",
   "scope": "user",
@@ -225,161 +257,198 @@ Allow mais específico (user > tenant > global) vence.
   "tenant_id": "tenant-abc",
   "inherits": ["pol-tenant-vendedor"],
   "effect": "allow",
+  "priority": 10,
   "actions": ["cotacao:*", "relatorio:read"],
   "resources": ["*"],
-  "conditions": []  // sem condições extras — herda tudo do pai
+  "conditions": []
 }
 ```
 
-### Regras de merge de condições
+### Regras de merge de condicoes
 
-1. Condições do pai são herdadas
+1. Condicoes do pai sao herdadas
 2. Se o filho define a mesma `field`, **sobrescreve** a do pai
-3. Campos não redefinidos são **mantidos** do pai
-4. Ciclos de herança são detectados e ignorados
+3. Campos nao redefinidos sao **mantidos** do pai
+4. Ciclos de heranca sao detectados e ignorados
 
 ---
 
-## Campos da Policy v2
+## Algoritmo de Avaliacao
 
-| Campo | Tipo | Descrição |
-|---|---|---|
-| `id` | string | UUID gerado automaticamente se omitido |
-| `name` | string | Nome descritivo |
-| `description` | string | Descrição detalhada |
-| `version` | string | Versão (default: "2.0") |
-| `tenant_id` | string\|null | Tenant; `null` = global |
-| `scope` | enum | `global` \| `tenant` \| `user` |
-| `subject_id` | string\|null | Para `scope=user`: ID do sujeito |
-| `inherits` | list[string] | IDs de policies pai |
-| `effect` | enum | `allow` \| `deny` |
-| `priority` | int | Menor = maior prioridade (default: 100) |
-| `actions` | list[string] | Ações (glob: `*`, `cotacao:*`) |
-| `resources` | list[string] | Recursos (hierárquico + glob) |
-| `conditions` | list[Condition] | Condições (suportam `{{template}}`) |
-| `condition_logic` | enum | `AND` (default) \| `OR` |
-| `enabled` | bool | Ativa/desativa (default: true) |
+```python
+def evaluate(ctx: EvalContext) -> EvalResult:
+    # 1. filtra policies aplicaveis ao tenant
+    candidates = [p for p in policies
+                  if p.tenant_id == ctx.tenant_id or p.tenant_id is None]
 
----
+    # 2. filtra por enabled
+    candidates = [p for p in candidates if p.enabled]
 
-## Os 14 Operadores
+    # 3. ordena por prioridade (menor = maior prioridade)
+    candidates.sort(key=lambda p: p.priority)
 
-| Op | Descrição |
-|---|---|
-| `eq` | Igual (com coerção de tipo) |
-| `neq` | Diferente |
-| `gt` | Maior que (numérico) |
-| `gte` | Maior ou igual |
-| `lt` | Menor que |
-| `lte` | Menor ou igual |
-| `in` | Está na lista |
-| `not_in` | Não está na lista |
-| `contains` | Contém (lista ou substring) |
-| `not_contains` | Não contém |
-| `starts_with` | Começa com |
-| `ends_with` | Termina com |
-| `regex` | Expressão regular (re.match) |
-| `exists` | Campo não é nulo |
-| `not_exists` | Campo é nulo |
+    allow_candidate = None
 
----
+    for policy in candidates:
+        # 4. verifica match de action (glob)
+        if not action_match(ctx.action, policy.actions):
+            continue
 
-## API
+        # 5. verifica match de resource (hierarquico + glob)
+        if not resource_match(ctx.resource, policy.resources):
+            continue
 
-### Criar policy
-```bash
-POST /admin/policies/
-# campos novos: scope, subject_id, inherits
+        # 6. resolve templates nas condicoes
+        resolved_conditions = resolve_templates(policy.conditions, ctx)
+
+        # 7. avalia condicoes (AND ou OR)
+        cond_ok = evaluate_conditions(resolved_conditions, ctx, policy.condition_logic)
+        if not cond_ok:
+            continue
+
+        # 8. deny explicito -> retorna imediatamente
+        if policy.effect == "deny":
+            return EvalResult(allowed=False, effect="deny",
+                              matched_policy=policy.id, ...)
+
+        # 9. primeiro allow por prioridade
+        if allow_candidate is None:
+            allow_candidate = policy
+
+    # 10. retorna allow ou default deny
+    if allow_candidate:
+        return EvalResult(allowed=True, effect="allow",
+                          matched_policy=allow_candidate.id, ...)
+
+    return EvalResult(allowed=False, effect=None,
+                      matched_policy=None,
+                      reason="Nenhuma policy aplicavel encontrada (default deny).")
 ```
 
-### Avaliar (com templating + hierarquia)
-```bash
-POST /admin/policies/evaluate
-{
-  "subject": {
-    "owner_id": "user-abc",
-    "roles": ["vendedor"],
-    "user_level": 3
-  },
-  "action": "cotacao:create",
-  "resource": "empresa/123/cotacao/456",
-  "tenant_id": "tenant-abc",
-  "subject_id": "user-abc",
-  "use_cache": true
-}
+---
+
+## Cache de Decisao
+
+```
+Chave:    SHA-256(tenant_id:subject_id:action:resource)
+TTL:      60s (default) | configuravel por policy_id via set_policy_ttl()
+Eviction: LRU (8192 entradas)
+Thread:   thread-safe via threading.Lock
+
+Invalidacao:
+  - delete_policy()  -> decision_cache.clear()
+  - toggle_policy()  -> decision_cache.clear()
+  - reload_from_db() -> decision_cache.clear()
 ```
 
-**Response:**
+---
+
+## Exemplos Praticos
+
+### Deny explicito para usuarios bloqueados (prioridade maxima)
+
 ```json
 {
-  "allowed": true,
-  "effect": "allow",
-  "matched_policy": "pol-vendedor-cotacao",
-  "reason": "Permitido pela policy '...' (scope=tenant).",
-  "composition_chain": ["pol-base-global", "pol-vendedor-cotacao"]
-}
-```
-
-### Explain (debug/audit)
-```bash
-POST /admin/policies/explain
-# mesmo payload do evaluate
-```
-
-**Response:**
-```json
-{
-  "result": {
-    "allowed": true,
-    "matched_policy": "pol-vendedor-cotacao",
-    "chain": ["pol-base-global", "pol-vendedor-cotacao"]
-  },
-  "context": {
-    "action": "cotacao:create",
-    "resource": "empresa/123/cotacao/456",
-    "subject_id": "user-abc"
-  },
-  "steps": [
-    {
-      "policy": "pol-base-global",
-      "scope": "global",
-      "action_ok": true,
-      "resource_ok": true,
-      "cond_ok": true,
-      "applicable": true,
-      "conditions": [
-        {
-          "field": "is_active",
-          "op": "eq",
-          "value": true,
-          "resolved": true,
-          "actual": true,
-          "result": true
-        }
-      ]
-    }
+  "id": "pol-deny-blocked",
+  "name": "Negar usuarios bloqueados",
+  "effect": "deny",
+  "priority": 1,
+  "actions": ["*"],
+  "resources": ["*"],
+  "conditions": [
+    {"field": "blocked", "op": "eq", "value": true}
   ]
 }
 ```
 
-### Listar por scope
-```bash
-GET /admin/policies/?scope=global
-GET /admin/policies/?scope=tenant&tenant_id=tenant-abc
-GET /admin/policies/?scope=user
+### Allow com logica OR (gerente OU aprovador)
+
+```json
+{
+  "name": "Gerentes e aprovadores — relatorios",
+  "effect": "allow",
+  "priority": 50,
+  "actions": ["relatorio:read", "relatorio:export"],
+  "resources": ["relatorio/*"],
+  "conditions": [
+    {"field": "roles", "op": "contains", "value": "gerente"},
+    {"field": "roles", "op": "contains", "value": "aprovador"}
+  ],
+  "condition_logic": "OR"
+}
+```
+
+### Glob em resource (admin/*)
+
+```json
+{
+  "name": "Superadmins — acesso total ao admin",
+  "effect": "allow",
+  "priority": 5,
+  "actions": ["*"],
+  "resources": ["admin/*"],
+  "conditions": [
+    {"field": "is_superuser", "op": "eq", "value": true}
+  ]
+}
+```
+
+### Operador neq (nao bloqueado)
+
+```json
+{
+  "name": "Usuarios ativos nao bloqueados",
+  "effect": "allow",
+  "priority": 100,
+  "actions": ["*"],
+  "resources": ["*"],
+  "conditions": [
+    {"field": "status", "op": "neq", "value": "blocked"},
+    {"field": "is_active", "op": "eq", "value": true}
+  ],
+  "condition_logic": "AND"
+}
+```
+
+### Policy com 6 operadores distintos
+
+```json
+{
+  "name": "Policy multi-operador",
+  "effect": "allow",
+  "priority": 200,
+  "actions": ["cotacao:*"],
+  "resources": ["cotacao/*"],
+  "conditions": [
+    {"field": "roles",       "op": "contains",  "value": "vendedor"},
+    {"field": "user_level",  "op": "gte",       "value": 2},
+    {"field": "department",  "op": "in",        "value": ["sales", "comercial"]},
+    {"field": "email",       "op": "ends_with", "value": "@empresa.com"},
+    {"field": "blocked_at",  "op": "not_exists"},
+    {"field": "is_active",   "op": "eq",        "value": true}
+  ],
+  "condition_logic": "AND"
+}
 ```
 
 ---
 
-## Cache de Decisão
+## API — Endpoints APL
 
-```
-Chave:    SHA-256(tenant_id:subject_id:action:resource)
-TTL:      60s (padrão) | configurável por policy_id
-Eviction: LRU (8192 entradas)
-Thread:   thread-safe via threading.Lock
-```
+| Metodo | Endpoint | Descricao |
+|---|---|---|
+| POST | `/admin/policies/` | Criar policy (JSON estruturado) |
+| POST | `/admin/policies/raw` | Criar policy (JSON/YAML raw string) |
+| GET | `/admin/policies/` | Listar policies (filtros: tenant_id, scope) |
+| GET | `/admin/policies/{id}` | Obter policy por ID |
+| DELETE | `/admin/policies/{id}` | Remover policy |
+| PATCH | `/admin/policies/{id}/toggle?enabled=false` | Ativar/desativar |
+| POST | `/admin/policies/evaluate` | Avaliar contexto de acesso |
+| POST | `/admin/policies/explain` | Rastreamento completo (debug) |
+| POST | `/admin/policies/reload` | Recarregar engine do banco |
+| GET | `/admin/policies/cache/stats` | Stats do decision cache |
+| GET | `/admin/policies/decisions/audit` | Audit trail de decisoes |
 
 ---
 
-*O2 Data Solutions — "O Grimório de Jake tem 3 novos feitiços hardcore!"*
+*Elias Andrade — O2 Data Solutions*

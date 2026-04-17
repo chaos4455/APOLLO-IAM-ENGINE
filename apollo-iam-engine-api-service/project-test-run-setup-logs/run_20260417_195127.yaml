@@ -1,0 +1,687 @@
+created:
+  groups: 1
+  permissions: 4
+  policies: 7
+  roles: 3
+  users: 3
+failed: 0
+latency:
+  avg_ms: 2090.8
+  p50_ms: 2057.6
+  p90_ms: 2284.5
+  p95_ms: 2309.8
+  p99_ms: 2474.9
+pass_rate: 100.0
+passed: 132
+results:
+- detail: ok
+  latency_ms: 2053.0
+  ok: true
+  status_code: 200
+  step: GET /health
+- detail: ''
+  latency_ms: 2309.8
+  ok: true
+  status_code: 200
+  step: Login admin
+- detail: ''
+  latency_ms: 2053.6
+  ok: true
+  status_code: 200
+  step: Validate token admin
+- detail: ''
+  latency_ms: 2048.1
+  ok: true
+  status_code: 200
+  step: Refresh token
+- detail: superuser
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Check superuser bypass
+- detail: ''
+  latency_ms: 2043.8
+  ok: true
+  status_code: 401
+  step: Validate token inválido → 401/422
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar role 'vendedor'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar role 'gerente'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar role 'aprovador'
+- detail: 7 roles
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar roles
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar permissão 'cotacao:create'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar permissão 'cotacao:read'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar permissão 'cotacao:update'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar permissão 'relatorio:read'
+- detail: 20 permissões
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar permissões
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar usuário 'usuario1_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar usuário 'gerente_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar usuário 'aprovador_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Login 'usuario1_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Login 'gerente_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Login 'aprovador_f90400'
+- detail: 9 usuários
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar usuários
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign role 'vendedor' → usuario1
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign role 'gerente' → gerente
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign role 'aprovador' → aprovador
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign perm 'cotacao:create' → role vendedor
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign perm 'relatorio:read' → role gerente
+- detail: ok
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Check usuario1 tem role 'vendedor'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Revogar role 'vendedor' de usuario1
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar atributo RBAC 'department'
+- detail: 2 attrs
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar atributos RBAC
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign department=sales → usuario1
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign user_level=3 → usuario1
+- detail: ok
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Check ABAC department=sales → allowed
+- detail: 'ABAC falhou: ''department'' esperado=''finance'' atual=''sales'''
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Check ABAC department=finance → denied
+- detail: ok
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Check combinado role+ABAC → allowed
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy Allow (JSON estruturado)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy Deny (raw YAML)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy OR logic (gerente OU aprovador)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy glob resource (admin/*)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy com 6 operadores distintos
+- detail: loaded=6
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Reload engine APL
+- detail: 5 policies
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar policies (tenant-teste)
+- detail: Permitido pela policy 'test-allow-vendedor-20260417_195127' (id=5f917fd8-8654-4336-bf15-71de89169780,
+    scope=tenant).
+  latency_ms: 2064.9
+  ok: true
+  status_code: 200
+  step: Evaluate → Allow esperado
+- detail: Negado pela policy 'Negar usuários bloqueados' (id=test-deny-blocked-20260417_195127,
+    scope=tenant).
+  latency_ms: 2049.2
+  ok: true
+  status_code: 200
+  step: Evaluate → Deny explícito vence Allow
+- detail: Nenhuma policy aplicável encontrada (default deny).
+  latency_ms: 2049.9
+  ok: true
+  status_code: 200
+  step: Evaluate → No match → default deny
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Toggle policy → disabled
+- detail: Nenhuma policy aplicável encontrada (default deny).
+  latency_ms: 2046.6
+  ok: true
+  status_code: 200
+  step: Evaluate após disable → denied
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Toggle policy → re-enabled
+- detail: test-allow-vendedor-20260417_195127
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Get policy por ID
+- detail: '{''decision'': {''decision'': ''allow'', ''allowed'': True, ''effect'':
+    ''allow'', ''matched_'
+  latency_ms: 2055.4
+  ok: true
+  status_code: 200
+  step: Explain policy (trace completo)
+- detail: 10 decisões
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Policy decisions/audit
+- detail: '{''size'': 0, ''max_size'': 8192, ''hits'': 0, ''misses'': 0, ''hit_rate'':
+    0.0, ''default_'
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Policy cache/stats
+- detail: allowed=True
+  latency_ms: 2057.9
+  ok: true
+  status_code: 200
+  step: 'Evaluate #1 (cache miss)'
+- detail: allowed=True | 2044ms vs 2058ms
+  latency_ms: 2044.4
+  ok: true
+  status_code: 200
+  step: 'Evaluate #2 (cache hit)'
+- detail: reason=[cache] Permitido pela policy 'test-allow-vendedor-20260417_
+  latency_ms: 2048.7
+  ok: true
+  status_code: 200
+  step: 'Evaluate #3 (cache hit confirmado)'
+- detail: miss=2058ms hit=2044ms
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Cache hit mais rápido que miss
+- detail: hits=2 misses=1 hit_rate=0.6667 size=1
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Cache stats disponíveis
+- detail: 'tenant-outro: allowed=False'
+  latency_ms: 2059.9
+  ok: true
+  status_code: 200
+  step: Cache isolado por tenant_id
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy exclusiva tenant-A
+- detail: Permitido pela policy 'tenant-a-only-20260417_195127' (id=28ca24da-9626-400b-bd88-8c422d0a1b42,
+    scope=tenant).
+  latency_ms: 2054.3
+  ok: true
+  status_code: 200
+  step: Evaluate tenant-A → allowed
+- detail: Nenhuma policy aplicável encontrada (default deny).
+  latency_ms: 2043.9
+  ok: true
+  status_code: 200
+  step: Evaluate tenant-B → denied (isolamento)
+- detail: 2 policies
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar policies tenant-A
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar user type 'funcionario'
+- detail: 1 tipos
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar user types
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET user type por ID
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT user type (update)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar user level 'junior_1b50f6' (rank=1)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar user level 'pleno_1b50f6' (rank=2)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar user level 'senior_1b50f6' (rank=3)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar user level 'lead_1b50f6' (rank=4)
+- detail: 4 níveis
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar user levels
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET user level por ID
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT user level (update rank)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar entity type 'regiao'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET entity type por slug
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT entity type (update)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar entity value 'sul'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar entity value 'sudeste'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar entity value 'nordeste'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET entity value por ID
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT entity value (update)
+- detail: 2 tipos
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar entity types
+- detail: 3 valores
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar entity values
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign entity 'regiao_075940' → usuario1
+- detail: 1 entidades
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET user entities
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Unassign entity de usuario1
+- detail: '{''access_token_expire_minutes'': 60, ''refresh_token_expire_days'': 7,
+    ''allow_regis'
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET settings
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT settings (update)
+- detail: 20 entradas
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar audit logs
+- detail: 10 entradas
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Audit logs filtrado por status=success
+- detail: 10 entradas
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Audit logs filtrado por actor=admin
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar grupo 'grupo-vendas'
+- detail: 2 grupos
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Listar grupos
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: Assign usuario1 → grupo-vendas
+- detail: uptime=0h 3m 47s
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET metrics (KPIs + sistema)
+- detail: '{''percent'': 0.0, ''count_logical'': 4, ''count_physical'': 4, ''f'
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Metrics tem cpu
+- detail: '{''total_mb'': 16324.3, ''used_mb'': 10634.1, ''available_mb'': 56'
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Metrics tem memory
+- detail: '{''users'': 9, ''roles'': 7, ''permissions'': 20, ''groups'': 2, ''rb'
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Metrics tem db KPIs
+- detail: '{''total'': 1835, ''success'': 1746, ''failure'': 89, ''logins'': 38'
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Metrics tem logs stats
+- detail: total=1836
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET metrics/logs (event_log)
+- detail: '{''token'': {''size'': 5, ''max_size'': 4096, ''hits'': 110, ''misses'':
+    13, ''hit_rate'': 0'
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET metrics/cache stats
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 201
+  step: Criar policy op=neq
+- detail: Permitido pela policy 'test-neq-20260417_195127' (id=4b8903d
+  latency_ms: 2052.7
+  ok: true
+  status_code: 200
+  step: Op neq [neq-active] → allow
+- detail: Nenhuma policy aplicável encontrada (default deny).
+  latency_ms: 2053.9
+  ok: true
+  status_code: 200
+  step: Op neq [neq-blocked] → deny
+- detail: usuario1_f90400
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: GET user por ID
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: PUT user (update)
+- detail: '{''is_active'': False}'
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: POST toggle-status (desativar)
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: POST toggle-status (reativar)
+- detail: Senha redefinida.
+  latency_ms: 0.0
+  ok: true
+  status_code: 200
+  step: POST reset-password
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 0
+  step: Login com nova senha após reset
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy 5f917fd8…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy test-den…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy cc561638…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy 86e6819a…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy a8659e35…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy 28ca24da…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete policy 4b8903d0…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user 'usuario1_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user 'gerente_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user 'aprovador_f90400'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete group 055e66f3…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete role 'vendedor'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete role 'gerente'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete role 'aprovador'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete entity type 'regiao_075940'
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user type 87f4b52b…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user level 61711083…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user level 1964c3f5…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user level 4aeba020…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete user level c4326d5b…
+- detail: ''
+  latency_ms: 0.0
+  ok: true
+  status_code: 204
+  step: Delete rbac attr 7955f8d9…
+run_id: '20260417_195127'
+server: https://localhost:8443
+timestamp: '2026-04-17T22:56:19.142539+00:00'
+total: 132

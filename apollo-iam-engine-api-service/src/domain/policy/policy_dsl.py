@@ -1,59 +1,36 @@
-"""
-policy_dsl.py
-╔══════════════════════════════════════════════════════════════════════════════╗
-║  Apollo IAM — Policy DSL Engine v2 (proprietária)                          ║
-║  "O Grimório de Jake — versão hardcore do Reino de Ooo"                    ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-
-Novidades v2:
-  ① Variáveis dinâmicas (templating) — {{subject_id}}, {{tenant_id}}, etc.
-  ② Hierarquia de recursos — empresa/123/depto/5/cotacao/9 com herança
-  ③ Policy composition — scope global → tenant → user (override em cascata)
-
-Formato de policy:
-{
-  "id": "pol-001",
-  "name": "Vendedores podem criar cotações",
-  "version": "2.0",
-  "tenant_id": "tenant-abc",
-  "scope": "tenant",                  # "global" | "tenant" | "user"
-  "subject_id": null,                 # para scope=user: ID do sujeito
-  "inherits": ["pol-base-global"],    # herança de policies pai
-  "effect": "allow",
-  "priority": 10,
-  "actions": ["cotacao:create"],
-  "resources": ["empresa/*/cotacao/*"],
-  "conditions": [
-    {"field": "resource.owner_id", "op": "eq",  "value": "{{subject_id}}"},
-    {"field": "user_level",        "op": "gte",  "value": 3},
-    {"field": "roles",             "op": "contains", "value": "vendedor"}
-  ],
-  "condition_logic": "AND"
-}
-
-Variáveis de template disponíveis em "value":
-  {{subject_id}}   → ctx.subject_id
-  {{tenant_id}}    → ctx.tenant_id
-  {{action}}       → ctx.action
-  {{resource}}     → ctx.resource
-  {{subject.*}}    → qualquer campo de ctx.subject
-
-Operadores (14):
-  eq, neq, gt, gte, lt, lte, in, not_in, contains, not_contains,
-  starts_with, ends_with, regex, exists, not_exists
-
-O2 Data Solutions
-"""
+# policy_dsl.py
+# Apollo IAM Engine v3 — Policy DSL Engine
+# Elias Andrade — O2 Data Solutions
+#
+# v3 improvements:
+#   - Regex seguro: timeout via threading + limite de tamanho (ReDoS protection)
+#   - Time-based policies: valid_from, valid_until, time_window (HH:MM-HH:MM)
+#   - Context schema validation: context_schema por policy
+#   - Conflict resolution score: weight + scope_score para desempate explicito
+#   - Cache key com hash do contexto completo (nao apenas tenant+subject+action+resource)
+#   - Audit estruturado: EvalResult.to_audit_dict() com evaluated_policies list
+#   - Policy simulation: simulate() retorna what-if sem side effects
+#   - Operadores: 16 (+ time_before, time_after)
 from __future__ import annotations
 
+import concurrent.futures
 import fnmatch
+import hashlib
 import json
 import re
+import threading
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
 import yaml
+
+# ── regex executor isolado para timeout (ReDoS protection) ───────────────────
+_REGEX_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=4,
+                                                        thread_name_prefix="apl-regex")
+_REGEX_MAX_LEN  = 256   # tamanho maximo do pattern regex
+_REGEX_TIMEOUT  = 0.5   # segundos — mata regex catastrofico
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -90,6 +67,9 @@ class Op(str, Enum):
     REGEX       = "regex"
     EXISTS      = "exists"
     NOT_EXISTS  = "not_exists"
+    # v3: time-based
+    TIME_BEFORE = "time_before"   # HH:MM — hora atual < value
+    TIME_AFTER  = "time_after"    # HH:MM — hora atual >= value
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -241,8 +221,14 @@ class Policy:
     enabled: bool = True
     # ── v2: composition ───────────────────────────────────────────────────────
     scope: PolicyScope = PolicyScope.TENANT
-    subject_id: str | None = None       # scope=user: ID do sujeito alvo
-    inherits: list[str] = field(default_factory=list)  # IDs de policies pai
+    subject_id: str | None = None
+    inherits: list[str] = field(default_factory=list)
+    # ── v3: time-based + schema + weight ─────────────────────────────────────
+    valid_from:  str | None = None   # ISO 8601 — policy ativa a partir de
+    valid_until: str | None = None   # ISO 8601 — policy expira em
+    time_window: str | None = None   # "HH:MM-HH:MM" — janela horaria diaria
+    context_schema: dict[str, str] = field(default_factory=dict)  # {field: type}
+    weight: int = 0                  # desempate explicito (maior = mais relevante)
 
     @classmethod
     def from_dict(cls, d: dict) -> "Policy":
@@ -262,6 +248,11 @@ class Policy:
             scope=PolicyScope(d.get("scope", "tenant")),
             subject_id=d.get("subject_id"),
             inherits=d.get("inherits", []),
+            valid_from=d.get("valid_from"),
+            valid_until=d.get("valid_until"),
+            time_window=d.get("time_window"),
+            context_schema=d.get("context_schema", {}),
+            weight=int(d.get("weight", 0)),
         )
 
     def to_dict(self) -> dict:
@@ -282,6 +273,11 @@ class Policy:
             "scope":           self.scope.value,
             "subject_id":      self.subject_id,
             "inherits":        self.inherits,
+            "valid_from":      self.valid_from,
+            "valid_until":     self.valid_until,
+            "time_window":     self.time_window,
+            "context_schema":  self.context_schema,
+            "weight":          self.weight,
         }
 
 
@@ -388,13 +384,16 @@ class EvalResult:
     effect: Effect | None
     matched_policy: str | None
     reason: str
-    # v2: rastreabilidade da composição
     composition_chain: list[str] = field(default_factory=list)
-    # v3: explainability estruturada
-    decision: str = ""           # "allow" | "deny" | "no_match"
-    matched_rule: str | None = None   # nome da policy que decidiu
-    failing_condition: str | None = None  # condição que causou deny/no_match
+    decision: str = ""
+    matched_rule: str | None = None
+    failing_condition: str | None = None
     traces: list[PolicyTrace] = field(default_factory=list)
+    # v3: conflict resolution
+    conflict_score: int = 0          # score da policy vencedora (weight + scope_score)
+    evaluated_policies: list[str] = field(default_factory=list)  # todos os IDs avaliados
+    schema_violations: list[str] = field(default_factory=list)   # campos com tipo errado
+    time_skipped: list[str] = field(default_factory=list)        # policies puladas por tempo
 
     def __post_init__(self):
         if not self.decision:
@@ -406,20 +405,24 @@ class EvalResult:
                 self.decision = "no_match"
 
     def to_audit_dict(self) -> dict:
-        """Formato compacto para audit log — sem traces completos."""
+        """Formato estruturado para audit log — compliance LGPD/SOC2."""
         return {
-            "decision":          self.decision,
-            "allowed":           self.allowed,
-            "effect":            self.effect.value if self.effect else None,
-            "matched_policy":    self.matched_policy,
-            "matched_rule":      self.matched_rule,
-            "reason":            self.reason,
-            "failing_condition": self.failing_condition,
-            "chain":             self.composition_chain,
+            "decision":           self.decision,
+            "allowed":            self.allowed,
+            "effect":             self.effect.value if self.effect else None,
+            "matched_policy":     self.matched_policy,
+            "matched_rule":       self.matched_rule,
+            "reason":             self.reason,
+            "failing_condition":  self.failing_condition,
+            "chain":              self.composition_chain,
+            "evaluated_policies": self.evaluated_policies,
+            "conflict_score":     self.conflict_score,
+            "schema_violations":  self.schema_violations,
+            "time_skipped":       self.time_skipped,
+            "timestamp":          datetime.now(timezone.utc).isoformat(),
         }
 
     def to_explain_dict(self) -> dict:
-        """Formato completo para /explain — inclui traces por condição."""
         return {
             **self.to_audit_dict(),
             "traces": [t.to_dict() for t in self.traces],
@@ -430,32 +433,48 @@ class EvalResult:
              policy_name: str | None = None,
              failing_condition: str | None = None,
              chain: list[str] | None = None,
-             traces: list[PolicyTrace] | None = None) -> "EvalResult":
+             traces: list[PolicyTrace] | None = None,
+             evaluated: list[str] | None = None,
+             score: int = 0,
+             time_skipped: list[str] | None = None) -> "EvalResult":
         return cls(
             allowed=False, effect=Effect.DENY, matched_policy=policy_id,
             reason=reason, decision="deny",
             matched_rule=policy_name, failing_condition=failing_condition,
             composition_chain=chain or [], traces=traces or [],
+            evaluated_policies=evaluated or [],
+            conflict_score=score,
+            time_skipped=time_skipped or [],
         )
 
     @classmethod
     def allow(cls, reason: str, policy_id: str | None = None,
               policy_name: str | None = None,
               chain: list[str] | None = None,
-              traces: list[PolicyTrace] | None = None) -> "EvalResult":
+              traces: list[PolicyTrace] | None = None,
+              evaluated: list[str] | None = None,
+              score: int = 0,
+              time_skipped: list[str] | None = None) -> "EvalResult":
         return cls(
             allowed=True, effect=Effect.ALLOW, matched_policy=policy_id,
             reason=reason, decision="allow",
             matched_rule=policy_name,
             composition_chain=chain or [], traces=traces or [],
+            evaluated_policies=evaluated or [],
+            conflict_score=score,
+            time_skipped=time_skipped or [],
         )
 
     @classmethod
-    def no_match(cls, traces: list[PolicyTrace] | None = None) -> "EvalResult":
+    def no_match(cls, traces: list[PolicyTrace] | None = None,
+                 evaluated: list[str] | None = None,
+                 time_skipped: list[str] | None = None) -> "EvalResult":
         return cls(
             allowed=False, effect=None, matched_policy=None,
-            reason="Nenhuma policy aplicável encontrada (default deny).",
+            reason="Nenhuma policy aplicavel encontrada (default deny).",
             decision="no_match", traces=traces or [],
+            evaluated_policies=evaluated or [],
+            time_skipped=time_skipped or [],
         )
 
 
@@ -474,15 +493,60 @@ def _coerce(a: Any, b: Any) -> tuple[Any, Any]:
     return str(a), str(b)
 
 
+def _safe_regex_match(pattern: str, value: str) -> bool:
+    """
+    Executa re.match com timeout para prevenir ReDoS (catastrophic backtracking).
+    Limita tamanho do pattern e usa ThreadPoolExecutor com timeout.
+    """
+    if len(pattern) > _REGEX_MAX_LEN:
+        return False
+    try:
+        future = _REGEX_EXECUTOR.submit(re.match, pattern, value)
+        result = future.result(timeout=_REGEX_TIMEOUT)
+        return bool(result)
+    except concurrent.futures.TimeoutError:
+        return False
+    except re.error:
+        return False
+
+
+def _parse_hhmm(s: str) -> tuple[int, int]:
+    """Parseia 'HH:MM' para (hora, minuto). Levanta ValueError se invalido."""
+    parts = s.strip().split(":")
+    return int(parts[0]), int(parts[1])
+
+
+def _current_hhmm() -> tuple[int, int]:
+    now = datetime.now(timezone.utc)
+    return now.hour, now.minute
+
+
+def _hhmm_to_minutes(h: int, m: int) -> int:
+    return h * 60 + m
+
+
 def _eval_condition(cond: PolicyCondition, ctx: EvalContext) -> bool:
     actual   = ctx.get(cond.field)
-    # ① resolve template no valor esperado
     expected = _resolve_template(cond.value, ctx)
 
     if cond.op == Op.EXISTS:
         return actual is not None
     if cond.op == Op.NOT_EXISTS:
         return actual is None
+
+    # ── time-based operators (nao dependem de actual) ─────────────────────────
+    if cond.op in (Op.TIME_BEFORE, Op.TIME_AFTER):
+        try:
+            th, tm = _parse_hhmm(str(expected))
+            ch, cm = _current_hhmm()
+            cur_min = _hhmm_to_minutes(ch, cm)
+            tgt_min = _hhmm_to_minutes(th, tm)
+            if cond.op == Op.TIME_BEFORE:
+                return cur_min < tgt_min
+            return cur_min >= tgt_min
+        except (ValueError, TypeError, IndexError):
+            return False
+
     if actual is None:
         return False
 
@@ -516,7 +580,7 @@ def _eval_condition(cond: PolicyCondition, ctx: EvalContext) -> bool:
     if op == Op.ENDS_WITH:
         return str(actual).endswith(str(expected))
     if op == Op.REGEX:
-        return bool(re.match(str(expected), str(actual)))
+        return _safe_regex_match(str(expected), str(actual))
     return False
 
 
@@ -632,16 +696,21 @@ def _resolve_inherited_conditions(
 
 class PolicyEngine:
     """
-    Motor de avaliação de policies Apollo IAM v3.
+    Motor de avaliacao de policies Apollo IAM v3.
 
     Regras de prioridade:
-    1. Deny explícito sempre vence Allow.
+    1. Deny explicito sempre vence Allow.
     2. Scope user > tenant > global (override em cascata).
-    3. Entre policies do mesmo scope/efeito, menor priority = maior precedência.
-    4. Sem policy aplicável → default deny.
-    5. Variáveis {{template}} resolvidas em tempo de avaliação.
-    6. Recursos hierárquicos: empresa/*/cotacao/* bate em empresa/123/cotacao/9.
-    7. Cada avaliação produz ConditionTrace por condição — explainability nativa.
+    3. Entre policies do mesmo scope/efeito: menor priority = maior precedencia.
+    4. Desempate por weight (maior weight = mais relevante).
+    5. Sem policy aplicavel -> default deny.
+    6. Variaveis {{template}} resolvidas em tempo de avaliacao.
+    7. Recursos hierarquicos: empresa/*/cotacao/* bate em empresa/123/cotacao/9.
+    8. Cada avaliacao produz ConditionTrace por condicao (explainability nativa).
+    9. v3: time-based (valid_from, valid_until, time_window).
+    10. v3: context_schema validation (tipo dos campos).
+    11. v3: conflict_score para resolucao explicita de conflitos.
+    12. v3: simulate() para what-if sem side effects.
     """
 
     def __init__(self):
@@ -684,16 +753,115 @@ class PolicyEngine:
         return [p for p in self._policies
                 if p.tenant_id == tenant_id or p.tenant_id is None]
 
+    # ── v3: validacao de context schema ──────────────────────────────────────
+
+    def _validate_context_schema(self, policy: Policy, ctx: EvalContext) -> list[str]:
+        """
+        Valida tipos dos campos do contexto contra context_schema da policy.
+        Retorna lista de violacoes (vazia = ok).
+        """
+        violations: list[str] = []
+        type_map = {"int": int, "float": float, "str": str,
+                    "string": str, "bool": bool, "list": list}
+        for field_name, expected_type in policy.context_schema.items():
+            actual = ctx.get(field_name)
+            if actual is None:
+                continue
+            py_type = type_map.get(expected_type.lower())
+            if py_type and not isinstance(actual, py_type):
+                violations.append(
+                    f"'{field_name}': esperado {expected_type}, "
+                    f"recebido {type(actual).__name__}({actual!r})"
+                )
+        return violations
+
+    # ── v3: time-based validation ─────────────────────────────────────────────
+
+    def _is_time_valid(self, policy: Policy) -> bool:
+        """
+        Verifica se a policy esta dentro da janela de tempo valida.
+        Retorna False se fora do periodo (valid_from/valid_until/time_window).
+        """
+        now = datetime.now(timezone.utc)
+
+        if policy.valid_from:
+            try:
+                vf = datetime.fromisoformat(policy.valid_from.replace("Z", "+00:00"))
+                if now < vf:
+                    return False
+            except ValueError:
+                pass
+
+        if policy.valid_until:
+            try:
+                vu = datetime.fromisoformat(policy.valid_until.replace("Z", "+00:00"))
+                if now > vu:
+                    return False
+            except ValueError:
+                pass
+
+        if policy.time_window:
+            try:
+                parts = policy.time_window.split("-")
+                start_h, start_m = _parse_hhmm(parts[0])
+                end_h, end_m     = _parse_hhmm(parts[1])
+                cur_min   = _hhmm_to_minutes(now.hour, now.minute)
+                start_min = _hhmm_to_minutes(start_h, start_m)
+                end_min   = _hhmm_to_minutes(end_h, end_m)
+                if start_min <= end_min:
+                    if not (start_min <= cur_min < end_min):
+                        return False
+                else:
+                    # janela que cruza meia-noite: ex "22:00-06:00"
+                    if not (cur_min >= start_min or cur_min < end_min):
+                        return False
+            except (ValueError, IndexError):
+                pass
+
+        return True
+
+    # ── v3: conflict score ────────────────────────────────────────────────────
+
+    def _conflict_score(self, p: Policy) -> int:
+        """
+        Score para resolucao explicita de conflitos entre policies.
+        Maior score = policy mais relevante em caso de empate de prioridade.
+        scope_score: user=300, tenant=200, global=100
+        weight: configuravel por policy (default 0)
+        """
+        scope_score = {PolicyScope.USER: 300, PolicyScope.TENANT: 200,
+                       PolicyScope.GLOBAL: 100}.get(p.scope, 100)
+        return scope_score + p.weight
+
+    # ── avaliacao principal ───────────────────────────────────────────────────
+
     def evaluate(self, ctx: EvalContext) -> EvalResult:
-        """
-        Avalia o contexto. Produz traces por condição para explainability.
-        Retorna EvalResult com decision, reason, failing_condition e traces.
-        """
         applicable_traces: list[PolicyTrace] = []
         skipped_traces: list[PolicyTrace] = []
+        time_skipped: list[str] = []
+        all_evaluated: list[str] = []
+        schema_violations: list[str] = []
 
         for p in self._policies:
+            all_evaluated.append(p.id)
+
+            # v3: time-based check
+            if not self._is_time_valid(p):
+                time_skipped.append(p.id)
+                skipped_traces.append(PolicyTrace(
+                    p.id, p.name, p.scope.value, p.effect.value, p.priority,
+                    skip_reason="time_invalid",
+                    action_match=None, resource_match=None, conditions_logic=None,
+                ))
+                continue
+
             pt = self._eval_policy(p, ctx)
+
+            # v3: schema validation (nao bloqueia, apenas registra)
+            if p.context_schema and pt.applicable:
+                violations = self._validate_context_schema(p, ctx)
+                schema_violations.extend(violations)
+
             if pt.skip_reason:
                 skipped_traces.append(pt)
             else:
@@ -703,41 +871,68 @@ class PolicyEngine:
         applicable = [t for t in applicable_traces if t.applicable]
 
         if not applicable:
-            return EvalResult.no_match(traces=all_traces)
+            return EvalResult.no_match(
+                traces=all_traces,
+                evaluated=all_evaluated,
+                time_skipped=time_skipped,
+            )
 
         chain = [t.policy_id for t in applicable]
 
-        # Deny explícito — prioridade absoluta
-        for pt in applicable:
-            if pt.effect == "deny":
-                failing = self._first_failing(pt)
-                return EvalResult.deny(
-                    reason=f"Negado pela policy '{pt.policy_name}' "
-                           f"(id={pt.policy_id}, scope={pt.scope}).",
-                    policy_id=pt.policy_id,
-                    policy_name=pt.policy_name,
-                    failing_condition=failing,
-                    chain=chain,
-                    traces=all_traces,
-                )
+        # Deny explicito — prioridade absoluta
+        # Em caso de multiplos denies, vence o de maior conflict_score
+        deny_candidates = [t for t in applicable if t.effect == "deny"]
+        if deny_candidates:
+            best_deny = max(
+                deny_candidates,
+                key=lambda t: self._conflict_score(self._by_id[t.policy_id])
+                if t.policy_id in self._by_id else 0
+            )
+            score = (self._conflict_score(self._by_id[best_deny.policy_id])
+                     if best_deny.policy_id in self._by_id else 0)
+            failing = self._first_failing(best_deny)
+            return EvalResult.deny(
+                reason=f"Negado pela policy '{best_deny.policy_name}' "
+                       f"(id={best_deny.policy_id}, scope={best_deny.scope}).",
+                policy_id=best_deny.policy_id,
+                policy_name=best_deny.policy_name,
+                failing_condition=failing,
+                chain=chain,
+                traces=all_traces,
+                evaluated=all_evaluated,
+                score=score,
+                time_skipped=time_skipped,
+            )
 
-        # Allow — scope mais específico vence
-        for pt in applicable:
-            if pt.effect == "allow":
-                return EvalResult.allow(
-                    reason=f"Permitido pela policy '{pt.policy_name}' "
-                           f"(id={pt.policy_id}, scope={pt.scope}).",
-                    policy_id=pt.policy_id,
-                    policy_name=pt.policy_name,
-                    chain=chain,
-                    traces=all_traces,
-                )
+        # Allow — scope mais especifico + maior weight vence
+        allow_candidates = [t for t in applicable if t.effect == "allow"]
+        if allow_candidates:
+            best_allow = max(
+                allow_candidates,
+                key=lambda t: self._conflict_score(self._by_id[t.policy_id])
+                if t.policy_id in self._by_id else 0
+            )
+            score = (self._conflict_score(self._by_id[best_allow.policy_id])
+                     if best_allow.policy_id in self._by_id else 0)
+            return EvalResult.allow(
+                reason=f"Permitido pela policy '{best_allow.policy_name}' "
+                       f"(id={best_allow.policy_id}, scope={best_allow.scope}).",
+                policy_id=best_allow.policy_id,
+                policy_name=best_allow.policy_name,
+                chain=chain,
+                traces=all_traces,
+                evaluated=all_evaluated,
+                score=score,
+                time_skipped=time_skipped,
+            )
 
-        return EvalResult.no_match(traces=all_traces)
+        return EvalResult.no_match(
+            traces=all_traces,
+            evaluated=all_evaluated,
+            time_skipped=time_skipped,
+        )
 
     def _eval_policy(self, p: Policy, ctx: EvalContext) -> PolicyTrace:
-        """Avalia uma policy e retorna PolicyTrace completo."""
-        # filtros de skip
         if not p.enabled:
             return PolicyTrace(p.id, p.name, p.scope.value, p.effect.value,
                                p.priority, skip_reason="disabled",
@@ -777,7 +972,6 @@ class PolicyEngine:
 
     @staticmethod
     def _first_failing(pt: PolicyTrace) -> str | None:
-        """Retorna a reason da primeira condição que falhou."""
         for ct in pt.conditions:
             if not ct.passed:
                 return ct.reason
@@ -795,23 +989,29 @@ class PolicyEngine:
     def evaluate_batch(self, contexts: list[EvalContext]) -> list[EvalResult]:
         return [self.evaluate(ctx) for ctx in contexts]
 
+    def simulate(self, policies_override: list[dict], ctx: EvalContext) -> dict:
+        """
+        Simula avaliacao com um conjunto de policies temporario (what-if).
+        Nao altera o estado do engine. Util para sandbox/dry-run.
+
+        policies_override: lista de dicts de policy (nao persistidas)
+        ctx: contexto de avaliacao
+        Retorna: resultado + traces completos
+        """
+        temp_engine = PolicyEngine()
+        for p_dict in policies_override:
+            temp_engine.load_from_dict(p_dict)
+        result = temp_engine.evaluate(ctx)
+        return {
+            "simulation": True,
+            "policies_tested": len(policies_override),
+            **result.to_explain_dict(),
+        }
+
     def explain(self, ctx: EvalContext) -> dict:
-        """
-        Retorna explicação estruturada completa — inclui traces por condição,
-        valores de template resolvidos, e decisão final.
-        """
         result = self.evaluate(ctx)
         return {
-            "decision": {
-                "decision":          result.decision,
-                "allowed":           result.allowed,
-                "effect":            result.effect.value if result.effect else None,
-                "matched_policy":    result.matched_policy,
-                "matched_rule":      result.matched_rule,
-                "reason":            result.reason,
-                "failing_condition": result.failing_condition,
-                "chain":             result.composition_chain,
-            },
+            "decision": result.to_audit_dict(),
             "context": {
                 "action":     ctx.action,
                 "resource":   ctx.resource,

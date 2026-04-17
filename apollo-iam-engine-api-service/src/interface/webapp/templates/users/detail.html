@@ -101,16 +101,16 @@
   </div>
   <hr class="divider"/>
   <div class="card-header mt-3"><span class="card-title">Atribuir Role</span></div>
-  <form method="post" action="/admin/users/{{ user.id }}/assign-role" class="flex gap-2">
-    <select class="form-control" name="role_id" style="max-width:280px">
+  <form method="post" action="/admin/users/{{ user.id }}/assign-role" class="flex gap-2 flex-wrap">
+    <select class="form-control" name="role_id" style="max-width:280px;flex:1;min-width:160px">
       {% for r in all_roles %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
     </select>
     <button class="btn btn-primary" type="submit">＋ Atribuir</button>
   </form>
   <hr class="divider"/>
   <div class="card-header mt-3"><span class="card-title">Revogar Role</span></div>
-  <form method="post" action="/admin/users/{{ user.id }}/revoke-role" class="flex gap-2">
-    <select class="form-control" name="role_id" style="max-width:280px">
+  <form method="post" action="/admin/users/{{ user.id }}/revoke-role" class="flex gap-2 flex-wrap">
+    <select class="form-control" name="role_id" style="max-width:280px;flex:1;min-width:160px">
       {% for r in all_roles %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}
     </select>
     <button class="btn btn-danger" type="submit">✕ Revogar</button>
@@ -121,10 +121,10 @@
 <div id="tab-rbac" class="tab-panel card">
   <div class="card-header"><span class="card-title">Atribuir Atributo RBAC</span></div>
   <form method="post" action="/admin/users/{{ user.id }}/assign-rbac" class="flex gap-2 flex-wrap">
-    <select class="form-control" name="attribute_key" style="max-width:220px">
+    <select class="form-control" name="attribute_key" style="flex:1;min-width:160px">
       {% for a in all_attrs %}<option value="{{ a.key }}">{{ a.key }} ({{ a.label }})</option>{% endfor %}
     </select>
-    <input class="form-control" name="value" placeholder="valor" style="max-width:180px"/>
+    <input class="form-control" name="value" placeholder="valor" style="flex:1;min-width:120px"/>
     <button class="btn btn-primary" type="submit">＋ Atribuir</button>
   </form>
   <div class="form-hint mt-2">Os atributos RBAC são incluídos no token JWT e usados em políticas de acesso.</div>
@@ -152,12 +152,12 @@
   <hr class="divider"/>
   <div class="card-header mt-3"><span class="card-title">Atribuir Entidade ABAC</span></div>
   <form method="post" action="/admin/users/{{ user.id }}/assign-entity" id="abac-form" class="flex gap-2 flex-wrap">
-    <select class="form-control" name="entity_type_slug" id="abac-type-sel" style="max-width:200px"
+    <select class="form-control" name="entity_type_slug" id="abac-type-sel" style="flex:1;min-width:160px"
             onchange="loadEntityValues(this.value)">
       <option value="">— Tipo —</option>
       {% for et in entity_types %}<option value="{{ et.slug }}">{{ et.label }}</option>{% endfor %}
     </select>
-    <select class="form-control" name="entity_value_id" id="abac-val-sel" style="max-width:200px">
+    <select class="form-control" name="entity_value_id" id="abac-val-sel" style="flex:1;min-width:160px">
       <option value="">— Valor —</option>
     </select>
     <button class="btn btn-primary" type="submit">＋ Atribuir</button>
@@ -165,7 +165,7 @@
 </div>
 
 <!-- Password -->
-<div id="tab-password" class="tab-panel card" style="max-width:400px">
+<div id="tab-password" class="tab-panel card" style="max-width:400px;width:100%">
   <div class="card-header"><span class="card-title">🔒 Redefinir Senha</span></div>
   <form method="post" action="/admin/users/{{ user.id }}/reset-password">
     <div class="form-group">

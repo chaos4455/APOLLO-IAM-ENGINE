@@ -52,8 +52,22 @@ class DecisionCache:
         subject_id: str,
         action: str,
         resource: str,
+        subject: dict | None = None,
     ) -> str:
-        raw = f"{tenant_id or ''}:{subject_id}:{action}:{resource}"
+        """
+        Chave de cache que inclui o contexto completo relevante.
+        Problema anterior: ignorava roles/attributes do subject — podia retornar
+        decisao errada para subjects diferentes com mesmo ID mas atributos distintos.
+        Solucao: hash(tenant:subject_id:action:resource:subject_canonical)
+        """
+        # serializa subject de forma deterministica (sorted keys)
+        subject_str = ""
+        if subject:
+            try:
+                subject_str = json.dumps(subject, sort_keys=True, default=str)
+            except Exception:
+                subject_str = str(sorted(subject.items()) if subject else "")
+        raw = f"{tenant_id or ''}:{subject_id}:{action}:{resource}:{subject_str}"
         return hashlib.sha256(raw.encode()).hexdigest()
 
     # ── TTL por policy ────────────────────────────────────────────────────────
@@ -74,8 +88,9 @@ class DecisionCache:
         subject_id: str,
         action: str,
         resource: str,
+        subject: dict | None = None,
     ) -> _DecisionEntry | None:
-        key = self.make_key(tenant_id, subject_id, action, resource)
+        key = self.make_key(tenant_id, subject_id, action, resource, subject)
         with self._lock:
             entry = self._store.get(key)
             if entry is None:
@@ -100,8 +115,9 @@ class DecisionCache:
         matched_policy: str | None,
         reason: str,
         ttl: float | None = None,
+        subject: dict | None = None,
     ) -> None:
-        key = self.make_key(tenant_id, subject_id, action, resource)
+        key = self.make_key(tenant_id, subject_id, action, resource, subject)
         effective_ttl = ttl if ttl is not None else self._ttl_for(matched_policy)
         entry = _DecisionEntry(
             allowed=allowed,

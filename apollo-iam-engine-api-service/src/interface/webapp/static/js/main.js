@@ -1,3 +1,30 @@
+// ── Sidebar mobile toggle ──
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  if (!sidebar) return;
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) {
+    sidebar.classList.remove('open');
+    overlay && overlay.classList.remove('open');
+  } else {
+    sidebar.classList.add('open');
+    overlay && overlay.classList.add('open');
+  }
+}
+function closeSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  sidebar && sidebar.classList.remove('open');
+  overlay && overlay.classList.remove('open');
+}
+// Fecha sidebar ao navegar (mobile)
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeSidebar();
+  });
+});
+
 // ── Modal: fecha ao clicar no backdrop ──
 document.addEventListener('click', e => {
   if (e.target.classList.contains('modal-backdrop')) {

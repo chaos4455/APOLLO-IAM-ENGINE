@@ -65,6 +65,11 @@ class PolicyService:
             scope=policy.scope.value,
             subject_id=policy.subject_id,
             inherits=json.dumps(policy.inherits),
+            valid_from=policy.valid_from,
+            valid_until=policy.valid_until,
+            time_window=policy.time_window,
+            context_schema=json.dumps(policy.context_schema),
+            weight=policy.weight,
         )
         self._db.add(model)
         self._db.commit()
@@ -129,7 +134,8 @@ class PolicyService:
         t0 = time.perf_counter()
 
         if use_cache and subject_id:
-            cached = decision_cache.get(tenant_id, subject_id, action, resource)
+            cached = decision_cache.get(tenant_id, subject_id, action, resource,
+                                        subject=subject)
             if cached:
                 dur = round((time.perf_counter() - t0) * 1000, 2)
                 result = EvalResult(
@@ -164,6 +170,7 @@ class PolicyService:
                 effect=result.effect.value if result.effect else None,
                 matched_policy=result.matched_policy,
                 reason=result.reason,
+                subject=subject,
             )
 
         # audit trail de decisão
@@ -180,6 +187,24 @@ class PolicyService:
         )
 
         return result
+
+    def simulate(
+        self,
+        policies_override: list[dict],
+        subject: dict[str, Any],
+        action: str,
+        resource: str,
+        tenant_id: str | None = None,
+        subject_id: str = "",
+    ) -> dict:
+        """
+        Simula avaliacao com policies temporarias (what-if / sandbox).
+        Nao persiste nada, nao altera o engine global, nao grava audit.
+        Ideal para: testar policies antes de ativar, dry-run, test suite.
+        """
+        ctx = EvalContext(subject=subject, action=action, resource=resource,
+                          tenant_id=tenant_id, subject_id=subject_id)
+        return self._engine.simulate(policies_override, ctx)
 
     def explain(
         self,

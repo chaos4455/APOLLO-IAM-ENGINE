@@ -50,5 +50,7 @@ class SqliteRbacAttributeRepository(RbacAttributeRepository):
     def delete(self, attr_id: str) -> None:
         m = self.db.query(RbacAttributeModel).filter_by(id=attr_id).first()
         if m:
+            from sqlalchemy import text
+            self.db.execute(text("DELETE FROM user_rbac_values WHERE attribute_id = :id"), {"id": attr_id})
             self.db.delete(m)
             self.db.commit()

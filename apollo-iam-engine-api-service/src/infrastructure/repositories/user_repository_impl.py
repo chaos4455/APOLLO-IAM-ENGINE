@@ -1,5 +1,6 @@
 from typing import Optional
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import text
 from src.domain.entities.user import User
 from src.domain.ports.user_repository import UserRepository
 from src.infrastructure.database.models.user_model import UserModel
@@ -44,24 +45,36 @@ class SqliteUserRepository(UserRepository):
         return user
 
     def find_by_id(self, user_id: str) -> Optional[User]:
-        m = self.db.query(UserModel).filter_by(id=user_id).first()
+        m = (self.db.query(UserModel)
+             .options(joinedload(UserModel.roles))
+             .filter_by(id=user_id).first())
         return _to_entity(m) if m else None
 
     def find_by_username(self, username: str) -> Optional[User]:
-        m = self.db.query(UserModel).filter_by(username=username).first()
+        m = (self.db.query(UserModel)
+             .options(joinedload(UserModel.roles))
+             .filter_by(username=username).first())
         return _to_entity(m) if m else None
 
     def find_by_email(self, email: str) -> Optional[User]:
-        m = self.db.query(UserModel).filter_by(email=email).first()
+        m = (self.db.query(UserModel)
+             .options(joinedload(UserModel.roles))
+             .filter_by(email=email).first())
         return _to_entity(m) if m else None
 
     def list_all(self, skip: int = 0, limit: int = 100) -> list[User]:
-        rows = self.db.query(UserModel).offset(skip).limit(limit).all()
+        rows = (self.db.query(UserModel)
+                .options(joinedload(UserModel.roles))
+                .offset(skip).limit(limit).all())
         return [_to_entity(r) for r in rows]
 
     def delete(self, user_id: str) -> None:
         m = self.db.query(UserModel).filter_by(id=user_id).first()
         if m:
+            # limpa associações antes de deletar para evitar FK constraint
+            self.db.execute(text("DELETE FROM user_roles WHERE user_id = :id"), {"id": user_id})
+            self.db.execute(text("DELETE FROM user_rbac_values WHERE user_id = :id"), {"id": user_id})
+            self.db.execute(text("DELETE FROM user_custom_entities WHERE user_id = :id"), {"id": user_id})
             self.db.delete(m)
             self.db.commit()
 

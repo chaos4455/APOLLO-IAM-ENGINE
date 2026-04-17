@@ -42,10 +42,31 @@ class PolicyCreateRequest(BaseModel):
     conditions: list[PolicyConditionSchema] = []
     condition_logic: str = "AND"
     enabled: bool = True
-    # v2: composition
-    scope: str = "tenant"                   # "global" | "tenant" | "user"
-    subject_id: Optional[str] = None        # scope=user: ID do sujeito
-    inherits: list[str] = []                # IDs de policies pai
+    scope: str = "tenant"
+    subject_id: Optional[str] = None
+    inherits: list[str] = []
+    # v3: time-based + schema + weight
+    valid_from: Optional[str] = None       # ISO 8601
+    valid_until: Optional[str] = None      # ISO 8601
+    time_window: Optional[str] = None      # "HH:MM-HH:MM"
+    context_schema: dict[str, str] = {}    # {field: type}
+    weight: int = 0                        # desempate explicito
+
+
+class PolicySimulateRequest(BaseModel):
+    """Simulacao what-if: testa policies temporarias sem persistir."""
+    policies: list[PolicyCreateRequest]    # policies a testar (nao persistidas)
+    subject: dict[str, Any]
+    action: str
+    resource: str
+    tenant_id: Optional[str] = None
+    subject_id: str = ""
+
+
+class PolicySimulateBatchRequest(BaseModel):
+    """Simulacao em massa: multiplos contextos contra as mesmas policies."""
+    policies: list[PolicyCreateRequest]
+    contexts: list[PolicyEvalRequest]
 
 
 class PolicyEvalRequest(BaseModel):
@@ -238,3 +259,58 @@ async def reload_policies(
     _require_super(current_user)
     count = PolicyService(db).reload_from_db()
     return {"loaded": count}
+
+
+@router.post("/simulate", summary="Simular avaliacao com policies temporarias (what-if / sandbox)")
+async def simulate_policy(
+    body: PolicySimulateRequest,
+    db: Session = Depends(get_db),
+    current_user: TokenPayload = Depends(get_current_user),
+):
+    """
+    Avalia policies temporarias sem persistir nada.
+    Ideal para: testar policies antes de ativar, dry-run, CI/CD de policies.
+    Retorna resultado completo com traces por condicao.
+    """
+    svc = PolicyService(db)
+    return svc.simulate(
+        policies_override=[p.model_dump() for p in body.policies],
+        subject=body.subject,
+        action=body.action,
+        resource=body.resource,
+        tenant_id=body.tenant_id,
+        subject_id=body.subject_id,
+    )
+
+
+@router.post("/simulate/batch", summary="Simulacao em massa: multiplos contextos")
+async def simulate_batch(
+    body: PolicySimulateBatchRequest,
+    db: Session = Depends(get_db),
+    current_user: TokenPayload = Depends(get_current_user),
+):
+    """
+    Testa multiplos contextos contra o mesmo conjunto de policies temporarias.
+    Retorna lista de resultados — util para test suite de policies.
+    """
+    from src.domain.policy.policy_dsl import PolicyEngine, EvalContext
+    temp_engine = PolicyEngine()
+    for p_dict in [p.model_dump() for p in body.policies]:
+        temp_engine.load_from_dict(p_dict)
+
+    results = []
+    for ctx_req in body.contexts:
+        ctx = EvalContext(
+            subject=ctx_req.subject,
+            action=ctx_req.action,
+            resource=ctx_req.resource,
+            tenant_id=ctx_req.tenant_id,
+            subject_id=ctx_req.subject_id,
+        )
+        result = temp_engine.evaluate(ctx)
+        results.append({
+            "context": {"action": ctx.action, "resource": ctx.resource,
+                        "tenant_id": ctx.tenant_id, "subject_id": ctx.subject_id},
+            **result.to_audit_dict(),
+        })
+    return {"simulation": True, "total": len(results), "results": results}

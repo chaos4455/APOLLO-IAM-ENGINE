@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Optional
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from src.domain.entities.role import Role
 from src.domain.ports.role_repository import RoleRepository
 from src.infrastructure.database.models.role_model import RoleModel
@@ -36,15 +36,22 @@ class SqliteRoleRepository(RoleRepository):
         return role
 
     def find_by_id(self, role_id: str) -> Optional[Role]:
-        m = self.db.query(RoleModel).filter_by(id=role_id).first()
+        m = (self.db.query(RoleModel)
+             .options(joinedload(RoleModel.permissions))
+             .filter_by(id=role_id).first())
         return _to_entity(m) if m else None
 
     def find_by_name(self, name: str) -> Optional[Role]:
-        m = self.db.query(RoleModel).filter_by(name=name).first()
+        m = (self.db.query(RoleModel)
+             .options(joinedload(RoleModel.permissions))
+             .filter_by(name=name).first())
         return _to_entity(m) if m else None
 
     def list_all(self) -> list[Role]:
-        return [_to_entity(r) for r in self.db.query(RoleModel).all()]
+        return [_to_entity(r) for r in
+                self.db.query(RoleModel)
+                .options(joinedload(RoleModel.permissions))
+                .all()]
 
     def delete(self, role_id: str) -> None:
         m = self.db.query(RoleModel).filter_by(id=role_id).first()

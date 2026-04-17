@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, DateTime
+from sqlalchemy import Column, String, Boolean, DateTime, Index
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from src.infrastructure.database.base import Base
@@ -9,6 +9,6 @@ class GroupModel(Base):
     id = Column(String, primary_key=True)
     name = Column(String, unique=True, nullable=False, index=True)
     description = Column(String, default="")
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, default=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     users = relationship("UserModel", back_populates="group")
